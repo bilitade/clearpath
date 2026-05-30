@@ -1,8 +1,8 @@
-# ClearPath — Mental Health Triage & Provider Match (MVP1)
+# ClearPath — Mental Health Triage & Provider Match (Prototype)
 
-ClearPath converts *"I need help"* into a ranked, contactable provider shortlist through AI-guided conversational screening (PHQ-9 + GAD-7), deterministic scoring, safe triage, and provider matching.
+ClearPath is an early prototype that turns *"I need help"* into a ranked provider shortlist through validated screening (PHQ-9 + GAD-7), deterministic scoring, safe triage, and provider matching — with an AI-written plain-language summary on the results page.
 
-**Live demo:** Deploy to Vercel (see [Deployment](#deployment))
+> **Status:** Prototype — not production-ready. See [Limitations](#limitations).
 
 ---
 
@@ -10,15 +10,16 @@ ClearPath converts *"I need help"* into a ranked, contactable provider shortlist
 
 ```bash
 pnpm install
-cp .env.example .env.local   # add your OPENAI_API_KEY
+cp .env.example .env.local   # add OPENAI_API_KEY (or Hugging Face hf_ token)
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
-pnpm test      # unit tests (scoring + matcher)
+pnpm test      # 34 unit tests (scoring, care level, matcher, intake flow)
 pnpm build     # production build
+pnpm lint      # ESLint
 ```
 
 ---
@@ -27,57 +28,108 @@ pnpm build     # production build
 
 ```
 Landing → Onboarding (ZIP, insurance, concern)
-       → AI intake (PHQ-9 ×9, GAD-7 ×7)
-       ├─ Crisis → /crisis (988, Crisis Text Line, 911)
-       └─ Deterministic scoring → care level → provider match → results
+       → Intake — 16 structured questions (PHQ-9 ×9, GAD-7 ×7)
+       │    tap 0–3 per question (Not at all → Nearly every day)
+       │
+       ├─ PHQ-9 item 9 ≥ 1 → /crisis (988, Crisis Text Line, 911)
+       │
+       └─ After Q16 → /processing (animated pipeline)
+              ├─ Score responses (deterministic)
+              ├─ Match providers (deterministic)
+              ├─ Write summary (LLM)
+              └─ → /results
 ```
+
+---
+
+## What uses AI vs code
+
+| Step | How it works |
+|---|---|
+| Questionnaire (16 items) | **Deterministic** — choice buttons, no LLM |
+| PHQ-9 / GAD-7 scoring | **Deterministic** — `lib/scoring.ts` |
+| Care level | **Deterministic** — `lib/scoring.ts` |
+| Provider ranking | **Deterministic** — `lib/matcher.ts` + seeded JSON |
+| Results summary paragraph | **LLM** — `/api/summary` (fallback text if API fails) |
+
+**Trust boundary:** The LLM never computes clinical scores. Scoring, triage, and provider ranking are pure TypeScript with unit tests.
 
 ---
 
 ## Architecture
 
-Single **Next.js 16 (App Router)** application — UI and API in one deployable.
+Single **Next.js 16 (App Router)** app — UI and API in one deployable.
 
 | Layer | Responsibility |
 |---|---|
-| **OpenAI API** | Conversational intake phrasing + non-diagnostic summary only |
-| **`lib/scoring.ts`** | Deterministic PHQ-9/GAD-7 scoring, severity bands, care level |
-| **`lib/crisis.ts`** | Dual-layer crisis detection (item 9 + classifier) |
-| **`lib/matcher.ts`** | Deterministic provider ranking from seeded JSON |
-| **`data/providers.json`** | ~20 seeded providers (MVP1) |
+| **`lib/intake-flow.ts`** | Question progression, answer capture, crisis on item 9 |
+| **`lib/scoring.ts`** | PHQ-9/GAD-7 bands, care level, crisis/urgent flags |
+| **`lib/matcher.ts`** | Provider ranking from `data/providers.json` |
+| **`lib/crisis.ts`** | Item 9 check + optional crisis-language classifier |
+| **`lib/openai.ts`** | OpenAI or Hugging Face router client (summary only in main flow) |
+| **`data/providers.json`** | ~20 seeded providers |
 
-**Trust boundary:** The LLM never computes clinical scores. All scoring, routing, and ranking are pure TypeScript.
+### Pages
+
+| Route | Purpose |
+|---|---|
+| `/` | Landing |
+| `/onboarding` | ZIP, insurance, primary concern |
+| `/intake` | 16-question structured screening |
+| `/processing` | Post-intake scoring, matching, summary animation |
+| `/results` | Scores, care level, AI summary, matched providers |
+| `/crisis` | Static crisis resources |
 
 ### API routes
 
 | Route | Method | Purpose |
 |---|---|---|
-| `/api/intake/message` | POST | One conversational turn |
+| `/api/intake/start` | POST | Begin or resume intake |
+| `/api/intake/answer` | POST | Save one 0–3 answer, return next step |
+| `/api/intake/session` | POST | Retrieve all answers |
 | `/api/intake/score` | POST | Deterministic scoring |
-| `/api/intake/session` | POST | Retrieve session answers |
 | `/api/match` | POST | Ranked provider match |
 | `/api/summary` | POST | Non-diagnostic LLM narrative |
+| `/api/intake/message` | POST | Legacy conversational turn (unused by current UI) |
+
+---
+
+## Environment
+
+```bash
+# OpenAI (default)
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4o-mini
+
+# Hugging Face router — auto-detected when key starts with hf_
+OPENAI_API_KEY=hf_...
+OPENAI_MODEL=google/gemma-4-31B-it
+OPENAI_MODEL_PROVIDER=novita   # optional
+```
+
+See `.env.example` for all options. **LLM is required for the AI summary**; intake works without it.
 
 ---
 
 ## Safety design
 
 1. **Deterministic scoring** — PHQ-9/GAD-7 totals and bands are pure code with unit tests.
-2. **Dual-layer crisis detection** — PHQ-9 item 9 ≥ 1 OR crisis-language classifier → `/crisis`.
-3. **Urgent ≠ crisis** — Severe scores without suicidality route to urgent care guidance, not the 988 page.
-4. **Static crisis page** — `/crisis` renders crisis resources with high-contrast styling.
-5. **Non-diagnostic posture** — Disclaimers on landing, results, and in LLM summary prompts.
-6. **No PII persistence** — Session data in memory only; client uses sessionStorage for active tab.
+2. **Crisis routing** — PHQ-9 item 9 ≥ 1 on answer save → `/crisis` immediately.
+3. **Urgent ≠ crisis** — Severe scores without suicidality show urgent guidance on results, not the 988 page.
+4. **Static crisis page** — `/crisis` is independent of intake/session state.
+5. **Non-diagnostic posture** — Disclaimers on landing, results, and in summary prompts.
+6. **No PII persistence** — Server session is in-memory; client uses sessionStorage for the active tab only.
 
 ---
 
-## Limitations (MVP1)
+## Limitations (prototype)
 
-- Seeded provider data (not real-time availability)
+- **Not an MVP or clinical product** — demo-quality, not validated for production care
+- Seeded provider data (not real-time availability or verified listings)
 - No accounts, auth, or persistent storage
 - English only; web-responsive (no native app)
-- OpenAI required for conversational intake (numeric fallback available for ambiguous answers)
-- Not HIPAA-compliant (no PHI stored; see product dossier for MVP2+ path)
+- LLM needed for results summary (static fallback if unavailable)
+- Not HIPAA-compliant (no PHI stored long-term)
 
 ---
 
@@ -85,28 +137,34 @@ Single **Next.js 16 (App Router)** application — UI and API in one deployable.
 
 1. Push to GitHub
 2. Import project in [Vercel](https://vercel.com)
-3. Set environment variables: `OPENAI_API_KEY`, optionally `OPENAI_MODEL`
+3. Set `OPENAI_API_KEY` (and optionally `OPENAI_MODEL`)
 4. Deploy from `main`
 
 **Post-deploy smoke checks:**
-- `/` loads
-- `/crisis` loads directly
-- Full persona run on public URL
+- `/` and `/crisis` load
+- Full flow: onboarding → intake → processing → results
 
 ---
 
 ## Project structure
 
 ```
-app/           # Pages + API routes
-components/    # UI design system + domain components
-lib/           # Clinical logic, prompts, session, validators
-data/          # Seeded providers
-tests/         # Vitest unit tests
+app/
+  (marketing)/     Landing page
+  onboarding/      User context form
+  intake/          Structured screening
+  processing/      Post-intake pipeline UI
+  results/         Scores + providers + summary
+  crisis/          Crisis resources
+  api/             Intake, match, summary routes
+components/        UI primitives + domain components
+lib/               Scoring, matching, intake flow, prompts, session
+data/              Seeded providers
+tests/             Vitest (34 tests across 4 files)
 ```
 
 ---
 
 ## License
 
-Private — MVP1 prototype.
+Private — prototype for demonstration and iteration.
