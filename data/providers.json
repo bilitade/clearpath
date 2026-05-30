@@ -1,0 +1,222 @@
+[
+  {
+    "id": "p001",
+    "name": "Dr. Sarah Chen, LCSW",
+    "specialties": ["anxiety", "depression", "stress"],
+    "insurances": ["aetna", "bcbs", "cigna"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "021",
+    "estWaitDays": 7,
+    "costEstimate": "$0–30 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p002",
+    "name": "Mindful Path Therapy Group",
+    "specialties": ["anxiety", "relationship", "stress"],
+    "insurances": ["aetna", "united", "self_pay"],
+    "format": ["tele"],
+    "zipCluster": "021",
+    "estWaitDays": 5,
+    "costEstimate": "$25–50 per session (self-pay)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p003",
+    "name": "Dr. James Okonkwo, PhD",
+    "specialties": ["depression", "anxiety"],
+    "insurances": ["bcbs", "cigna", "united"],
+    "format": ["in_person"],
+    "zipCluster": "021",
+    "estWaitDays": 14,
+    "costEstimate": "$0–40 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p004",
+    "name": "Harbor Behavioral Health",
+    "specialties": ["depression", "stress", "relationship"],
+    "insurances": ["aetna", "bcbs", "self_pay"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "100",
+    "estWaitDays": 10,
+    "costEstimate": "$0–35 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p005",
+    "name": "Dr. Maria Santos, LMFT",
+    "specialties": ["relationship", "anxiety", "stress"],
+    "insurances": ["cigna", "united", "self_pay"],
+    "format": ["tele"],
+    "zipCluster": "100",
+    "estWaitDays": 3,
+    "costEstimate": "$30–60 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p006",
+    "name": "Dr. Robert Kim, MD (Psychiatry)",
+    "specialties": ["depression", "anxiety"],
+    "insurances": ["aetna", "bcbs", "cigna", "united"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "100",
+    "estWaitDays": 21,
+    "costEstimate": "$0–50 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p007",
+    "name": "Calm Coast Counseling",
+    "specialties": ["anxiety", "stress", "unsure"],
+    "insurances": ["bcbs", "self_pay"],
+    "format": ["in_person"],
+    "zipCluster": "902",
+    "estWaitDays": 8,
+    "costEstimate": "$40–80 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p008",
+    "name": "Dr. Emily Wright, PsyD",
+    "specialties": ["depression", "relationship"],
+    "insurances": ["aetna", "united"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "902",
+    "estWaitDays": 12,
+    "costEstimate": "$0–45 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p009",
+    "name": "Westside Wellness Center",
+    "specialties": ["anxiety", "depression", "stress"],
+    "insurances": ["cigna", "bcbs", "self_pay"],
+    "format": ["tele"],
+    "zipCluster": "902",
+    "estWaitDays": 6,
+    "costEstimate": "$20–55 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p010",
+    "name": "Dr. Ahmed Hassan, LPC",
+    "specialties": ["stress", "anxiety", "relationship"],
+    "insurances": ["aetna", "cigna"],
+    "format": ["in_person"],
+    "zipCluster": "606",
+    "estWaitDays": 9,
+    "costEstimate": "$0–30 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p011",
+    "name": "Chicago Mind Health",
+    "specialties": ["depression", "anxiety", "unsure"],
+    "insurances": ["bcbs", "united", "self_pay"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "606",
+    "estWaitDays": 4,
+    "costEstimate": "$25–65 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p012",
+    "name": "Dr. Lisa Park, PMHNP",
+    "specialties": ["depression", "anxiety"],
+    "insurances": ["aetna", "bcbs", "united"],
+    "format": ["tele"],
+    "zipCluster": "606",
+    "estWaitDays": 18,
+    "costEstimate": "$0–55 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p013",
+    "name": "Renew Therapy Partners",
+    "specialties": ["relationship", "stress", "depression"],
+    "insurances": ["cigna", "self_pay"],
+    "format": ["tele"],
+    "zipCluster": "021",
+    "estWaitDays": 11,
+    "costEstimate": "$35–70 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p014",
+    "name": "Dr. Thomas Nguyen, LCSW",
+    "specialties": ["anxiety", "depression", "stress"],
+    "insurances": ["united", "bcbs"],
+    "format": ["in_person"],
+    "zipCluster": "100",
+    "estWaitDays": 15,
+    "costEstimate": "$0–35 copay (in-network)",
+    "acceptingNew": false
+  },
+  {
+    "id": "p015",
+    "name": "Bright Horizons Mental Health",
+    "specialties": ["unsure", "anxiety", "stress"],
+    "insurances": ["aetna", "self_pay"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "902",
+    "estWaitDays": 2,
+    "costEstimate": "$15–45 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p016",
+    "name": "Dr. Patricia Moore, PhD",
+    "specialties": ["depression", "relationship"],
+    "insurances": ["bcbs", "cigna", "united"],
+    "format": ["in_person"],
+    "zipCluster": "606",
+    "estWaitDays": 20,
+    "costEstimate": "$0–40 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p017",
+    "name": "Serenity Online Therapy",
+    "specialties": ["anxiety", "stress", "depression"],
+    "insurances": ["self_pay", "aetna"],
+    "format": ["tele"],
+    "zipCluster": "021",
+    "estWaitDays": 1,
+    "costEstimate": "$50–90 per session",
+    "acceptingNew": true
+  },
+  {
+    "id": "p018",
+    "name": "Dr. Kevin Brooks, LMHC",
+    "specialties": ["relationship", "anxiety"],
+    "insurances": ["cigna", "united"],
+    "format": ["tele", "in_person"],
+    "zipCluster": "100",
+    "estWaitDays": 7,
+    "costEstimate": "$0–25 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p019",
+    "name": "Pacific Grove Psychiatry",
+    "specialties": ["depression", "anxiety"],
+    "insurances": ["aetna", "bcbs", "cigna"],
+    "format": ["in_person"],
+    "zipCluster": "902",
+    "estWaitDays": 25,
+    "costEstimate": "$0–60 copay (in-network)",
+    "acceptingNew": true
+  },
+  {
+    "id": "p020",
+    "name": "Dr. Rachel Green, LCSW",
+    "specialties": ["stress", "depression", "unsure"],
+    "insurances": ["united", "self_pay"],
+    "format": ["tele"],
+    "zipCluster": "606",
+    "estWaitDays": 5,
+    "costEstimate": "$30–55 per session",
+    "acceptingNew": true
+  }
+]
