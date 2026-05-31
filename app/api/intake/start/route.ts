@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
-import { resumeIntake, startIntake } from "@/lib/intake-flow";
+import {
+  resumeIntake,
+  setClassifierCrisisFlag,
+  startIntake,
+  startQuestionnaireIntake,
+} from "@/lib/intake/intake-flow";
+import { classifyCrisisMessage } from "@/lib/screening/crisis";
+import { llmClassifyCrisis } from "@/lib/ai/prompts";
 import { onboardingContextSchema } from "@/lib/validators";
 import { z } from "zod";
 
@@ -7,6 +14,7 @@ const schema = z.object({
   sessionId: z.string().min(1),
   context: onboardingContextSchema,
   resume: z.boolean().optional(),
+  mode: z.enum(["story", "questionnaire"]).optional(),
 });
 
 export async function POST(request: Request) {
@@ -20,10 +28,23 @@ export async function POST(request: Request) {
       );
     }
 
-    const { sessionId, context, resume } = parsed.data;
+    const { sessionId, context, resume, mode } = parsed.data;
+
+    if (mode !== "questionnaire" && context.optionalContext?.trim()) {
+      const crisis = await classifyCrisisMessage(
+        context.optionalContext,
+        llmClassifyCrisis,
+      );
+      if (crisis.crisis) {
+        setClassifierCrisisFlag(sessionId, true);
+      }
+    }
+
     const result = resume
       ? resumeIntake(sessionId, context)
-      : startIntake(sessionId, context);
+      : mode === "questionnaire"
+        ? startQuestionnaireIntake(sessionId, context)
+        : startIntake(sessionId, context);
 
     return NextResponse.json(result);
   } catch (error) {

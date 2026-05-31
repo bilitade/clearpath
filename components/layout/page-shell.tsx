@@ -5,9 +5,7 @@ import { Header } from "./header";
 interface PageShellProps {
   children: React.ReactNode;
   className?: string;
-  /** Remove default main padding — for full-bleed marketing layouts */
   flush?: boolean;
-  /** Tighter vertical padding on main */
   compact?: boolean;
 }
 

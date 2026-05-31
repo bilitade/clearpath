@@ -1,0 +1,207 @@
+import {
+  SCREENING_MODE_KEY,
+  type ScreeningMode,
+} from "@/lib/screening/screening-mode";
+import type { OnboardingContext, PatientProfile } from "@/lib/types";
+
+const SESSION_KEY = "clearpath_session";
+const CONTEXT_KEY = "clearpath_context";
+const RESULTS_KEY = "clearpath_results";
+
+function normalizeProfile(raw: unknown): PatientProfile | null {
+  if (!raw || typeof raw !== "object") return null;
+  const o = raw as Record<string, unknown>;
+  if (typeof o.zip !== "string" || typeof o.insurance !== "string") return null;
+  if (typeof o.concern !== "string") return null;
+  return {
+    zip: o.zip,
+    insurance: o.insurance,
+    concern: o.concern as PatientProfile["concern"],
+    formatPreference:
+      o.formatPreference === "tele" ||
+      o.formatPreference === "in_person" ||
+      o.formatPreference === "either"
+        ? o.formatPreference
+        : "either",
+    optionalContext:
+      typeof o.optionalContext === "string" ? o.optionalContext : undefined,
+  };
+}
+
+export interface StoredResults {
+  score: import("@/lib/types").ScoreResult;
+  match: import("@/lib/types").MatchResult;
+  summary: string;
+  context: OnboardingContext;
+}
+
+export function getSessionId(): string | null {
+  if (typeof window === "undefined") return null;
+  return sessionStorage.getItem(SESSION_KEY);
+}
+
+export function setSessionId(id: string): void {
+  sessionStorage.setItem(SESSION_KEY, id);
+  sessionIdSnapshotCache = { raw: id, data: id };
+  notifyOnboardingSessionListeners();
+}
+
+export function getOnboardingContext(): OnboardingContext | null {
+  if (typeof window === "undefined") return null;
+  const raw = sessionStorage.getItem(CONTEXT_KEY);
+  if (!raw) return null;
+  try {
+    return normalizeProfile(JSON.parse(raw));
+  } catch {
+    return null;
+  }
+}
+
+export function setOnboardingContext(context: OnboardingContext): void {
+  const raw = JSON.stringify(context);
+  sessionStorage.setItem(CONTEXT_KEY, raw);
+  contextSnapshotCache = { raw, data: context };
+  notifyOnboardingSessionListeners();
+}
+
+export function getPatientProfile(): PatientProfile | null {
+  return getOnboardingContext();
+}
+
+export function setPatientProfile(profile: PatientProfile): void {
+  setOnboardingContext(profile);
+}
+
+export function getStoredResults(): StoredResults | null {
+  if (typeof window === "undefined") return null;
+  const raw = sessionStorage.getItem(RESULTS_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as StoredResults;
+  } catch {
+    return null;
+  }
+}
+
+export function setStoredResults(results: StoredResults): void {
+  sessionStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+  resultsSnapshotCache = { raw: sessionStorage.getItem(RESULTS_KEY), data: results };
+  notifyResultsListeners();
+}
+
+export function getScreeningMode(): ScreeningMode | null {
+  if (typeof window === "undefined") return null;
+  const raw = sessionStorage.getItem(SCREENING_MODE_KEY);
+  return raw === "story" || raw === "questionnaire" ? raw : null;
+}
+
+export function setScreeningMode(mode: ScreeningMode): void {
+  sessionStorage.setItem(SCREENING_MODE_KEY, mode);
+}
+
+export function clearSessionData(): void {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(CONTEXT_KEY);
+  sessionStorage.removeItem(RESULTS_KEY);
+  sessionStorage.removeItem(SCREENING_MODE_KEY);
+  contextSnapshotCache = null;
+  sessionIdSnapshotCache = null;
+  resultsSnapshotCache = null;
+  notifyOnboardingSessionListeners();
+  notifyResultsListeners();
+}
+
+let contextSnapshotCache: {
+  raw: string | null;
+  data: OnboardingContext | null;
+} | null = null;
+
+let sessionIdSnapshotCache: {
+  raw: string | null;
+  data: string | null;
+} | null = null;
+
+const onboardingSessionListeners = new Set<() => void>();
+
+function notifyOnboardingSessionListeners() {
+  onboardingSessionListeners.forEach((listener) => listener());
+}
+
+export function subscribeToOnboardingSession(listener: () => void): () => void {
+  onboardingSessionListeners.add(listener);
+  return () => onboardingSessionListeners.delete(listener);
+}
+
+export function getOnboardingContextSnapshot(): OnboardingContext | null {
+  if (typeof window === "undefined") return null;
+
+  const raw = sessionStorage.getItem(CONTEXT_KEY);
+  if (contextSnapshotCache !== null && raw === contextSnapshotCache.raw) {
+    return contextSnapshotCache.data;
+  }
+
+  if (!raw) {
+    contextSnapshotCache = { raw: null, data: null };
+    return null;
+  }
+
+  try {
+    const data = normalizeProfile(JSON.parse(raw));
+    contextSnapshotCache = { raw, data };
+    return data;
+  } catch {
+    contextSnapshotCache = { raw, data: null };
+    return null;
+  }
+}
+
+export function getSessionIdSnapshot(): string | null {
+  if (typeof window === "undefined") return null;
+
+  const raw = sessionStorage.getItem(SESSION_KEY);
+  if (sessionIdSnapshotCache !== null && raw === sessionIdSnapshotCache.raw) {
+    return sessionIdSnapshotCache.data;
+  }
+
+  sessionIdSnapshotCache = { raw, data: raw };
+  return raw;
+}
+
+let resultsSnapshotCache: {
+  raw: string | null;
+  data: StoredResults | null;
+} | null = null;
+
+const resultsListeners = new Set<() => void>();
+
+function notifyResultsListeners() {
+  resultsListeners.forEach((listener) => listener());
+}
+
+export function subscribeToStoredResults(listener: () => void): () => void {
+  resultsListeners.add(listener);
+  return () => resultsListeners.delete(listener);
+}
+
+export function getStoredResultsSnapshot(): StoredResults | null {
+  if (typeof window === "undefined") return null;
+
+  const raw = sessionStorage.getItem(RESULTS_KEY);
+  if (resultsSnapshotCache !== null && raw === resultsSnapshotCache.raw) {
+    return resultsSnapshotCache.data;
+  }
+
+  if (!raw) {
+    resultsSnapshotCache = { raw: null, data: null };
+    return null;
+  }
+
+  try {
+    const data = JSON.parse(raw) as StoredResults;
+    resultsSnapshotCache = { raw, data };
+    return data;
+  } catch {
+    resultsSnapshotCache = { raw, data: null };
+    return null;
+  }
+}

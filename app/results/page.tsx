@@ -4,17 +4,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useSyncExternalStore } from "react";
 import { PageShell } from "@/components/layout/page-shell";
+import { JourneyProgress } from "@/components/journey/journey-progress";
 import { ScreeningDisclaimer } from "@/components/shared/screening-disclaimer";
-import { CareLevelBadge } from "@/components/results/care-level-badge";
+import { HowResultsWork } from "@/components/results/how-results-work";
+import { ClinicalProfileCard } from "@/components/results/clinical-profile-card";
 import { ProviderCard } from "@/components/results/provider-card";
+import { SafetySupportCard } from "@/components/shared/safety-support-card";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   getStoredResultsSnapshot,
   subscribeToStoredResults,
   type StoredResults,
-} from "@/lib/client-storage";
+} from "@/lib/storage/client-storage";
+import type { ProviderMatchEntry } from "@/lib/types";
+import { CONCERN_OPTIONS } from "@/lib/types";
 
 function useStoredResults(): StoredResults | null {
   return useSyncExternalStore(
@@ -24,124 +28,139 @@ function useStoredResults(): StoredResults | null {
   );
 }
 
+function toMatchEntries(
+  match: StoredResults["match"],
+): ProviderMatchEntry[] {
+  if (match.matches?.length) return match.matches;
+  return match.providers.map((provider, i) => ({
+    provider,
+    fitScore: 90 - i * 5,
+    matchReasons: [match.rationale],
+  }));
+}
+
 export default function ResultsPage() {
   const router = useRouter();
   const results = useStoredResults();
 
   useEffect(() => {
     if (results === null) {
-      router.replace("/onboarding");
+      router.replace("/welcome");
     }
   }, [results, router]);
 
   if (results === null) {
     return (
-      <PageShell>
-        <p className="text-muted">Redirecting...</p>
+      <PageShell compact>
+        <p className="text-sm text-muted">Loading your results…</p>
       </PageShell>
     );
   }
 
   const { score, match, summary, context } = results;
+  const matches = toMatchEntries(match);
+  const concernLabel =
+    CONCERN_OPTIONS.find((c) => c.id === context.concern)?.label ??
+    context.concern;
 
   return (
-    <PageShell>
-      <div className="mx-auto max-w-2xl space-y-6 print:max-w-none">
-        <div className="flex flex-wrap items-center justify-between gap-3 no-print">
-          <h1 className="text-2xl font-semibold text-foreground">Your results</h1>
+    <PageShell compact className="max-w-6xl">
+      <div className="space-y-5 print:space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3 no-print">
+          <div className="space-y-3 min-w-0 flex-1">
+            <JourneyProgress current="matches" />
+            <div>
+              <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
+                Your care plan
+              </h1>
+              <p className="text-sm text-muted mt-0.5">
+                Profile, screening, and matched providers
+              </p>
+            </div>
+          </div>
           <Button variant="outline" size="sm" onClick={() => window.print()}>
-            Print / Save PDF
+            Print / Save
           </Button>
         </div>
 
         <ScreeningDisclaimer />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Recommended care level</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <CareLevelBadge careLevel={score.careLevel} />
-            {score.isUrgent && (
-              <Alert variant="warning">
-                Your responses suggest a higher level of distress. Consider
-                expedited care — this is not the same as a crisis emergency.
-              </Alert>
-            )}
-          </CardContent>
-        </Card>
+        {score.isCrisis && <SafetySupportCard variant="results" />}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Screening scores</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-3 sm:grid-cols-2 text-sm">
-            <div className="rounded-lg bg-surface p-3 border border-border">
-              <p className="font-medium text-foreground">PHQ-9</p>
-              <p className="text-2xl font-semibold">{score.phq9Total}</p>
-              <p className="text-muted capitalize">
-                {score.phq9Band.replace("_", " ")}
-              </p>
-            </div>
-            <div className="rounded-lg bg-surface p-3 border border-border">
-              <p className="font-medium text-foreground">GAD-7</p>
-              <p className="text-2xl font-semibold">{score.gad7Total}</p>
-              <p className="text-muted capitalize">{score.gad7Band}</p>
-            </div>
-          </CardContent>
-        </Card>
+        <HowResultsWork hasStory={Boolean(context.optionalContext)} />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm leading-relaxed text-foreground">{summary}</p>
-          </CardContent>
-        </Card>
+        {score.isUrgent && (
+          <Alert variant="warning">
+            Higher distress detected — consider expedited care (not a crisis emergency).
+          </Alert>
+        )}
 
         {match.fallback === "community_resources" ? (
-          <Alert variant="info">
-            <p className="font-medium">No in-network matches found</p>
-            <p className="mt-1">
-              We couldn&apos;t find providers matching your insurance and concern
-              in our directory. Try{" "}
-              <a
-                href="https://www.samhsa.gov/find-help/helplines"
-                className="text-primary underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                SAMHSA&apos;s helpline (1-800-662-4357)
-              </a>{" "}
-              or contact your insurance member services for in-network options near{" "}
-              {context.zip}.
-            </p>
-          </Alert>
+          <>
+            <ClinicalProfileCard
+              profile={context}
+              score={score}
+              summary={summary}
+              compact
+            />
+            <Alert variant="info">
+              <p className="font-medium">No in-network matches found</p>
+              <p className="mt-1 text-sm">
+                Try{" "}
+                <a
+                  href="https://www.samhsa.gov/find-help/helplines"
+                  className="text-primary underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  SAMHSA (1-800-662-4357)
+                </a>{" "}
+                or your insurer near ZIP {context.zip}.
+              </p>
+            </Alert>
+          </>
         ) : (
-          <div className="space-y-4">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                Matched providers
-              </h2>
-              <p className="text-sm text-muted mt-1">{match.rationale}</p>
-            </div>
-            {match.providers.map((provider, i) => (
-              <ProviderCard key={provider.id} provider={provider} rank={i + 1} />
-            ))}
+          <div className="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_17.5rem] xl:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
+            <ClinicalProfileCard
+              profile={context}
+              score={score}
+              summary={summary}
+              compact
+              className="min-w-0 w-full"
+            />
+
+            <section className="min-w-0 w-full space-y-3">
+              <div>
+                <h2 className="text-base font-semibold text-foreground">
+                  Matched providers
+                </h2>
+                <p className="text-xs text-muted mt-0.5">{match.rationale}</p>
+              </div>
+
+              <div className="space-y-3">
+                {matches.map((entry, i) => (
+                  <ProviderCard
+                    key={entry.provider.id}
+                    match={entry}
+                    rank={i + 1}
+                    patientConcern={concernLabel}
+                  />
+                ))}
+              </div>
+            </section>
           </div>
         )}
 
-        <div className="flex flex-col gap-3 sm:flex-row no-print">
+        <div className="grid grid-cols-2 gap-2 no-print pt-1 w-full max-w-xs">
           <Link
             href="/"
-            className="inline-flex h-10 items-center justify-center rounded-lg border border-border px-4 text-sm font-medium hover:bg-surface"
+            className="inline-flex h-9 flex-1 items-center justify-center rounded-lg border border-border px-3 text-sm font-medium hover:bg-surface"
           >
             Back to home
           </Link>
           <Link
-            href="/onboarding"
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
+            href="/welcome"
+            className="inline-flex h-9 flex-1 items-center justify-center rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
             Start over
           </Link>

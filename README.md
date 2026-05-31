@@ -1,170 +1,85 @@
-# ClearPath — Mental Health Triage & Provider Match (Prototype)
+# ClearPath
 
-ClearPath is an early prototype that turns *"I need help"* into a ranked provider shortlist through validated screening (PHQ-9 + GAD-7), deterministic scoring, safe triage, and provider matching — with an AI-written plain-language summary on the results page.
+Mental health triage and provider matching: PHQ-9 + GAD-7 screening, deterministic scoring and care level, ranked shortlist, optional story path with AI-assisted mapping and a plain-language results summary.
 
-> **Status:** Prototype — not production-ready. See [Limitations](#limitations).
+**Live:** https://clearpathcare-demo.vercel.app
 
 ---
 
-## Quick start
+## Run locally
 
 ```bash
 pnpm install
-cp .env.example .env.local   # add OPENAI_API_KEY (or Hugging Face hf_ token)
+cp .env.example .env.local   # HF_API_KEY, OPENAI_API_KEY, or OPENROUTER_API_KEY
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
 ```bash
-pnpm test      # 34 unit tests (scoring, care level, matcher, intake flow)
-pnpm build     # production build
-pnpm lint      # ESLint
+pnpm test
+pnpm build
 ```
 
 ---
 
-## Core loop
+## User flow
 
 ```
-Landing → Onboarding (ZIP, insurance, concern)
-       → Intake — 16 structured questions (PHQ-9 ×9, GAD-7 ×7)
-       │    tap 0–3 per question (Not at all → Nearly every day)
-       │
-       ├─ PHQ-9 item 9 ≥ 1 → /crisis (988, Crisis Text Line, 911)
-       │
-       └─ After Q16 → /processing (animated pipeline)
-              ├─ Score responses (deterministic)
-              ├─ Match providers (deterministic)
-              ├─ Write summary (LLM)
-              └─ → /results
+/ → /welcome → /onboarding → /intake
+  ├─ /intake/questions   (PHQ-9 + GAD-7, batched)
+  └─ /intake/story → /intake/review   (AI draft → user confirms all 16 items)
+→ /processing → /results
+/crisis   (988, crisis text line, 911 — optional anytime)
 ```
 
----
-
-## What uses AI vs code
-
-| Step | How it works |
-|---|---|
-| Questionnaire (16 items) | **Deterministic** — choice buttons, no LLM |
-| PHQ-9 / GAD-7 scoring | **Deterministic** — `lib/scoring.ts` |
-| Care level | **Deterministic** — `lib/scoring.ts` |
-| Provider ranking | **Deterministic** — `lib/matcher.ts` + seeded JSON |
-| Results summary paragraph | **LLM** — `/api/summary` (fallback text if API fails) |
-
-**Trust boundary:** The LLM never computes clinical scores. Scoring, triage, and provider ranking are pure TypeScript with unit tests.
+Scores use confirmed 0–3 answers only. PHQ-9 item 9 ≥ 1 (or crisis classifier on story text) sets crisis care level and shows safety resources; screening is not hard-stopped.
 
 ---
 
-## Architecture
+## AI vs deterministic logic
 
-Single **Next.js 16 (App Router)** app — UI and API in one deployable.
-
-| Layer | Responsibility |
-|---|---|
-| **`lib/intake-flow.ts`** | Question progression, answer capture, crisis on item 9 |
-| **`lib/scoring.ts`** | PHQ-9/GAD-7 bands, care level, crisis/urgent flags |
-| **`lib/matcher.ts`** | Provider ranking from `data/providers.json` |
-| **`lib/crisis.ts`** | Item 9 check + optional crisis-language classifier |
-| **`lib/openai.ts`** | OpenAI or Hugging Face router client (summary only in main flow) |
-| **`data/providers.json`** | ~20 seeded providers |
-
-### Pages
-
-| Route | Purpose |
-|---|---|
-| `/` | Landing |
-| `/onboarding` | ZIP, insurance, primary concern |
-| `/intake` | 16-question structured screening |
-| `/processing` | Post-intake scoring, matching, summary animation |
-| `/results` | Scores, care level, AI summary, matched providers |
-| `/crisis` | Static crisis resources |
-
-### API routes
-
-| Route | Method | Purpose |
-|---|---|---|
-| `/api/intake/start` | POST | Begin or resume intake |
-| `/api/intake/answer` | POST | Save one 0–3 answer, return next step |
-| `/api/intake/session` | POST | Retrieve all answers |
-| `/api/intake/score` | POST | Deterministic scoring |
-| `/api/match` | POST | Ranked provider match |
-| `/api/summary` | POST | Non-diagnostic LLM narrative |
-| `/api/intake/message` | POST | Legacy conversational turn (unused by current UI) |
+| Area | Implementation |
+|------|----------------|
+| Questionnaires, PHQ-9/GAD-7 totals, care level | `lib/scoring.ts` |
+| Provider ranking | `lib/matcher.ts` + `data/providers.json` |
+| Story → draft item values | LLM (`/api/intake/infer-story`) |
+| Crisis language (story) | Keywords + optional LLM classifier (`lib/crisis.ts`) |
+| Results narrative | LLM (`/api/summary`); static fallback if unavailable |
 
 ---
 
-## Environment
+## Scope
 
-```bash
-# OpenAI (default)
-OPENAI_API_KEY=sk-...
-OPENAI_MODEL=gpt-4o-mini
+**Shipped:** Profile → intake (questionnaire or story) → score → match → results; safety handling; seeded provider fixtures for matching logic.
 
-# Hugging Face router — auto-detected when key starts with hf_
-OPENAI_API_KEY=hf_...
-OPENAI_MODEL=google/gemma-4-31B-it
-OPENAI_MODEL_PROVIDER=novita   # optional
-```
+**Not in this repo:** Live provider directory, scheduling, accounts, persistence across sessions, employer admin.
 
-See `.env.example` for all options. **LLM is required for the AI summary**; intake works without it.
+Sessions are in-memory on the server and `sessionStorage` in the browser for the active tab.
 
 ---
 
-## Safety design
+## Stack
 
-1. **Deterministic scoring** — PHQ-9/GAD-7 totals and bands are pure code with unit tests.
-2. **Crisis routing** — PHQ-9 item 9 ≥ 1 on answer save → `/crisis` immediately.
-3. **Urgent ≠ crisis** — Severe scores without suicidality show urgent guidance on results, not the 988 page.
-4. **Static crisis page** — `/crisis` is independent of intake/session state.
-5. **Non-diagnostic posture** — Disclaimers on landing, results, and in summary prompts.
-6. **No PII persistence** — Server session is in-memory; client uses sessionStorage for the active tab only.
-
----
-
-## Limitations (prototype)
-
-- **Not an MVP or clinical product** — demo-quality, not validated for production care
-- Seeded provider data (not real-time availability or verified listings)
-- No accounts, auth, or persistent storage
-- English only; web-responsive (no native app)
-- LLM needed for results summary (static fallback if unavailable)
-- Not HIPAA-compliant (no PHI stored long-term)
-
----
-
-## Deployment
-
-1. Push to GitHub
-2. Import project in [Vercel](https://vercel.com)
-3. Set `OPENAI_API_KEY` (and optionally `OPENAI_MODEL`)
-4. Deploy from `main`
-
-**Post-deploy smoke checks:**
-- `/` and `/crisis` load
-- Full flow: onboarding → intake → processing → results
-
----
-
-## Project structure
+Next.js 16 (App Router), TypeScript, Vitest.
 
 ```
-app/
-  (marketing)/     Landing page
-  onboarding/      User context form
-  intake/          Structured screening
-  processing/      Post-intake pipeline UI
-  results/         Scores + providers + summary
-  crisis/          Crisis resources
-  api/             Intake, match, summary routes
-components/        UI primitives + domain components
-lib/               Scoring, matching, intake flow, prompts, session
-data/              Seeded providers
-tests/             Vitest (34 tests across 4 files)
+lib/
+  types.ts, utils.ts, validators.ts
+  ai/          openai, prompts, story-inference
+  intake/      intake-flow, instruments, finalize-intake-client
+  screening/   scoring, crisis, screening-summary
+  storage/     session, client-storage
+  matching/    matcher, provider-avatar
+  hooks/
 ```
+
+**API:** `/api/intake/start`, `batch`, `infer-story`, `review-submit`, `session`, `score`, `match`, `summary` — see route handlers under `app/api/`.
+
+**Env:** `.env.example` — `LLM_PROVIDER`, provider key + base URL + model (`HF_*`, `OPENAI_*`, `OPENROUTER_*`).
 
 ---
 
-## License
+## Safety (summary)
 
-Private — prototype for demonstration and iteration.
+- Clinical scores are not LLM-generated.
+- Story-path answers must be confirmed on `/intake/review` before scoring.
+- Non-diagnostic copy in UI and summary prompts.

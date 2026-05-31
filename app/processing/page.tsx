@@ -7,17 +7,19 @@ import { PageShell } from "@/components/layout/page-shell";
 import {
   finalizeIntakeClient,
   type FinalizeStep,
-} from "@/lib/finalize-intake-client";
+  type ProcessingPreview,
+} from "@/lib/intake/finalize-intake-client";
 import {
   getOnboardingContext,
   getSessionId,
   setStoredResults,
-} from "@/lib/client-storage";
+} from "@/lib/storage/client-storage";
 
 export default function ProcessingPage() {
   const router = useRouter();
   const startedRef = useRef(false);
   const [activeStep, setActiveStep] = useState<FinalizeStep>("score");
+  const [preview, setPreview] = useState<ProcessingPreview | undefined>();
   const [error, setError] = useState<string | null>(null);
 
   const run = useCallback(async () => {
@@ -25,20 +27,27 @@ export default function ProcessingPage() {
     const context = getOnboardingContext();
 
     if (!sessionId || !context) {
-      router.replace("/onboarding");
+      router.replace("/welcome");
       return;
     }
 
     setError(null);
-    setActiveStep("score");
+    setPreview(undefined);
+    setActiveStep(
+      context.optionalContext?.trim() ? "personalize" : "score",
+    );
 
     try {
-      const result = await finalizeIntakeClient(sessionId, context, setActiveStep);
-
-      if (result.kind === "crisis") {
-        router.replace("/crisis");
-        return;
-      }
+      const result = await finalizeIntakeClient(
+        sessionId,
+        context,
+        (step, nextPreview) => {
+          setActiveStep(step);
+          if (nextPreview) {
+            setPreview((prev) => ({ ...prev, ...nextPreview }));
+          }
+        },
+      );
 
       setStoredResults({
         score: result.score,
@@ -62,9 +71,10 @@ export default function ProcessingPage() {
   }, [run]);
 
   return (
-    <PageShell compact className="max-w-lg">
+    <PageShell compact className="max-w-xl">
       <ProcessingScreen
         activeStep={activeStep}
+        preview={preview}
         error={error}
         onRetry={() => {
           startedRef.current = true;

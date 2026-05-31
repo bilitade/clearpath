@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { scoreIntake } from "@/lib/scoring";
-import { getSession } from "@/lib/session";
+import { scoreIntake } from "@/lib/screening/scoring";
+import { getSession } from "@/lib/storage/session";
 import { scoreRequestSchema } from "@/lib/validators";
 
 export async function POST(request: Request) {

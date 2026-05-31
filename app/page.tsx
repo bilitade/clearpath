@@ -5,7 +5,7 @@ const features = [
   {
     title: "Validated screening",
     description:
-      "PHQ-9 and GAD-7 delivered one question at a time — clinically standard, easy to complete.",
+      "PHQ-9 and GAD-7 in focused sections — clinically standard, about 5 minutes.",
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -37,25 +37,24 @@ const features = [
 const steps = [
   {
     step: "01",
-    title: "Share basics",
-    description: "ZIP, insurance, and what you'd like help with — three fields, under a minute.",
+    title: "Build your profile",
+    description: "Location, insurance, concern, and care preferences — a guided wizard, ~2 minutes.",
   },
   {
     step: "02",
-    title: "Complete screening",
-    description: "16 guided questions about the last two weeks. Tap your answer — no typing required.",
+    title: "Clinical screening",
+    description: "Validated wellbeing and anxiety checks in short sections — tap to answer.",
   },
   {
     step: "03",
-    title: "Get your shortlist",
-    description: "See your care level, screening summary, and up to three matched providers.",
+    title: "Matched care plan",
+    description: "Your clinical profile, care pathway, and up to three providers with fit scores and contact options.",
   },
 ];
 
 export default function LandingPage() {
   return (
     <PageShell flush className="max-w-none">
-      {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary-muted/80 via-background to-background dark:from-primary-muted/20"
@@ -77,7 +76,7 @@ export default function LandingPage() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="/onboarding"
+                href="/welcome"
                 className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground shadow-sm transition-all hover:opacity-90 hover:shadow-md"
               >
                 Start free screening
@@ -97,7 +96,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {features.map((feature) => (
@@ -119,7 +117,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How it works */}
       <section
         id="how-it-works"
         className="border-y border-border bg-surface/30"
@@ -158,7 +155,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary-muted/80 to-surface px-6 py-10 text-center sm:px-10 sm:py-12 dark:from-primary-muted/30 dark:to-surface">
           <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
@@ -169,7 +165,7 @@ export default function LandingPage() {
             your options and connect you with providers that fit.
           </p>
           <Link
-            href="/onboarding"
+            href="/welcome"
             className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:h-12 sm:text-base"
           >
             Begin screening

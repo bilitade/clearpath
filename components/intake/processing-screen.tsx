@@ -1,31 +1,59 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type { FinalizeStep } from "@/lib/finalize-intake-client";
+import type {
+  FinalizeStep,
+  ProcessingPreview,
+} from "@/lib/intake/finalize-intake-client";
 
-const STEPS: { id: FinalizeStep; label: string; detail: string }[] = [
-  {
-    id: "score",
-    label: "Analyzing your responses",
-    detail: "Calculating PHQ-9 & GAD-7 scores",
-  },
-  {
-    id: "match",
-    label: "Matching providers",
-    detail: "Finding care options for your needs",
-  },
-  {
-    id: "summary",
-    label: "Writing your summary",
-    detail: "Generating a plain-language overview",
-  },
-];
+type StepDef = {
+  id: FinalizeStep;
+  label: string;
+  detail: string;
+  badge?: "code" | "ai";
+  optional?: boolean;
+};
+
+function buildSteps(hasStory: boolean): StepDef[] {
+  const steps: StepDef[] = [];
+  if (hasStory) {
+    steps.push({
+      id: "personalize",
+      label: "Using your story",
+      detail: "Personalizing your summary — scores come from answers you confirmed",
+      badge: "ai",
+      optional: true,
+    });
+  }
+  steps.push(
+    {
+      id: "score",
+      label: "Calculating screening scores",
+      detail: "PHQ-9 & GAD-7 totals from your 16 answers (deterministic code)",
+      badge: "code",
+    },
+    {
+      id: "match",
+      label: "Matching providers",
+      detail: "Ranking by insurance, concern, severity, wait & format",
+      badge: "code",
+    },
+    {
+      id: "summary",
+      label: "Writing your summary",
+      detail: "Plain-language overview using scores + matches (+ your story if provided)",
+      badge: "ai",
+    },
+  );
+  return steps;
+}
 
 function stepStatus(
   stepId: FinalizeStep,
   activeStep: FinalizeStep,
+  steps: StepDef[],
 ): "pending" | "active" | "complete" {
-  const order: FinalizeStep[] = ["score", "match", "summary", "complete"];
+  const order = [...steps.map((s) => s.id), "complete" as FinalizeStep];
   const activeIdx = order.indexOf(activeStep);
   const stepIdx = order.indexOf(stepId);
 
@@ -65,23 +93,84 @@ function StepIcon({ status }: { status: "pending" | "active" | "complete" }) {
   );
 }
 
+function StepPreview({
+  stepId,
+  preview,
+}: {
+  stepId: FinalizeStep;
+  preview?: ProcessingPreview;
+}) {
+  if (!preview) return null;
+
+  if (
+    stepId === "score" &&
+    preview.phq9Total !== undefined &&
+    preview.gad7Total !== undefined
+  ) {
+    return (
+      <div className="mt-2 grid grid-cols-2 gap-2 text-center">
+        <div className="rounded-md border border-border bg-background px-2 py-1.5">
+          <p className="text-[0.6rem] uppercase text-muted">PHQ-9</p>
+          <p className="text-sm font-semibold text-foreground">
+            {preview.phq9Total}
+            <span className="text-muted font-normal"> / 27</span>
+          </p>
+        </div>
+        <div className="rounded-md border border-border bg-background px-2 py-1.5">
+          <p className="text-[0.6rem] uppercase text-muted">GAD-7</p>
+          <p className="text-sm font-semibold text-foreground">
+            {preview.gad7Total}
+            <span className="text-muted font-normal"> / 21</span>
+          </p>
+        </div>
+        {preview.careLevelLabel && (
+          <p className="col-span-2 text-[0.65rem] text-muted">
+            Suggested care:{" "}
+            <span className="text-foreground font-medium">
+              {preview.careLevelLabel}
+            </span>
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  if (stepId === "match" && preview.matchCount !== undefined) {
+    return (
+      <p className="mt-2 text-[0.65rem] text-muted">
+        Found{" "}
+        <span className="font-medium text-foreground">
+          {preview.matchCount} provider{preview.matchCount === 1 ? "" : "s"}
+        </span>{" "}
+        in our directory for your profile.
+      </p>
+    );
+  }
+
+  return null;
+}
+
 interface ProcessingScreenProps {
   activeStep: FinalizeStep;
+  preview?: ProcessingPreview;
   error?: string | null;
   onRetry?: () => void;
 }
 
 export function ProcessingScreen({
   activeStep,
+  preview,
   error,
   onRetry,
 }: ProcessingScreenProps) {
   const isComplete = activeStep === "complete";
+  const hasStory = preview?.hasPersonalStory ?? false;
+  const steps = buildSteps(hasStory);
 
   return (
-    <div className="processing-enter mx-auto w-full max-w-md">
+    <div className="processing-enter mx-auto w-full max-w-lg">
       <div className="rounded-xl border border-border bg-surface/60 p-6 sm:p-8">
-        <div className="mb-8 text-center">
+        <div className="mb-6 text-center">
           <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary-muted">
             <svg
               viewBox="0 0 24 24"
@@ -112,50 +201,78 @@ export function ProcessingScreen({
               ? "Something went wrong"
               : isComplete
                 ? "All set!"
-                : "Preparing your results"}
+                : "Building your care plan"}
           </h1>
           <p className="mt-1.5 text-sm text-muted">
             {error
               ? "We couldn't finish processing your screening."
               : isComplete
-                ? "Taking you to your results…"
-                : "This usually takes a few seconds."}
+                ? "Taking you to scores, matches, and summary…"
+                : "Screening is done — here's what we're doing with your answers."}
           </p>
         </div>
 
         {!error && (
           <ul className="space-y-4">
-            {STEPS.map((step, i) => {
-              const status = stepStatus(step.id, activeStep);
+            {steps.map((step, i) => {
+              const status = stepStatus(step.id, activeStep, steps);
+              const showPreview =
+                status === "complete" ||
+                (status === "active" &&
+                  (step.id === "score"
+                    ? preview?.phq9Total !== undefined
+                    : step.id === "match"
+                      ? preview?.matchCount !== undefined
+                      : false));
+
               return (
                 <li
                   key={step.id}
                   className={cn(
-                    "processing-step flex items-start gap-3 rounded-lg px-2 py-1 transition-colors",
+                    "processing-step rounded-lg px-2 py-2 transition-colors",
                     status === "active" && "bg-primary-muted/50",
                   )}
                   style={{ animationDelay: `${i * 80}ms` }}
                 >
-                  <StepIcon status={status} />
-                  <div className="min-w-0 pt-0.5">
-                    <p
-                      className={cn(
-                        "text-sm font-medium",
-                        status === "pending"
-                          ? "text-muted"
-                          : "text-foreground",
+                  <div className="flex items-start gap-3">
+                    <StepIcon status={status} />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p
+                          className={cn(
+                            "text-sm font-medium",
+                            status === "pending"
+                              ? "text-muted"
+                              : "text-foreground",
+                          )}
+                        >
+                          {step.label}
+                        </p>
+                        {step.badge && (
+                          <span
+                            className={cn(
+                              "text-[0.6rem] uppercase tracking-wide px-1.5 py-0.5 rounded font-medium",
+                              step.badge === "ai"
+                                ? "bg-primary/10 text-primary"
+                                : "bg-muted/30 text-muted",
+                            )}
+                          >
+                            {step.badge === "ai" ? "AI" : "Your answers"}
+                          </span>
+                        )}
+                      </div>
+                      <p
+                        className={cn(
+                          "text-xs mt-0.5 leading-relaxed",
+                          status === "active" ? "text-muted" : "text-muted/70",
+                        )}
+                      >
+                        {step.detail}
+                      </p>
+                      {showPreview && (
+                        <StepPreview stepId={step.id} preview={preview} />
                       )}
-                    >
-                      {step.label}
-                    </p>
-                    <p
-                      className={cn(
-                        "text-xs mt-0.5",
-                        status === "active" ? "text-muted" : "text-muted/70",
-                      )}
-                    >
-                      {step.detail}
-                    </p>
+                    </div>
                   </div>
                 </li>
               );

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { matchProviders } from "@/lib/matcher";
+import { matchProviders } from "@/lib/matching/matcher";
 import type { OnboardingContext, ScoreResult } from "@/lib/types";
 
 const baseScore: ScoreResult = {
@@ -17,13 +17,17 @@ const context: OnboardingContext = {
   zip: "02139",
   insurance: "aetna",
   concern: "anxiety",
+  formatPreference: "either",
 };
 
 describe("matchProviders", () => {
-  it("returns up to 3 providers", () => {
+  it("returns up to 3 providers with match details", () => {
     const result = matchProviders(baseScore, context);
     expect(result.providers.length).toBeLessThanOrEqual(3);
     expect(result.providers.length).toBeGreaterThan(0);
+    expect(result.matches.length).toBe(result.providers.length);
+    expect(result.matches[0]?.fitScore).toBeGreaterThan(0);
+    expect(result.matches[0]?.matchReasons.length).toBeGreaterThan(0);
   });
 
   it("matches insurance and concern", () => {

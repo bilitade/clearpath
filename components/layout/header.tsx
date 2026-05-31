@@ -35,7 +35,7 @@ export function Header() {
           </Link>
           <ThemeToggle />
           <Link
-            href="/onboarding"
+            href="/welcome"
             className="ml-1 hidden h-8 items-center justify-center rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:inline-flex"
           >
             Get started

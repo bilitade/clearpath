@@ -2,221 +2,533 @@
   {
     "id": "p001",
     "name": "Dr. Sarah Chen, LCSW",
-    "specialties": ["anxiety", "depression", "stress"],
-    "insurances": ["aetna", "bcbs", "cigna"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "anxiety",
+      "depression",
+      "stress"
+    ],
+    "insurances": [
+      "aetna",
+      "bcbs",
+      "cigna"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "021",
     "estWaitDays": 7,
     "costEstimate": "$0–30 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1000",
+    "website": "https://example.com/provider/p001",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p001&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p002",
     "name": "Mindful Path Therapy Group",
-    "specialties": ["anxiety", "relationship", "stress"],
-    "insurances": ["aetna", "united", "self_pay"],
-    "format": ["tele"],
+    "specialties": [
+      "anxiety",
+      "relationship",
+      "stress"
+    ],
+    "insurances": [
+      "aetna",
+      "united",
+      "self_pay"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "021",
     "estWaitDays": 5,
     "costEstimate": "$25–50 per session (self-pay)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1001",
+    "website": "https://example.com/provider/p002",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "company",
+    "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=p002&backgroundColor=0d9488,e0f2f1,99f6e4"
   },
   {
     "id": "p003",
     "name": "Dr. James Okonkwo, PhD",
-    "specialties": ["depression", "anxiety"],
-    "insurances": ["bcbs", "cigna", "united"],
-    "format": ["in_person"],
+    "specialties": [
+      "depression",
+      "anxiety"
+    ],
+    "insurances": [
+      "bcbs",
+      "cigna",
+      "united"
+    ],
+    "format": [
+      "in_person"
+    ],
     "zipCluster": "021",
     "estWaitDays": 14,
     "costEstimate": "$0–40 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1002",
+    "website": "https://example.com/provider/p003",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "PhD",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p003&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p004",
     "name": "Harbor Behavioral Health",
-    "specialties": ["depression", "stress", "relationship"],
-    "insurances": ["aetna", "bcbs", "self_pay"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "depression",
+      "stress",
+      "relationship"
+    ],
+    "insurances": [
+      "aetna",
+      "bcbs",
+      "self_pay"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "100",
     "estWaitDays": 10,
     "costEstimate": "$0–35 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1003",
+    "website": "https://example.com/provider/p004",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "company",
+    "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=p004&backgroundColor=0d9488,e0f2f1,99f6e4"
   },
   {
     "id": "p005",
     "name": "Dr. Maria Santos, LMFT",
-    "specialties": ["relationship", "anxiety", "stress"],
-    "insurances": ["cigna", "united", "self_pay"],
-    "format": ["tele"],
+    "specialties": [
+      "relationship",
+      "anxiety",
+      "stress"
+    ],
+    "insurances": [
+      "cigna",
+      "united",
+      "self_pay"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "100",
     "estWaitDays": 3,
     "costEstimate": "$30–60 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1004",
+    "website": "https://example.com/provider/p005",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LMFT",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p005&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p006",
     "name": "Dr. Robert Kim, MD (Psychiatry)",
-    "specialties": ["depression", "anxiety"],
-    "insurances": ["aetna", "bcbs", "cigna", "united"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "depression",
+      "anxiety"
+    ],
+    "insurances": [
+      "aetna",
+      "bcbs",
+      "cigna",
+      "united"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "100",
     "estWaitDays": 21,
     "costEstimate": "$0–50 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1005",
+    "website": "https://example.com/provider/p006",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "MD",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p006&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p007",
     "name": "Calm Coast Counseling",
-    "specialties": ["anxiety", "stress", "unsure"],
-    "insurances": ["bcbs", "self_pay"],
-    "format": ["in_person"],
+    "specialties": [
+      "anxiety",
+      "stress",
+      "unsure"
+    ],
+    "insurances": [
+      "bcbs",
+      "self_pay"
+    ],
+    "format": [
+      "in_person"
+    ],
     "zipCluster": "902",
     "estWaitDays": 8,
     "costEstimate": "$40–80 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1006",
+    "website": "https://example.com/provider/p007",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p007&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p008",
     "name": "Dr. Emily Wright, PsyD",
-    "specialties": ["depression", "relationship"],
-    "insurances": ["aetna", "united"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "depression",
+      "relationship"
+    ],
+    "insurances": [
+      "aetna",
+      "united"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "902",
     "estWaitDays": 12,
     "costEstimate": "$0–45 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1007",
+    "website": "https://example.com/provider/p008",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p008&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p009",
     "name": "Westside Wellness Center",
-    "specialties": ["anxiety", "depression", "stress"],
-    "insurances": ["cigna", "bcbs", "self_pay"],
-    "format": ["tele"],
+    "specialties": [
+      "anxiety",
+      "depression",
+      "stress"
+    ],
+    "insurances": [
+      "cigna",
+      "bcbs",
+      "self_pay"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "902",
     "estWaitDays": 6,
     "costEstimate": "$20–55 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1008",
+    "website": "https://example.com/provider/p009",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "company",
+    "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=p009&backgroundColor=0d9488,e0f2f1,99f6e4"
   },
   {
     "id": "p010",
     "name": "Dr. Ahmed Hassan, LPC",
-    "specialties": ["stress", "anxiety", "relationship"],
-    "insurances": ["aetna", "cigna"],
-    "format": ["in_person"],
+    "specialties": [
+      "stress",
+      "anxiety",
+      "relationship"
+    ],
+    "insurances": [
+      "aetna",
+      "cigna"
+    ],
+    "format": [
+      "in_person"
+    ],
     "zipCluster": "606",
     "estWaitDays": 9,
     "costEstimate": "$0–30 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1009",
+    "website": "https://example.com/provider/p010",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p010&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p011",
     "name": "Chicago Mind Health",
-    "specialties": ["depression", "anxiety", "unsure"],
-    "insurances": ["bcbs", "united", "self_pay"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "depression",
+      "anxiety",
+      "unsure"
+    ],
+    "insurances": [
+      "bcbs",
+      "united",
+      "self_pay"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "606",
     "estWaitDays": 4,
     "costEstimate": "$25–65 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1010",
+    "website": "https://example.com/provider/p011",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "company",
+    "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=p011&backgroundColor=0d9488,e0f2f1,99f6e4"
   },
   {
     "id": "p012",
     "name": "Dr. Lisa Park, PMHNP",
-    "specialties": ["depression", "anxiety"],
-    "insurances": ["aetna", "bcbs", "united"],
-    "format": ["tele"],
+    "specialties": [
+      "depression",
+      "anxiety"
+    ],
+    "insurances": [
+      "aetna",
+      "bcbs",
+      "united"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "606",
     "estWaitDays": 18,
     "costEstimate": "$0–55 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1011",
+    "website": "https://example.com/provider/p012",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p012&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p013",
     "name": "Renew Therapy Partners",
-    "specialties": ["relationship", "stress", "depression"],
-    "insurances": ["cigna", "self_pay"],
-    "format": ["tele"],
+    "specialties": [
+      "relationship",
+      "stress",
+      "depression"
+    ],
+    "insurances": [
+      "cigna",
+      "self_pay"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "021",
     "estWaitDays": 11,
     "costEstimate": "$35–70 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1012",
+    "website": "https://example.com/provider/p013",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p013&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p014",
     "name": "Dr. Thomas Nguyen, LCSW",
-    "specialties": ["anxiety", "depression", "stress"],
-    "insurances": ["united", "bcbs"],
-    "format": ["in_person"],
+    "specialties": [
+      "anxiety",
+      "depression",
+      "stress"
+    ],
+    "insurances": [
+      "united",
+      "bcbs"
+    ],
+    "format": [
+      "in_person"
+    ],
     "zipCluster": "100",
     "estWaitDays": 15,
     "costEstimate": "$0–35 copay (in-network)",
-    "acceptingNew": false
+    "acceptingNew": false,
+    "phone": "(555) 555-1013",
+    "website": "https://example.com/provider/p014",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p014&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p015",
     "name": "Bright Horizons Mental Health",
-    "specialties": ["unsure", "anxiety", "stress"],
-    "insurances": ["aetna", "self_pay"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "unsure",
+      "anxiety",
+      "stress"
+    ],
+    "insurances": [
+      "aetna",
+      "self_pay"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "902",
     "estWaitDays": 2,
     "costEstimate": "$15–45 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1014",
+    "website": "https://example.com/provider/p015",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "company",
+    "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=p015&backgroundColor=0d9488,e0f2f1,99f6e4"
   },
   {
     "id": "p016",
     "name": "Dr. Patricia Moore, PhD",
-    "specialties": ["depression", "relationship"],
-    "insurances": ["bcbs", "cigna", "united"],
-    "format": ["in_person"],
+    "specialties": [
+      "depression",
+      "relationship"
+    ],
+    "insurances": [
+      "bcbs",
+      "cigna",
+      "united"
+    ],
+    "format": [
+      "in_person"
+    ],
     "zipCluster": "606",
     "estWaitDays": 20,
     "costEstimate": "$0–40 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1015",
+    "website": "https://example.com/provider/p016",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "PhD",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p016&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p017",
     "name": "Serenity Online Therapy",
-    "specialties": ["anxiety", "stress", "depression"],
-    "insurances": ["self_pay", "aetna"],
-    "format": ["tele"],
+    "specialties": [
+      "anxiety",
+      "stress",
+      "depression"
+    ],
+    "insurances": [
+      "self_pay",
+      "aetna"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "021",
     "estWaitDays": 1,
     "costEstimate": "$50–90 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1016",
+    "website": "https://example.com/provider/p017",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "company",
+    "imageUrl": "https://api.dicebear.com/7.x/shapes/svg?seed=p017&backgroundColor=0d9488,e0f2f1,99f6e4"
   },
   {
     "id": "p018",
     "name": "Dr. Kevin Brooks, LMHC",
-    "specialties": ["relationship", "anxiety"],
-    "insurances": ["cigna", "united"],
-    "format": ["tele", "in_person"],
+    "specialties": [
+      "relationship",
+      "anxiety"
+    ],
+    "insurances": [
+      "cigna",
+      "united"
+    ],
+    "format": [
+      "tele",
+      "in_person"
+    ],
     "zipCluster": "100",
     "estWaitDays": 7,
     "costEstimate": "$0–25 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1017",
+    "website": "https://example.com/provider/p018",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p018&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p019",
     "name": "Pacific Grove Psychiatry",
-    "specialties": ["depression", "anxiety"],
-    "insurances": ["aetna", "bcbs", "cigna"],
-    "format": ["in_person"],
+    "specialties": [
+      "depression",
+      "anxiety"
+    ],
+    "insurances": [
+      "aetna",
+      "bcbs",
+      "cigna"
+    ],
+    "format": [
+      "in_person"
+    ],
     "zipCluster": "902",
     "estWaitDays": 25,
     "costEstimate": "$0–60 copay (in-network)",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1018",
+    "website": "https://example.com/provider/p019",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p019&backgroundColor=c0f0ea,0d9488,f0fdfa"
   },
   {
     "id": "p020",
     "name": "Dr. Rachel Green, LCSW",
-    "specialties": ["stress", "depression", "unsure"],
-    "insurances": ["united", "self_pay"],
-    "format": ["tele"],
+    "specialties": [
+      "stress",
+      "depression",
+      "unsure"
+    ],
+    "insurances": [
+      "united",
+      "self_pay"
+    ],
+    "format": [
+      "tele"
+    ],
     "zipCluster": "606",
     "estWaitDays": 5,
     "costEstimate": "$30–55 per session",
-    "acceptingNew": true
+    "acceptingNew": true,
+    "phone": "(555) 555-1019",
+    "website": "https://example.com/provider/p020",
+    "bio": "Mental health provider accepting new patients in your area.",
+    "credentials": "LCSW",
+    "imageType": "person",
+    "imageUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=p020&backgroundColor=c0f0ea,0d9488,f0fdfa"
   }
 ]

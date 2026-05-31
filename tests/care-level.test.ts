@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { deriveCareLevel } from "@/lib/scoring";
+import { deriveCareLevel } from "@/lib/screening/scoring";
 
 describe("deriveCareLevel", () => {
   it("crisis takes precedence over urgent", () => {

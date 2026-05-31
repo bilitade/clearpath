@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { matchProviders } from "@/lib/matcher";
+import { matchProviders } from "@/lib/matching/matcher";
 import { matchRequestSchema } from "@/lib/validators";
 import type { ScoreResult } from "@/lib/types";
 

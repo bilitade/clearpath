@@ -5,11 +5,18 @@ export type Concern =
   | "stress"
   | "unsure";
 
-export interface OnboardingContext {
+export type FormatPreference = "tele" | "in_person" | "either";
+
+
+export interface PatientProfile {
   zip: string;
   insurance: string;
   concern: Concern;
+  formatPreference: FormatPreference;
+  optionalContext?: string;
 }
+
+export type OnboardingContext = PatientProfile;
 
 export type Instrument = "PHQ9" | "GAD7";
 
@@ -58,6 +65,12 @@ export interface ScoreResult {
 export interface Provider {
   id: string;
   name: string;
+  credentials?: string;
+  bio?: string;
+  phone?: string;
+  website?: string;
+  imageUrl?: string;
+  imageType?: "person" | "company";
   specialties: string[];
   insurances: string[];
   format: ("in_person" | "tele")[];
@@ -67,8 +80,16 @@ export interface Provider {
   acceptingNew: boolean;
 }
 
+export interface ProviderMatchEntry {
+  provider: Provider;
+  fitScore: number;
+  matchReasons: string[];
+  gaps?: string[];
+}
+
 export interface MatchResult {
   providers: Provider[];
+  matches: ProviderMatchEntry[];
   rationale: string;
   fallback?: "community_resources";
 }
@@ -91,6 +112,8 @@ export interface IntakeState {
   context: OnboardingContext;
   messages: Array<{ role: "user" | "assistant"; content: string }>;
   classifierCrisisFlag: boolean;
+  patientStory?: string;
+  aiSuggestions?: Partial<Record<number, 0 | 1 | 2 | 3>>;
 }
 
 export interface MessageResponse {
@@ -117,4 +140,10 @@ export const CONCERN_OPTIONS = [
   { id: "relationship", label: "Relationship issues" },
   { id: "stress", label: "Stress or burnout" },
   { id: "unsure", label: "Not sure yet" },
+] as const;
+
+export const FORMAT_OPTIONS = [
+  { id: "either", label: "Either works for me" },
+  { id: "tele", label: "Telehealth (video/phone)" },
+  { id: "in_person", label: "In-person visits" },
 ] as const;

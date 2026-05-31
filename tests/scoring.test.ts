@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getGad7Band, getPhq9Band, scoreIntake } from "@/lib/scoring";
+import { getGad7Band, getPhq9Band, scoreIntake } from "@/lib/screening/scoring";
 import type { IntakeAnswer } from "@/lib/types";
 
 function buildAnswers(

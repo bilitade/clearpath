@@ -8,8 +8,10 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const variantClasses: Record<AlertVariant, string> = {
   default: "border-border bg-surface text-foreground",
-  warning: "border-warning/30 bg-amber-50 text-amber-900 dark:bg-amber-950/20 dark:text-amber-100",
-  destructive: "border-destructive/30 bg-rose-50 text-rose-900 dark:bg-rose-950/20 dark:text-rose-100",
+  warning:
+    "border-warning/30 bg-warning/10 text-foreground dark:bg-warning/15",
+  destructive:
+    "border-destructive/30 bg-destructive/10 text-foreground dark:bg-destructive/15",
   info: "border-primary/30 bg-primary-muted text-foreground",
 };
 

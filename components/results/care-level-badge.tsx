@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { CARE_LEVEL_LABELS } from "@/lib/scoring";
+import { CARE_LEVEL_LABELS } from "@/lib/screening/scoring";
 import type { CareLevel } from "@/lib/types";
 
 interface CareLevelBadgeProps {

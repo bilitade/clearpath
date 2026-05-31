@@ -1,3 +1,6 @@
+import { TOTAL_INTAKE_ITEMS } from "@/lib/intake/instruments";
+import { CARE_LEVEL_LABELS } from "@/lib/screening/scoring";
+import { buildDeterministicSummary } from "@/lib/screening/screening-summary";
 import type {
   IntakeAnswer,
   MatchResult,
@@ -5,13 +8,31 @@ import type {
   ScoreResult,
 } from "@/lib/types";
 
-export type FinalizeStep = "score" | "match" | "summary" | "complete";
+export type FinalizeStep =
+  | "personalize"
+  | "score"
+  | "match"
+  | "summary"
+  | "complete";
 
-export type FinalizeResult =
-  | { kind: "success"; score: ScoreResult; match: MatchResult; summary: string }
-  | { kind: "crisis" };
+export type ProcessingPreview = {
+  phq9Total?: number;
+  gad7Total?: number;
+  careLevelLabel?: string;
+  matchCount?: number;
+  hasPersonalStory?: boolean;
+};
+
+export type FinalizeResult = {
+  kind: "success";
+  score: ScoreResult;
+  match: MatchResult;
+  summary: string;
+};
 
 const STEP_MIN_MS = 750;
+const UX_PERSONALIZE_MS = 900;
+const UX_COMPLETE_MS = 800;
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -25,12 +46,27 @@ async function withMinDuration<T>(fn: () => Promise<T>, minMs = STEP_MIN_MS) {
   return result;
 }
 
+function mergePreview(
+  base: ProcessingPreview,
+  patch: Partial<ProcessingPreview>,
+): ProcessingPreview {
+  return { ...base, ...patch };
+}
+
 export async function finalizeIntakeClient(
   sessionId: string,
   context: OnboardingContext,
-  onStep: (step: FinalizeStep) => void,
+  onStep: (step: FinalizeStep, preview?: ProcessingPreview) => void,
 ): Promise<FinalizeResult> {
-  onStep("score");
+  const hasPersonalStory = Boolean(context.optionalContext?.trim());
+  let preview: ProcessingPreview = { hasPersonalStory };
+
+  if (hasPersonalStory) {
+    onStep("personalize", preview);
+    await sleep(UX_PERSONALIZE_MS);
+  }
+
+  onStep("score", preview);
 
   const { score } = await withMinDuration(async () => {
     const sessionRes = await fetch("/api/intake/session", {
@@ -43,7 +79,9 @@ export async function finalizeIntakeClient(
     const { answers: loadedAnswers } = (await sessionRes.json()) as {
       answers: IntakeAnswer[];
     };
-    if (loadedAnswers.length !== 16) throw new Error("Intake incomplete");
+    if (loadedAnswers.length !== TOTAL_INTAKE_ITEMS) {
+      throw new Error("Intake incomplete");
+    }
 
     const scoreRes = await fetch("/api/intake/score", {
       method: "POST",
@@ -52,17 +90,16 @@ export async function finalizeIntakeClient(
     });
     if (!scoreRes.ok) throw new Error("Scoring failed");
 
-    return {
-      answers: loadedAnswers,
-      score: (await scoreRes.json()) as ScoreResult,
-    };
+    return { score: (await scoreRes.json()) as ScoreResult };
   });
 
-  if (score.isCrisis) {
-    return { kind: "crisis" };
-  }
-
-  onStep("match");
+  preview = mergePreview(preview, {
+    phq9Total: score.phq9Total,
+    gad7Total: score.gad7Total,
+    careLevelLabel: CARE_LEVEL_LABELS[score.careLevel],
+  });
+  onStep("score", preview);
+  onStep("match", preview);
 
   const match = await withMinDuration(async () => {
     const matchRes = await fetch("/api/match", {
@@ -74,23 +111,27 @@ export async function finalizeIntakeClient(
     return (await matchRes.json()) as MatchResult;
   });
 
-  onStep("summary");
+  preview = mergePreview(preview, {
+    matchCount: match.matches?.length ?? match.providers.length,
+  });
+  onStep("match", preview);
+  onStep("summary", preview);
 
   const summary = await withMinDuration(async () => {
     const summaryRes = await fetch("/api/summary", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ score, match }),
+      body: JSON.stringify({ score, match, context }),
     });
     if (summaryRes.ok) {
       const data = (await summaryRes.json()) as { summary: string };
       return data.summary;
     }
-    return "Based on your responses, consider discussing these results with a licensed professional. This is a screening, not a diagnosis.";
+    return buildDeterministicSummary(score);
   }, 900);
 
-  onStep("complete");
-  await sleep(500);
+  onStep("complete", preview);
+  await sleep(UX_COMPLETE_MS);
 
   return { kind: "success", score, match, summary };
 }

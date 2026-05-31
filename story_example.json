@@ -1,0 +1,19 @@
+[
+    {
+        "user1": {
+            "severity": "severe",
+            "story": "I've been feeling completely hopeless for weeks now. Everything feels pointless and I don't see any reason to keep going. Work is a disaster, my relationships are falling apart, and I just can't handle it anymore. I've been thinking a lot about ending it all, like maybe taking a bunch of pills so I can finally sleep forever and not wake up to this pain. Last night I cut myself again because the emotional pain gets so bad I need something physical to focus on. I barely eat, I can't sleep more than an hour or two, and most days I just stay in bed staring at the wall. I feel like a burden to everyone and the world would be better without me. I need help right now because I'm scared of what I might do if I stay like this."
+        },
+        "user2": {
+
+            "severity": "moderate",
+            "story": "Lately I've been feeling down and unmotivated. Some days it’s hard to get out of bed and I don’t enjoy things as much as I used to. Work feels stressful and I sometimes get overwhelmed, but I haven’t really told anyone about it. I’m eating and sleeping a bit less, and I wish I could feel more like myself again. I know it’s not serious, just hoping things get better soon."
+       
+        },
+        "user3": {
+            "severity": "minimal",
+            "story": "I've been feeling completely hopeless for weeks now. Everything feels pointless and I don't see any reason to keep going. Work is a disaster, my relationships are falling apart, and I just can't handle it anymore. I've been thinking a lot about ending it all, like maybe taking a bunch of pills so I can finally sleep forever and not wake up to this pain. Last night I cut myself again because the emotional pain gets so bad I need something physical to focus on. I barely eat, I can't sleep more than an hour or two, and most days I just stay in bed staring at the wall. I feel like a burden to everyone and the world would be better without me. I need help right now because I'm scared of what I might do if I stay like this."
+        }  
+        
+    }
+]
