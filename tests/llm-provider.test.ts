@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  getLlmApiKeyEnvVar,
   getLlmProvider,
   resolveApiKey,
   resolveBaseURL,
@@ -9,17 +8,12 @@ import {
 
 const snapshot = { ...process.env };
 
-function seedHfEnv() {
-  process.env.LLM_PROVIDER = "huggingface";
-  process.env.HF_BASE_URL = "https://router.huggingface.co/v1";
-  process.env.HF_MODEL = "google/gemma-4-31B-it";
-}
-
 function clearLlmEnv() {
   delete process.env.LLM_PROVIDER;
   delete process.env.LLM_DEFAULT_PROVIDER;
+  delete process.env.LLM_API_KEY;
   delete process.env.LLM_BASE_URL;
-  delete process.env.OPENAI_BASE_URL;
+  delete process.env.LLM_MODEL;
   delete process.env.HF_API_KEY;
   delete process.env.HF_BASE_URL;
   delete process.env.HF_MODEL;
@@ -30,6 +24,13 @@ function clearLlmEnv() {
   delete process.env.OPENAI_API_BASE_URL;
   delete process.env.OPENAI_MODEL;
   delete process.env.HF_INFERENCE_PROVIDER;
+}
+
+function seedHfEnv() {
+  process.env.LLM_PROVIDER = "huggingface";
+  process.env.LLM_API_KEY = "hf_test";
+  process.env.LLM_BASE_URL = "https://router.huggingface.co/v1";
+  process.env.LLM_MODEL = "google/gemma-4-31B-it";
 }
 
 describe("getLlmProvider", () => {
@@ -66,11 +67,6 @@ describe("getLlmProvider", () => {
     process.env.HF_BASE_URL = "https://router.huggingface.co/v1";
     expect(getLlmProvider()).toBe("huggingface");
   });
-
-  it("uses LLM_DEFAULT_PROVIDER when unset", () => {
-    process.env.LLM_DEFAULT_PROVIDER = "openai";
-    expect(getLlmProvider()).toBe("openai");
-  });
 });
 
 describe("resolveApiKey", () => {
@@ -83,11 +79,16 @@ describe("resolveApiKey", () => {
     process.env = snapshot;
   });
 
-  it("reads the key for the active provider", () => {
+  it("uses LLM_API_KEY for any provider", () => {
     seedHfEnv();
+    delete process.env.HF_API_KEY;
+    expect(resolveApiKey()).toBe("hf_test");
+  });
+
+  it("uses provider-specific key when LLM_API_KEY unset", () => {
+    process.env.LLM_PROVIDER = "huggingface";
     process.env.HF_API_KEY = "hf_abc";
     expect(resolveApiKey()).toBe("hf_abc");
-    expect(getLlmApiKeyEnvVar()).toBe("HF_API_KEY");
   });
 });
 
@@ -101,15 +102,15 @@ describe("resolveBaseURL", () => {
     process.env = snapshot;
   });
 
-  it("reads HF_BASE_URL from env", () => {
+  it("uses LLM_BASE_URL", () => {
     seedHfEnv();
     expect(resolveBaseURL()).toBe("https://router.huggingface.co/v1");
   });
 
-  it("prefers LLM_BASE_URL override", () => {
-    seedHfEnv();
-    process.env.LLM_BASE_URL = "https://custom.example/v1";
-    expect(resolveBaseURL()).toBe("https://custom.example/v1");
+  it("uses HF_BASE_URL when LLM_BASE_URL unset", () => {
+    process.env.LLM_PROVIDER = "huggingface";
+    process.env.HF_BASE_URL = "https://router.huggingface.co/v1";
+    expect(resolveBaseURL()).toBe("https://router.huggingface.co/v1");
   });
 });
 
@@ -123,7 +124,7 @@ describe("resolveModel", () => {
     process.env = snapshot;
   });
 
-  it("uses HF_MODEL from env", () => {
+  it("uses LLM_MODEL", () => {
     seedHfEnv();
     expect(resolveModel()).toBe("google/gemma-4-31B-it");
   });
@@ -137,6 +138,8 @@ describe("resolveModel", () => {
   it("uses OPENROUTER_MODEL from env", () => {
     process.env.LLM_PROVIDER = "openrouter";
     process.env.OPENROUTER_MODEL = "openai/gpt-4o-mini";
+    process.env.OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+    process.env.OPENROUTER_API_KEY = "sk-or-test";
     expect(resolveModel()).toBe("openai/gpt-4o-mini");
   });
 });

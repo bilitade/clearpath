@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLlmApiKeyEnvVar, isLlmConfigured } from "@/lib/ai/openai";
+import { getLlmSetupError, isLlmConfigured } from "@/lib/ai/openai";
 import { generateSummary } from "@/lib/ai/prompts";
 import { buildDeterministicSummary, buildSummaryContext } from "@/lib/screening/screening-summary";
 import { summaryRequestSchema } from "@/lib/validators";
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     const message =
       !isLlmConfigured() ||
       (error instanceof Error && error.message.includes("is not configured"))
-        ? `${getLlmApiKeyEnvVar()} is not configured`
+        ? getLlmSetupError()
         : "Failed to generate summary";
     return NextResponse.json({ error: message }, { status: 500 });
   }

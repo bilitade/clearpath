@@ -10,7 +10,7 @@ Mental health triage and provider matching: PHQ-9 + GAD-7 screening, determinist
 
 ```bash
 pnpm install
-cp .env.example .env.local   # HF_API_KEY, OPENAI_API_KEY, or OPENROUTER_API_KEY
+cp .env.example .env.local   # LLM_PROVIDER + LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
 pnpm dev
 ```
 
@@ -74,7 +74,7 @@ lib/
 
 **API:** `/api/intake/start`, `batch`, `infer-story`, `review-submit`, `session`, `score`, `match`, `summary` — see route handlers under `app/api/`.
 
-**Env:** `.env.example` — `LLM_PROVIDER`, provider key + base URL + model (`HF_*`, `OPENAI_*`, `OPENROUTER_*`).
+**Env:** `.env.example` — set `LLM_PROVIDER` and shared `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL` (or provider-specific `HF_*` / `OPENAI_*` / `OPENROUTER_*`).
 
 ---
 

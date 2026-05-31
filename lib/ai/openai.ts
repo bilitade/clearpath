@@ -36,17 +36,21 @@ function envInt(key: string): number | undefined {
   return Number.isFinite(n) ? n : undefined;
 }
 
+function pickEnv(keys: string[]): string | undefined {
+  for (const key of keys) {
+    const value = env(key);
+    if (value) return value;
+  }
+  return undefined;
+}
+
 function isProvider(value: string): value is LlmProvider {
   return PROVIDERS.includes(value as LlmProvider);
 }
 
-function globalBaseUrl(): string | undefined {
-  return env("LLM_BASE_URL") ?? env("OPENAI_BASE_URL");
-}
-
 function baseUrlForDetection(): string {
   return [
-    globalBaseUrl(),
+    env("LLM_BASE_URL"),
     env("HF_BASE_URL"),
     env("OPENROUTER_BASE_URL"),
     env("OPENAI_API_BASE_URL"),
@@ -57,12 +61,13 @@ function baseUrlForDetection(): string {
 }
 
 export function getLlmApiKeyEnvVar(provider?: LlmProvider): string {
-  return API_KEY_ENV[provider ?? getLlmProvider()];
+  const p = provider ?? getLlmProvider();
+  return `LLM_API_KEY or ${API_KEY_ENV[p]}`;
 }
 
 export function resolveApiKey(provider?: LlmProvider): string | undefined {
   const p = provider ?? getLlmProvider();
-  return env(API_KEY_ENV[p]);
+  return pickEnv(["LLM_API_KEY", API_KEY_ENV[p]]);
 }
 
 export function isLlmConfigured(provider?: LlmProvider): boolean {
@@ -93,20 +98,44 @@ export function isHuggingFaceProvider(): boolean {
 
 export function resolveBaseURL(provider?: LlmProvider): string {
   const p = provider ?? getLlmProvider();
-  const override = globalBaseUrl();
-  if (override) return override;
-  const url = env(BASE_URL_ENV[p]);
+  const url = pickEnv(["LLM_BASE_URL", BASE_URL_ENV[p]]);
   if (!url) {
-    throw new Error(`${BASE_URL_ENV[p]} is not configured (see .env.example)`);
+    throw new Error(
+      `LLM_BASE_URL or ${BASE_URL_ENV[p]} is not configured (see .env.example)`,
+    );
   }
   return url;
 }
 
+export function getLlmSetupError(): string {
+  const p = getLlmProvider();
+  const missing: string[] = [];
+
+  if (!resolveApiKey(p)) {
+    missing.push(`LLM_API_KEY or ${API_KEY_ENV[p]}`);
+  }
+  try {
+    resolveBaseURL(p);
+  } catch {
+    missing.push(`LLM_BASE_URL or ${BASE_URL_ENV[p]}`);
+  }
+  try {
+    resolveModel();
+  } catch {
+    missing.push(`LLM_MODEL or ${MODEL_ENV[p]}`);
+  }
+
+  if (missing.length === 0) {
+    return "AI is not configured";
+  }
+  return `AI is not configured (set ${missing.join("; ")} — provider: ${p})`;
+}
+
 function resolveModelId(provider: LlmProvider): string {
-  const model = env(MODEL_ENV[provider]) ?? env("OPENAI_MODEL");
+  const model = pickEnv(["LLM_MODEL", MODEL_ENV[provider], "OPENAI_MODEL"]);
   if (!model) {
     throw new Error(
-      `${MODEL_ENV[provider]} or OPENAI_MODEL is not configured (see .env.example)`,
+      `LLM_MODEL or ${MODEL_ENV[provider]} is not configured (see .env.example)`,
     );
   }
   return model;
@@ -141,7 +170,7 @@ export function getOpenAIClient(): OpenAI {
     const provider = getLlmProvider();
     const apiKey = resolveApiKey(provider);
     if (!apiKey) {
-      throw new Error(`${API_KEY_ENV[provider]} is not configured`);
+      throw new Error(getLlmSetupError());
     }
 
     const options: ConstructorParameters<typeof OpenAI>[0] = {

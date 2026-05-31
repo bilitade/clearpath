@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { classifyCrisisMessage } from "@/lib/screening/crisis";
-import { getLlmApiKeyEnvVar, isLlmConfigured } from "@/lib/ai/openai";
+import { getLlmSetupError, isLlmConfigured } from "@/lib/ai/openai";
 import { inferScreeningFromStory, llmClassifyCrisis } from "@/lib/ai/prompts";
 import {
   savePatientStory,
@@ -64,11 +64,9 @@ export async function POST(request: Request) {
     const message =
       error instanceof Error ? error.message : "Failed to map story to screening";
     const isConfig =
-      !isLlmConfigured() ||
-      message.includes("is not configured");
-    const envVar = getLlmApiKeyEnvVar();
+      !isLlmConfigured() || message.includes("is not configured");
     return NextResponse.json(
-      { error: isConfig ? `AI is not configured (set ${envVar})` : message },
+      { error: isConfig ? getLlmSetupError() : message },
       { status: isConfig ? 503 : 500 },
     );
   }
