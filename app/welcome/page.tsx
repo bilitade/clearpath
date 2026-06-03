@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PageShell } from "@/components/layout/page-shell";
+import { ScreeningDisclaimer } from "@/components/shared/screening-disclaimer";
 import { Button } from "@/components/ui/button";
 
 const STEPS = [
@@ -39,6 +40,8 @@ export default function WelcomePage() {
             validated screening — story + AI review, or standard questionnaires.
           </p>
         </div>
+
+        <ScreeningDisclaimer />
 
         <ol className="space-y-3">
           {STEPS.map((s) => (

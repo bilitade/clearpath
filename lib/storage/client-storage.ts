@@ -2,11 +2,13 @@ import {
   SCREENING_MODE_KEY,
   type ScreeningMode,
 } from "@/lib/screening/screening-mode";
+import { TOTAL_INTAKE_ITEMS } from "@/lib/intake/instruments";
 import type { OnboardingContext, PatientProfile } from "@/lib/types";
 
 const SESSION_KEY = "clearpath_session";
 const CONTEXT_KEY = "clearpath_context";
 const RESULTS_KEY = "clearpath_results";
+const CONFIRMED_ANSWERS_KEY = "clearpath_confirmed_answers";
 
 function normalizeProfile(raw: unknown): PatientProfile | null {
   if (!raw || typeof raw !== "object") return null;
@@ -33,6 +35,11 @@ export interface StoredResults {
   match: import("@/lib/types").MatchResult;
   summary: string;
   context: OnboardingContext;
+}
+
+export interface LocalConfirmedAnswer {
+  globalIndex: number;
+  value: 0 | 1 | 2 | 3;
 }
 
 export function getSessionId(): string | null {
@@ -83,6 +90,96 @@ export function getStoredResults(): StoredResults | null {
   }
 }
 
+function isScaleValue(value: unknown): value is 0 | 1 | 2 | 3 {
+  return value === 0 || value === 1 || value === 2 || value === 3;
+}
+
+function normalizeLocalConfirmedAnswers(
+  raw: unknown,
+): LocalConfirmedAnswer[] | null {
+  if (!Array.isArray(raw)) return null;
+
+  const parsed: LocalConfirmedAnswer[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") return null;
+    const answer = item as Record<string, unknown>;
+    const globalIndex = answer.globalIndex;
+    if (typeof globalIndex !== "number" || !Number.isInteger(globalIndex)) {
+      return null;
+    }
+    if (!isScaleValue(answer.value)) return null;
+    if (globalIndex < 0 || globalIndex >= TOTAL_INTAKE_ITEMS) {
+      return null;
+    }
+    parsed.push({
+      globalIndex,
+      value: answer.value,
+    });
+  }
+
+  return parsed;
+}
+
+function sortAndDedupeLocalAnswers(
+  answers: LocalConfirmedAnswer[],
+): LocalConfirmedAnswer[] {
+  const byIndex = new Map<number, 0 | 1 | 2 | 3>();
+  for (const answer of answers) {
+    byIndex.set(answer.globalIndex, answer.value);
+  }
+  return [...byIndex.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([globalIndex, value]) => ({ globalIndex, value }));
+}
+
+export function getLocalConfirmedAnswers(
+  sessionId: string,
+): LocalConfirmedAnswer[] {
+  if (typeof window === "undefined") return [];
+
+  const raw = sessionStorage.getItem(CONFIRMED_ANSWERS_KEY);
+  if (!raw) return [];
+
+  try {
+    const parsed = JSON.parse(raw) as {
+      sessionId?: unknown;
+      answers?: unknown;
+    };
+    if (parsed.sessionId !== sessionId) return [];
+    const answers = normalizeLocalConfirmedAnswers(parsed.answers);
+    if (!answers) return [];
+    return sortAndDedupeLocalAnswers(answers);
+  } catch {
+    return [];
+  }
+}
+
+export function mergeLocalConfirmedAnswers(
+  sessionId: string,
+  partialAnswers: LocalConfirmedAnswer[],
+): void {
+  if (typeof window === "undefined") return;
+
+  const current = getLocalConfirmedAnswers(sessionId);
+  const merged = sortAndDedupeLocalAnswers([...current, ...partialAnswers]);
+  sessionStorage.setItem(
+    CONFIRMED_ANSWERS_KEY,
+    JSON.stringify({ sessionId, answers: merged }),
+  );
+}
+
+export function setLocalConfirmedAnswers(
+  sessionId: string,
+  answers: LocalConfirmedAnswer[],
+): void {
+  if (typeof window === "undefined") return;
+  const normalized = sortAndDedupeLocalAnswers(answers);
+  sessionStorage.setItem(
+    CONFIRMED_ANSWERS_KEY,
+    JSON.stringify({ sessionId, answers: normalized }),
+  );
+}
+
 export function setStoredResults(results: StoredResults): void {
   sessionStorage.setItem(RESULTS_KEY, JSON.stringify(results));
   resultsSnapshotCache = { raw: sessionStorage.getItem(RESULTS_KEY), data: results };
@@ -104,6 +201,7 @@ export function clearSessionData(): void {
   sessionStorage.removeItem(CONTEXT_KEY);
   sessionStorage.removeItem(RESULTS_KEY);
   sessionStorage.removeItem(SCREENING_MODE_KEY);
+  sessionStorage.removeItem(CONFIRMED_ANSWERS_KEY);
   contextSnapshotCache = null;
   sessionIdSnapshotCache = null;
   resultsSnapshotCache = null;

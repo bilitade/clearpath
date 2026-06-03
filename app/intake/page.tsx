@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PageShell } from "@/components/layout/page-shell";
 import { IntakeStepLayout } from "@/components/intake/intake-step-layout";
+import { ScreeningDisclaimer } from "@/components/shared/screening-disclaimer";
 import { useOnboardingSession } from "@/lib/hooks/use-session-ready";
 import { setScreeningMode } from "@/lib/storage/client-storage";
 
@@ -41,6 +42,8 @@ export default function IntakeChoosePage() {
           you confirm — not from the story alone.
         </p>
       </div>
+
+      <ScreeningDisclaimer />
 
       <div className="grid gap-3 sm:grid-cols-2">
         <button

@@ -39,10 +39,10 @@ Scores use confirmed 0–3 answers only. PHQ-9 item 9 ≥ 1 (or crisis classifie
 
 | Area | Implementation |
 |------|----------------|
-| Questionnaires, PHQ-9/GAD-7 totals, care level | `lib/scoring.ts` |
-| Provider ranking | `lib/matcher.ts` + `data/providers.json` |
+| Questionnaires, PHQ-9/GAD-7 totals, care level | `lib/screening/scoring.ts` |
+| Provider ranking | `lib/matching/matcher.ts` + `data/providers.json` |
 | Story → draft item values | LLM (`/api/intake/infer-story`) |
-| Crisis language (story) | Keywords + optional LLM classifier (`lib/crisis.ts`) |
+| Crisis language (story) | Keywords + optional LLM classifier (`lib/screening/crisis.ts`) |
 | Results narrative | LLM (`/api/summary`); static fallback if unavailable |
 
 ---

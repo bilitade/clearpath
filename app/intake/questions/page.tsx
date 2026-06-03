@@ -14,6 +14,7 @@ import { useOnboardingSession } from "@/lib/hooks/use-session-ready";
 import {
   getOnboardingContext,
   getSessionId,
+  mergeLocalConfirmedAnswers,
   setScreeningMode,
 } from "@/lib/storage/client-storage";
 import type { IntakeBatchState } from "@/lib/intake/intake-flow";
@@ -92,6 +93,10 @@ export default function IntakeQuestionsPage() {
     if (payload.some((p) => p.value === undefined)) {
       return;
     }
+    const confirmedPayload = payload as Array<{
+      globalIndex: number;
+      value: 0 | 1 | 2 | 3;
+    }>;
 
     setLoading(true);
     setSubmitError("");
@@ -105,6 +110,7 @@ export default function IntakeQuestionsPage() {
       if (!res.ok) throw new Error("Failed to save answers");
 
       const data = (await res.json()) as IntakeBatchState;
+      mergeLocalConfirmedAnswers(sessionId, confirmedPayload);
 
       if (data.crisis?.crisis) {
         setShowSafetyNotice(true);

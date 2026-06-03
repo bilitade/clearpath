@@ -2,8 +2,16 @@
 
 import { ProviderAvatar } from "@/components/results/provider-avatar";
 import { Badge } from "@/components/ui/badge";
+import { PROVIDER_DATA_LAST_UPDATED } from "@/data/provider-meta";
 import type { ProviderMatchEntry } from "@/lib/types";
+import { INSURANCE_OPTIONS } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+function formatInsuranceList(insuranceIds: string[]): string {
+  return insuranceIds
+    .map((id) => INSURANCE_OPTIONS.find((o) => o.id === id)?.label ?? id)
+    .join(", ");
+}
 
 interface ProviderCardProps {
   match: ProviderMatchEntry;
@@ -49,6 +57,10 @@ export function ProviderCard({ match, rank, patientConcern }: ProviderCardProps)
             {formatLabel} · ~{provider.estWaitDays}d · {provider.costEstimate}
           </p>
 
+          <p className="text-[0.65rem] text-muted line-clamp-2 leading-snug">
+            Insurance accepted: {formatInsuranceList(provider.insurances)}
+          </p>
+
           {patientConcern && (
             <p className="text-[0.65rem] text-muted line-clamp-1">
               <span className="text-foreground">{patientConcern}</span>
@@ -73,6 +85,11 @@ export function ProviderCard({ match, rank, patientConcern }: ProviderCardProps)
       {(gaps?.length ?? 0) > 0 && (
         <p className="mt-1.5 text-[0.65rem] text-warning">{gaps![0]}</p>
       )}
+
+      <p className="mt-2 text-[0.6rem] leading-snug text-muted">
+        Verify availability, insurance, and credentials before booking. Sample
+        data last updated {PROVIDER_DATA_LAST_UPDATED}.
+      </p>
 
       <div className="mt-2.5 flex gap-1.5 no-print">
         {tel && (

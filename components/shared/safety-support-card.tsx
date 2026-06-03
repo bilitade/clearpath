@@ -90,6 +90,9 @@ export function SafetySupportCard({
               <a href="sms:741741&body=HOME" className={actionOutline}>
                 Text HOME to 741741
               </a>
+              <a href="tel:911" className={actionOutline}>
+                Call 911
+              </a>
               <Link href="/crisis" className={actionOutline}>
                 More crisis resources
               </Link>

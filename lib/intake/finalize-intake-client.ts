@@ -1,6 +1,11 @@
 import { TOTAL_INTAKE_ITEMS } from "@/lib/intake/instruments";
+import {
+  buildIntakeAnswers,
+  sortGlobalAnswers,
+} from "@/lib/intake/intake-answers";
 import { CARE_LEVEL_LABELS } from "@/lib/screening/scoring";
 import { buildDeterministicSummary } from "@/lib/screening/screening-summary";
+import { getLocalConfirmedAnswers } from "@/lib/storage/client-storage";
 import type {
   IntakeAnswer,
   MatchResult,
@@ -69,24 +74,45 @@ export async function finalizeIntakeClient(
   onStep("score", preview);
 
   const { score } = await withMinDuration(async () => {
+    let loadedAnswers: IntakeAnswer[] | null = null;
+    let classifierCrisisFlag: boolean | undefined;
+
     const sessionRes = await fetch("/api/intake/session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sessionId }),
     });
-    if (!sessionRes.ok) throw new Error("Could not retrieve session answers");
 
-    const { answers: loadedAnswers } = (await sessionRes.json()) as {
-      answers: IntakeAnswer[];
-    };
-    if (loadedAnswers.length !== TOTAL_INTAKE_ITEMS) {
-      throw new Error("Intake incomplete");
+    if (sessionRes.ok) {
+      const data = (await sessionRes.json()) as {
+        answers: IntakeAnswer[];
+        classifierCrisisFlag?: boolean;
+      };
+      if (data.answers.length === TOTAL_INTAKE_ITEMS) {
+        loadedAnswers = data.answers;
+        classifierCrisisFlag = data.classifierCrisisFlag;
+      }
+    }
+
+    if (!loadedAnswers) {
+      const fallbackAnswers = getLocalConfirmedAnswers(sessionId);
+      if (fallbackAnswers.length === TOTAL_INTAKE_ITEMS) {
+        loadedAnswers = buildIntakeAnswers(sortGlobalAnswers(fallbackAnswers));
+      } else {
+        throw new Error(
+          "Could not restore your screening answers. Please continue from intake.",
+        );
+      }
     }
 
     const scoreRes = await fetch("/api/intake/score", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId, answers: loadedAnswers }),
+      body: JSON.stringify({
+        sessionId,
+        answers: loadedAnswers,
+        classifierCrisisFlag,
+      }),
     });
     if (!scoreRes.ok) throw new Error("Scoring failed");
 

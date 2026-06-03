@@ -11,6 +11,7 @@ import { useOnboardingSession } from "@/lib/hooks/use-session-ready";
 import {
   getOnboardingContext,
   getSessionId,
+  setLocalConfirmedAnswers,
 } from "@/lib/storage/client-storage";
 import {
   SCALE_LABELS,
@@ -107,6 +108,10 @@ export default function IntakeReviewPage() {
       setError("Please confirm every question (tap 0–3 for each).");
       return;
     }
+    const confirmedPayload = payload as Array<{
+      globalIndex: number;
+      value: 0 | 1 | 2 | 3;
+    }>;
 
     setLoading(true);
     setError("");
@@ -115,7 +120,11 @@ export default function IntakeReviewPage() {
       const res = await fetch("/api/intake/review-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, context: profile, answers: payload }),
+        body: JSON.stringify({
+          sessionId,
+          context: profile,
+          answers: confirmedPayload,
+        }),
       });
 
       const data = (await res.json()) as { crisis?: boolean; error?: string };
@@ -129,6 +138,7 @@ export default function IntakeReviewPage() {
         setShowSafetyNotice(true);
       }
 
+      setLocalConfirmedAnswers(sessionId, confirmedPayload);
       router.push("/processing");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Submit failed");
