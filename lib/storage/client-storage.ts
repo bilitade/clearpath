@@ -9,6 +9,13 @@ const SESSION_KEY = "clearpath_session";
 const CONTEXT_KEY = "clearpath_context";
 const RESULTS_KEY = "clearpath_results";
 const CONFIRMED_ANSWERS_KEY = "clearpath_confirmed_answers";
+const STORY_REVIEW_KEY = "clearpath_story_review";
+
+export interface LocalStoryReviewState {
+  sessionId: string;
+  patientStory: string;
+  aiSuggestions: Record<number, 0 | 1 | 2 | 3>;
+}
 
 function normalizeProfile(raw: unknown): PatientProfile | null {
   if (!raw || typeof raw !== "object") return null;
@@ -180,6 +187,62 @@ export function setLocalConfirmedAnswers(
   );
 }
 
+function normalizeStorySuggestions(
+  raw: unknown,
+): Record<number, 0 | 1 | 2 | 3> | null {
+  if (!raw || typeof raw !== "object") return null;
+  const map: Record<number, 0 | 1 | 2 | 3> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    const index = Number(k);
+    if (!Number.isInteger(index)) return null;
+    if (!isScaleValue(v)) return null;
+    map[index] = v;
+  }
+  return map;
+}
+
+export function setLocalStoryReview(
+  sessionId: string,
+  patientStory: string,
+  aiSuggestions: Record<number, 0 | 1 | 2 | 3>,
+): void {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(
+    STORY_REVIEW_KEY,
+    JSON.stringify({ sessionId, patientStory, aiSuggestions }),
+  );
+}
+
+export function getLocalStoryReview(
+  sessionId: string,
+): LocalStoryReviewState | null {
+  if (typeof window === "undefined") return null;
+
+  const raw = sessionStorage.getItem(STORY_REVIEW_KEY);
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw) as {
+      sessionId?: unknown;
+      patientStory?: unknown;
+      aiSuggestions?: unknown;
+    };
+    if (parsed.sessionId !== sessionId) return null;
+    if (typeof parsed.patientStory !== "string" || !parsed.patientStory.trim()) {
+      return null;
+    }
+    const aiSuggestions = normalizeStorySuggestions(parsed.aiSuggestions);
+    if (!aiSuggestions) return null;
+    return {
+      sessionId,
+      patientStory: parsed.patientStory,
+      aiSuggestions,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function setStoredResults(results: StoredResults): void {
   sessionStorage.setItem(RESULTS_KEY, JSON.stringify(results));
   resultsSnapshotCache = { raw: sessionStorage.getItem(RESULTS_KEY), data: results };
@@ -202,6 +265,7 @@ export function clearSessionData(): void {
   sessionStorage.removeItem(RESULTS_KEY);
   sessionStorage.removeItem(SCREENING_MODE_KEY);
   sessionStorage.removeItem(CONFIRMED_ANSWERS_KEY);
+  sessionStorage.removeItem(STORY_REVIEW_KEY);
   contextSnapshotCache = null;
   sessionIdSnapshotCache = null;
   resultsSnapshotCache = null;

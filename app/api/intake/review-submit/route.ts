@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { getReviewState, submitReviewAnswers } from "@/lib/intake/intake-flow";
+import {
+  ensureStoryReviewSession,
+  submitReviewAnswers,
+} from "@/lib/intake/intake-flow";
 import { reviewSubmitRequestSchema } from "@/lib/validators";
 
 export async function POST(request: Request) {
@@ -15,9 +18,12 @@ export async function POST(request: Request) {
 
     const { sessionId, context, answers } = parsed.data;
 
-    if (!getReviewState(sessionId)?.hasStory) {
+    if (!ensureStoryReviewSession(sessionId, context)) {
       return NextResponse.json(
-        { error: "Complete your story before review" },
+        {
+          error:
+            "Your screening session expired. Please return to your story and try again.",
+        },
         { status: 400 },
       );
     }

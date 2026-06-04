@@ -230,6 +230,7 @@ export function savePatientStory(
   aiSuggestions: Record<number, 0 | 1 | 2 | 3>,
 ): void {
   const profile = { ...context, optionalContext: story };
+  ensureSession(sessionId, profile);
   updateSession(sessionId, (s) => ({
     ...s,
     context: profile,
@@ -238,6 +239,31 @@ export function savePatientStory(
     answers: [],
     itemIndex: 0,
   }));
+}
+
+/** Restore story-path session when in-memory server state was lost. */
+export function ensureStoryReviewSession(
+  sessionId: string,
+  context: OnboardingContext,
+  aiSuggestions?: Partial<Record<number, 0 | 1 | 2 | 3>>,
+): boolean {
+  if (getReviewState(sessionId)?.hasStory) return true;
+
+  const story = context.optionalContext?.trim();
+  if (!story) return false;
+
+  const profile = { ...context, optionalContext: story };
+  ensureSession(sessionId, profile);
+  updateSession(sessionId, (s) => ({
+    ...s,
+    context: profile,
+    patientStory: story,
+    aiSuggestions: aiSuggestions ?? s.aiSuggestions ?? {},
+    answers: [],
+    itemIndex: 0,
+  }));
+
+  return Boolean(getReviewState(sessionId)?.hasStory);
 }
 
 export function getReviewState(sessionId: string): {

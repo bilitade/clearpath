@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useOnboardingSession } from "@/lib/hooks/use-session-ready";
 import {
   getSessionId,
+  setLocalStoryReview,
   setPatientProfile,
   setScreeningMode,
 } from "@/lib/storage/client-storage";
@@ -62,12 +63,28 @@ export default function IntakeStoryPage() {
         }),
       });
 
-      const data = (await inferRes.json()) as { error?: string };
+      const data = (await inferRes.json()) as {
+        error?: string;
+        suggestions?: Array<{ globalIndex: number; value: number }>;
+      };
 
       if (!inferRes.ok) {
         throw new Error(data.error ?? "Could not analyze your story");
       }
 
+      const suggestions: Record<number, 0 | 1 | 2 | 3> = {};
+      for (const item of data.suggestions ?? []) {
+        if (
+          item.value === 0 ||
+          item.value === 1 ||
+          item.value === 2 ||
+          item.value === 3
+        ) {
+          suggestions[item.globalIndex] = item.value;
+        }
+      }
+
+      setLocalStoryReview(sessionId, trimmed, suggestions);
       setPatientProfile({ ...profile, optionalContext: trimmed });
       router.push("/intake/review");
     } catch (err) {

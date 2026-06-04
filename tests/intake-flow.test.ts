@@ -1,9 +1,16 @@
 import { describe, expect, it } from "vitest";
 import {
+  ensureStoryReviewSession,
   getIntakeBatchState,
+  getReviewState,
+  savePatientStory,
   startIntake,
   submitBatchAnswers,
+  submitReviewAnswers,
 } from "@/lib/intake/intake-flow";
+import type { GlobalAnswerInput } from "@/lib/intake/intake-answers";
+import { TOTAL_INTAKE_ITEMS } from "@/lib/intake/instruments";
+import { deleteSession, getSession } from "@/lib/storage/session";
 
 const context = {
   zip: "02139",
@@ -11,6 +18,24 @@ const context = {
   concern: "anxiety" as const,
   formatPreference: "either" as const,
 };
+
+const story =
+  "Overall I have been doing well with only mild stress before deadlines.";
+
+function allZeroReviewAnswers(): GlobalAnswerInput[] {
+  return Array.from({ length: TOTAL_INTAKE_ITEMS }, (_, globalIndex) => ({
+    globalIndex,
+    value: 0 as const,
+  }));
+}
+
+function buildSuggestions(value: 0 | 1 | 2 | 3 = 0) {
+  const suggestions: Record<number, 0 | 1 | 2 | 3> = {};
+  for (let i = 0; i < TOTAL_INTAKE_ITEMS; i++) {
+    suggestions[i] = value;
+  }
+  return suggestions;
+}
 
 describe("intake-flow", () => {
   it("starts at batch 0 with PHQ-9 items", () => {
@@ -68,5 +93,80 @@ describe("intake-flow", () => {
     const resumed = getIntakeBatchState(sessionId, context);
     expect(resumed.batchIndex).toBe(1);
     expect(resumed.progress.current).toBe(3);
+  });
+});
+
+describe("story review session resilience", () => {
+  it("savePatientStory creates server session when none exists", () => {
+    const sessionId = "story-save-no-prior-session";
+    expect(getSession(sessionId)).toBeUndefined();
+
+    savePatientStory(sessionId, context, story, buildSuggestions());
+
+    expect(getReviewState(sessionId)?.hasStory).toBe(true);
+    expect(getReviewState(sessionId)?.story).toBe(story);
+  });
+
+  it("ensureStoryReviewSession restores story after in-memory session loss", () => {
+    const sessionId = "story-restore-after-loss";
+    savePatientStory(sessionId, context, story, buildSuggestions());
+    deleteSession(sessionId);
+
+    expect(getReviewState(sessionId)).toBeNull();
+
+    const restored = ensureStoryReviewSession(sessionId, {
+      ...context,
+      optionalContext: story,
+    });
+
+    expect(restored).toBe(true);
+    expect(getReviewState(sessionId)?.hasStory).toBe(true);
+    expect(getReviewState(sessionId)?.story).toBe(story);
+  });
+
+  it("ensureStoryReviewSession fails without story text in profile", () => {
+    const sessionId = "story-restore-missing-text";
+    deleteSession(sessionId);
+
+    expect(
+      ensureStoryReviewSession(sessionId, context),
+    ).toBe(false);
+  });
+
+  it("submitReviewAnswers succeeds after session loss once story is restored", () => {
+    const sessionId = "story-submit-after-restore";
+    const storyContext = { ...context, optionalContext: story };
+
+    savePatientStory(sessionId, storyContext, story, buildSuggestions());
+    deleteSession(sessionId);
+
+    expect(
+      ensureStoryReviewSession(sessionId, storyContext),
+    ).toBe(true);
+
+    const result = submitReviewAnswers(
+      sessionId,
+      storyContext,
+      allZeroReviewAnswers(),
+    );
+
+    expect(result.done).toBe(true);
+    expect(result.crisis.crisis).toBe(false);
+    expect(getSession(sessionId)?.answers).toHaveLength(TOTAL_INTAKE_ITEMS);
+  });
+
+  it("does not require a prior startIntake call before story inference save", () => {
+    const sessionId = "story-infer-only-path";
+    deleteSession(sessionId);
+
+    savePatientStory(sessionId, { ...context, optionalContext: story }, story, {
+      ...buildSuggestions(1),
+      8: 0,
+    });
+
+    const review = getReviewState(sessionId);
+    expect(review?.hasStory).toBe(true);
+    expect(review?.suggestions[0]).toBe(1);
+    expect(review?.suggestions[8]).toBe(0);
   });
 });

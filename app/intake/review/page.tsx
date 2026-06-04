@@ -9,6 +9,7 @@ import { SafetySupportCard } from "@/components/shared/safety-support-card";
 import { Button } from "@/components/ui/button";
 import { useOnboardingSession } from "@/lib/hooks/use-session-ready";
 import {
+  getLocalStoryReview,
   getOnboardingContext,
   getSessionId,
   setLocalConfirmedAnswers,
@@ -52,34 +53,51 @@ export default function IntakeReviewPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId }),
       });
-      if (!res.ok) {
-        router.replace("/intake");
-        return;
+
+      let patientStory: string | undefined;
+      let suggestionSource: Record<string, number> | undefined;
+
+      if (res.ok) {
+        const data = (await res.json()) as {
+          patientStory?: string;
+          aiSuggestions?: Record<string, number>;
+        };
+        patientStory = data.patientStory;
+        suggestionSource = data.aiSuggestions;
       }
 
-      const data = (await res.json()) as {
-        patientStory?: string;
-        aiSuggestions?: Record<string, number>;
-      };
+      const local = getLocalStoryReview(sessionId);
+      if (!patientStory && local) {
+        patientStory = local.patientStory;
+        suggestionSource = Object.fromEntries(
+          Object.entries(local.aiSuggestions).map(([k, v]) => [k, v]),
+        );
+      }
 
-      if (!data.patientStory) {
-        router.replace("/intake");
+      if (!patientStory) {
+        router.replace("/intake/story");
         return;
       }
 
       const map: Record<number, 0 | 1 | 2 | 3> = {};
-      for (const [k, v] of Object.entries(data.aiSuggestions ?? {})) {
+      for (const [k, v] of Object.entries(suggestionSource ?? {})) {
         if (v === 0 || v === 1 || v === 2 || v === 3) {
           map[Number(k)] = v;
         }
       }
 
+      if (Object.keys(map).length < TOTAL_INTAKE_ITEMS && local) {
+        for (const [k, v] of Object.entries(local.aiSuggestions)) {
+          map[Number(k)] = v;
+        }
+      }
+
       if (Object.keys(map).length < TOTAL_INTAKE_ITEMS) {
-        router.replace("/intake");
+        router.replace("/intake/story");
         return;
       }
 
-      setStory(data.patientStory);
+      setStory(patientStory);
       setSuggestions(map);
       setAnswers({ ...map });
       if ((map[8] ?? 0) >= 1) {
@@ -117,12 +135,16 @@ export default function IntakeReviewPage() {
     setError("");
 
     try {
+      const reviewContext = profile.optionalContext?.trim()
+        ? profile
+        : { ...profile, optionalContext: story.trim() || undefined };
+
       const res = await fetch("/api/intake/review-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sessionId,
-          context: profile,
+          context: reviewContext,
           answers: confirmedPayload,
         }),
       });
