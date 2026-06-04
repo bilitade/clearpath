@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>research.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* ClearPath brand — Tailwind teal palette */
+:root {
+	--cp-teal-50: #f0fdfa;
+	--cp-teal-100: #ccfbf1;
+	--cp-teal-200: #99f6e4;
+	--cp-teal-500: #14b8a6;
+	--cp-teal-600: #0d9488;
+	--cp-teal-700: #0f766e;
+	--cp-teal-800: #115e59;
+	--cp-text: #1e293b;
+}
+
+body {
+	color: var(--cp-text);
+}
+
+/* Inline code: file paths, endpoints, env vars */
+:not(pre):not(.hljs) > code {
+	color: var(--cp-teal-700);
+	background-color: var(--cp-teal-50);
+	border: 1px solid var(--cp-teal-100);
+	padding: 0.12em 0.4em;
+	border-radius: 3px;
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	font-size: 0.88em;
+	font-weight: 500;
+}
+
+/* File-tree and code blocks */
+pre:not(.hljs):not(:has(.mermaid)),
+pre.hljs {
+	background-color: var(--cp-teal-50) !important;
+	border: 1px solid var(--cp-teal-200);
+	border-left: 4px solid var(--cp-teal-500);
+	border-radius: 4px;
+}
+
+pre.hljs code,
+pre:not(:has(.mermaid)) code {
+	color: var(--cp-teal-800);
+}
+
+blockquote {
+	border-left-color: var(--cp-teal-500);
+	background: var(--cp-teal-50);
+	padding: 0.5em 1em;
+	border-radius: 0 4px 4px 0;
+}
+
+a {
+	color: var(--cp-teal-600);
+}
+
+a:hover {
+	color: var(--cp-teal-700);
+	text-decoration: underline;
+}
+
+hr {
+	border-bottom-color: var(--cp-teal-200);
+}
+
+table > thead > tr > th {
+	background-color: var(--cp-teal-50);
+	color: var(--cp-teal-800);
+	border-bottom: 2px solid var(--cp-teal-200);
+}
+
+/* Evidence citations & reliability tags (filled by script) */
+.cp-evidence {
+	background: var(--cp-teal-50);
+	color: var(--cp-teal-700);
+	padding: 0.08em 0.35em;
+	border-radius: 3px;
+	font-weight: 600;
+	font-size: 0.92em;
+	white-space: nowrap;
+}
+
+.cp-finding-label {
+	color: var(--cp-teal-700);
+}
+
+h3[id*="evidence"] + p + ul,
+h3[id="12-the-evidence-summary"] + p + ul {
+	background: var(--cp-teal-50);
+	border-left: 3px solid var(--cp-teal-500);
+	padding: 0.65em 1em 0.65em 1.25em;
+	border-radius: 0 4px 4px 0;
+	margin-top: 0.5em;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+/* Typography: sections & subsections slightly bold */
+h1 {
+	font-weight: 700;
+	font-size: 1.75em;
+	margin-top: 0;
+	color: var(--cp-teal-800);
+	border-bottom: 2px solid var(--cp-teal-500);
+	padding-bottom: 0.35em;
+}
+
+h2 {
+	font-weight: 600;
+	font-size: 1.35em;
+	margin-top: 1.4em;
+	margin-bottom: 0.5em;
+	color: var(--cp-teal-700);
+	border-bottom: 2px solid var(--cp-teal-200);
+	padding-bottom: 0.3em;
+}
+
+h3 {
+	font-weight: 600;
+	font-size: 1.12em;
+	margin-top: 1.1em;
+	margin-bottom: 0.35em;
+	color: var(--cp-teal-700);
+}
+
+h4, h5, h6 {
+	font-weight: 600;
+	color: var(--cp-teal-800);
+}
+
+pre:has(.mermaid),
+pre:has(.mermaid) code {
+	padding: 0;
+	margin: 0.5em 0;
+	background: none;
+	overflow: visible;
+	white-space: normal;
+	border: none;
+}
+
+.mermaid {
+	display: block;
+	margin: 0.5em 0;
+	text-align: center;
+}
+
+.mermaid svg {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	height: auto;
+}
+
+@media screen {
+	body {
+		max-width: 210mm;
+		margin: 0 auto;
+		padding: 18mm 15mm;
+		background: #fff;
+		font-size: 11pt;
+		line-height: 1.5;
+		color: #1a1a1a;
+	}
+}
+
+@media print {
+	@page {
+		size: A4;
+		margin: 18mm 15mm 20mm 15mm;
+	}
+
+	html, body {
+		width: 100%;
+		margin: 0 !important;
+		padding: 0 !important;
+		font-size: 11pt;
+		line-height: 1.45;
+		color: #000;
+		background: #fff;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	h1, h2, h3, h4 {
+		color: var(--cp-teal-800) !important;
+	}
+
+	h2 {
+		border-bottom-color: var(--cp-teal-200) !important;
+	}
+
+	table > thead > tr > th {
+		background-color: var(--cp-teal-50) !important;
+		color: var(--cp-teal-800) !important;
+	}
+
+	:not(pre):not(.hljs) > code,
+	.cp-evidence {
+		background-color: var(--cp-teal-50) !important;
+		color: var(--cp-teal-700) !important;
+		border-color: var(--cp-teal-100) !important;
+	}
+
+	pre.hljs,
+	pre:not(:has(.mermaid)) {
+		background-color: var(--cp-teal-50) !important;
+		border-color: var(--cp-teal-200) !important;
+	}
+
+	body.scrollBeyondLastLine {
+		margin-bottom: 0 !important;
+	}
+
+	#code-csp-warning {
+		display: none !important;
+	}
+
+	h1, h2, h3, h4 {
+		page-break-after: avoid;
+		break-after: avoid-page;
+	}
+
+	p, li {
+		orphans: 3;
+		widows: 3;
+	}
+
+	table {
+		width: 100%;
+		font-size: 10pt;
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	tr {
+		page-break-inside: avoid;
+		break-inside: avoid-page;
+	}
+
+	pre:not(:has(.mermaid)), blockquote, img {
+		page-break-inside: avoid;
+		break-inside: avoid-page;
+	}
+
+	pre:has(.mermaid),
+	pre:has(.mermaid) code {
+		padding: 0 !important;
+		margin: 0.25em 0 0.5em;
+		background: none !important;
+		overflow: visible !important;
+		white-space: normal;
+		border: none;
+		page-break-inside: auto;
+		break-inside: auto;
+	}
+
+	.mermaid {
+		display: block;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		page-break-inside: auto;
+		break-inside: auto;
+	}
+
+	.mermaid svg {
+		display: block;
+		margin: 0 auto;
+		max-width: 100% !important;
+		width: auto !important;
+		height: auto !important;
+		max-height: 175mm;
+	}
+
+	.page {
+		page-break-after: always;
+		break-after: page;
+	}
+
+	hr {
+		border: none;
+		border-top: 1px solid #ccc;
+		margin: 1em 0;
+		page-break-after: avoid;
+	}
+
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ccfbf1',
+        primaryTextColor: '#0f172a',
+        primaryBorderColor: '#14b8a6',
+        lineColor: '#14b8a6',
+        secondaryColor: '#f0fdfa',
+        tertiaryColor: '#99f6e4',
+        edgeLabelBackground: '#ffffff',
+        fontSize: '11px'
+      },
+      flowchart: {
+        curve: 'basis'
+      }
+    });
+  </script>
+<h1 id="clearpath">ClearPath</h1>
+<p><strong>Prepared by:</strong> Bilisuma Tadesse</p>
+<h2 id="primary-research-dossier">Primary Research Dossier</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Type</strong></td>
+<td>Primary Research Dossier</td>
+</tr>
+<tr>
+<td><strong>Project</strong></td>
+<td>ClearPath — AI-Powered Mental Health Triage and Navigation</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>v1.0 — Final Draft</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>June 4, 2026</td>
+</tr>
+<tr>
+<td><strong>Companion Documents</strong></td>
+<td>Product Dossier; Software Requirements Specification</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Document purpose.</strong> This dossier provides the foundational research layer underpinning the ClearPath product. It establishes the problem, synthesizes the evidence base, and frames the opportunity. Product decisions, design choices, and technical tradeoffs documented in the companion Product Dossier and SRS are traceable back to findings in this document. All claims carry source attribution, reliability ratings, and limitation notes where material.</p>
+</blockquote>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-research-methodology">Research Methodology</a></li>
+<li><a href="#2-the-core-problem-intent-to-care-gap">The Core Problem: Intent-to-Care Gap</a></li>
+<li><a href="#3-epidemiology-scale-of-mental-health-need">Epidemiology: Scale of Mental Health Need</a></li>
+<li><a href="#4-workforce-supply-a-structural-shortage">Workforce Supply: A Structural Shortage</a></li>
+<li><a href="#5-access-barriers-where-the-system-fails">Access Barriers: Where the System Fails</a></li>
+<li><a href="#6-economic-impact-the-cost-of-inaction">Economic Impact: The Cost of Inaction</a></li>
+<li><a href="#7-digital-mental-health-evidence-for-technology-interventions">Digital Mental Health: Evidence for Technology Interventions</a></li>
+<li><a href="#8-market-context">Market Context</a></li>
+<li><a href="#9-regulatory-and-ethical-landscape">Regulatory and Ethical Landscape</a></li>
+<li><a href="#10-competitive-landscape-analysis">Competitive Landscape Analysis</a></li>
+<li><a href="#11-key-research-conclusions">Key Research Conclusions</a></li>
+<li><a href="#12-references">References</a></li>
+</ol>
+<h2 id="1-research-methodology">1. Research Methodology</h2>
+<h3 id="11-scope">1.1 Scope</h3>
+<p>This research covers the United States mental healthcare access landscape as of 2024–2026. The scope is bounded to:</p>
+<ul>
+<li>Epidemiology of mental illness prevalence and treatment access</li>
+<li>Healthcare workforce supply and shortage projections</li>
+<li>Access barriers including wait times, insurance complexity, and cost</li>
+<li>Economic burden of untreated mental illness, particularly in the workplace</li>
+<li>Evidence for digital and AI-enabled mental health interventions</li>
+<li>Regulatory environment for digital health tools</li>
+<li>Competitive product landscape</li>
+</ul>
+<h3 id="12-sources-used">1.2 Sources Used</h3>
+<p>Research draws from five tiers of sources, prioritized by reliability:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Source Type</th>
+<th>Reliability</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 — Primary Federal</strong></td>
+<td>Federal agencies, government surveys</td>
+<td>High</td>
+<td>SAMHSA NSDUH, HRSA Workforce Data, CDC/NCHS, FDA Guidance</td>
+</tr>
+<tr>
+<td><strong>2 — Peer-Reviewed</strong></td>
+<td>Academic journals, RCTs, systematic reviews</td>
+<td>High</td>
+<td>BMJ Open, Psychiatric Services, Nature Communications Medicine, PMC/NCBI</td>
+</tr>
+<tr>
+<td><strong>3 — Policy/Advocacy</strong></td>
+<td>Nonpartisan policy institutes, professional bodies</td>
+<td>Moderate-High</td>
+<td>Commonwealth Fund, APA, NAMI, Gallup, IFEBP</td>
+</tr>
+<tr>
+<td><strong>4 — Market Research</strong></td>
+<td>Commercial market-sizing firms</td>
+<td>Moderate</td>
+<td>SNS Insider, Mordor Intelligence, Straits Research</td>
+</tr>
+<tr>
+<td><strong>5 — Industry/Vendor</strong></td>
+<td>Proprietary studies, vendor reports</td>
+<td>Moderate (directional only)</td>
+<td>Wysa, Woebot, Big Health</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-reliability-conventions">1.3 Reliability Conventions</h3>
+<p>Throughout this document, reliability labels are applied as follows:</p>
+<ul>
+<li><strong>[High]</strong> — Federal primary source or peer-reviewed publication; methodology is documented and reproducible</li>
+<li><strong>[Moderate-High]</strong> — Professional body or nonpartisan policy institute citing primary data; methodology partially documented</li>
+<li><strong>[Moderate]</strong> — Advocacy, commercial, or vendor synthesis; directional use only; noted where estimates vary materially across firms</li>
+<li><strong>[Directional only]</strong> — Proprietary, non-peer-reviewed, or self-reported industry data; cited for illustration, not as definitive</li>
+</ul>
+<h3 id="14-verification-process">1.4 Verification Process</h3>
+<p>Key statistics were cross-checked against primary federal and peer-reviewed sources before inclusion. Figures are attributed to the primary source even when first encountered via a secondary synthesis. Where a statistic is commonly misquoted in industry summaries, the body text states the precise definition, scope, and limitation inline — for example, wait-time benchmarks scoped to community mental health centers, or economic figures distinguished by component and time horizon.</p>
+<h2 id="2-the-core-problem-intent-to-care-gap">2. The Core Problem: Intent-to-Care Gap</h2>
+<h3 id="21-framing">2.1 Framing</h3>
+<blockquote>
+<p><strong>The critical failure in U.S. mental healthcare is not a lack of willingness to seek help — it is the system's structural inability to convert that intent into care quickly and correctly.</strong></p>
+</blockquote>
+<p>When a motivated adult decides to seek mental health support today, they face a sequence of friction points that — individually — might be surmountable, but together create a systemic failure:</p>
+<ol>
+<li><strong>No structured self-assessment</strong> — there is no validated, accessible tool to help them understand what type of care they actually need before they begin searching</li>
+<li><strong>Invisible availability</strong> — directories show who exists, not who is accepting new patients</li>
+<li><strong>Insurance opacity</strong> — coverage is often unknown until after the first visit</li>
+<li><strong>Long waits</strong> — even when a suitable provider is found, waiting weeks to months is standard</li>
+<li><strong>No step-down logic</strong> — the system defaults to weekly individual therapy regardless of clinical need, bypassing evidence-based stepped-care models</li>
+</ol>
+<p>The outcome: people either never enter care, enter mismatched care, or abandon the process entirely after weeks of fruitless effort.</p>
+<h3 id="22-primary-user-profile">2.2 Primary User Profile</h3>
+<p>The target user is not the most acutely ill — that population is served (imperfectly) by crisis systems. The most underserved population is the large, commercially accessible middle:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Age range</strong></td>
+<td>25–45 years</td>
+</tr>
+<tr>
+<td><strong>Employment status</strong></td>
+<td>Employed, often with employer-sponsored insurance</td>
+</tr>
+<tr>
+<td><strong>Digital literacy</strong></td>
+<td>Moderate to high</td>
+</tr>
+<tr>
+<td><strong>Clinical state</strong></td>
+<td>Mild-to-moderate anxiety or depression; not in acute crisis</td>
+</tr>
+<tr>
+<td><strong>Behavioral pattern</strong></td>
+<td>Has searched for help; hit walls of unavailability; stalled</td>
+</tr>
+<tr>
+<td><strong>Primary need</strong></td>
+<td>Fast, personalized, actionable guidance — not generic information</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this user:</strong> They are large in number (tens of millions), commercially reachable through employer benefit channels, capable of completing a digital intake, and most harmed by the intent-to-care gap. Their treatment gap drives the largest share of measurable economic loss.</p>
+<h2 id="3-epidemiology-scale-of-mental-health-need">3. Epidemiology: Scale of Mental Health Need</h2>
+<h3 id="31-prevalence-of-mental-illness">3.1 Prevalence of Mental Illness</h3>
+<p><strong>Finding:</strong> In 2024, approximately <strong>61.5 million U.S. adults (23.4%)</strong> met criteria for any mental illness (AMI). Of these, only <strong>52.1% received any mental health treatment</strong> in the past year, leaving approximately <strong>29.5 million adults (48%) with no treatment</strong> despite meeting diagnostic criteria. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Substance Abuse and Mental Health Services Administration (SAMHSA). (2025). <em>Key Substance Use and Mental Health Indicators in the United States: Results from the 2024 National Survey on Drug Use and Health (NSDUH).</em> [1]</p>
+<p><strong>Limitation:</strong> Self-report; stigma likely causes underreporting. Cross-sectional design captures prevalence at a point in time. Figures match SAMHSA published tables (61.5 million / 23.4%).</p>
+</blockquote>
+<h3 id="32-substance-use-disorders">3.2 Substance Use Disorders</h3>
+<p><strong>Finding:</strong> The treatment gap is even wider for substance use disorders: approximately <strong>80% of people</strong> who needed treatment in 2024 did not receive it. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> SAMHSA NSDUH 2024 [1, 4]</p>
+<p><strong>Limitation:</strong> Same survey caveats as §3.1 above.</p>
+</blockquote>
+<h3 id="33-depression-and-income-disparity">3.3 Depression and Income Disparity</h3>
+<p><strong>Finding:</strong> Federal data consistently show depression prevalence is substantially higher among lower-income adults than higher-income adults across survey cycles. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> CDC/NCHS data briefs, multiple cycles</p>
+<p><strong>Note:</strong> The specific income-to-prevalence multiplier varies by survey year and design. This is stated as a directional finding rather than a fixed ratio; citing a specific multiplier from any single cycle risks false precision.</p>
+</blockquote>
+<h3 id="34-summary-table">3.4 Summary Table</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Year</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U.S. adults with any mental illness</td>
+<td>61.5 million (23.4%)</td>
+<td>2024</td>
+<td>SAMHSA NSDUH [1, 4]</td>
+</tr>
+<tr>
+<td>Of those, received no treatment</td>
+<td>~48% (~29.5 million)</td>
+<td>2024</td>
+<td>SAMHSA NSDUH [1, 4]</td>
+</tr>
+<tr>
+<td>SUD treatment gap</td>
+<td>~80%</td>
+<td>2024</td>
+<td>SAMHSA NSDUH [1]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-workforce-supply-a-structural-shortage">4. Workforce Supply: A Structural Shortage</h2>
+<h3 id="41-geographic-access-shortage">4.1 Geographic Access Shortage</h3>
+<p><strong>Finding:</strong> As of <strong>December 2, 2025, 40% of the U.S. population — approximately 137 million people</strong> — lives in a federally designated Mental Health Professional Shortage Area (Mental Health HPSA). <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> HRSA, National Center for Health Workforce Analysis. (December 2025). <em>Behavioral Health Workforce Brief 2025.</em> [9]</p>
+<p><strong>Note:</strong> HPSA designations are updated regularly; this figure reflects the December 2, 2025 data snapshot published in the brief.</p>
+</blockquote>
+<h3 id="42-psychiatrist-supply">4.2 Psychiatrist Supply</h3>
+<p><strong>Finding:</strong> There were <strong>52,164 psychiatrists</strong> in the United States as of 2023. Federal workforce projection models indicate substantial shortages across multiple behavioral health professions are projected to persist through the 2030s. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> HRSA Behavioral Health Workforce Brief 2025 [9]</p>
+<p><strong>Limitation:</strong> Supply-demand modeling involves assumptions about utilization rates, population growth, and provider productivity; projections carry inherent uncertainty.</p>
+</blockquote>
+<h3 id="43-psychologist-availability">4.3 Psychologist Availability</h3>
+<p><strong>Finding:</strong> A majority of psychologists surveyed by the American Psychological Association report <strong>not accepting new patients</strong>. Among those with active waitlists, average waits of <strong>three months or longer</strong> are common. <strong>[Moderate-High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> American Psychological Association practitioner workforce surveys, 2023 [20]</p>
+<p><strong>Limitation:</strong> Self-selected respondent pool; may overrepresent busier practitioners. Results are from a 2023 survey and may not reflect 2025–2026 conditions precisely.</p>
+</blockquote>
+<h3 id="44-summary-table">4.4 Summary Table</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Year</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Population in Mental Health HPSA</td>
+<td>40% (137 million)</td>
+<td>Dec 2, 2025</td>
+<td>HRSA Workforce Brief 2025 [9]</td>
+</tr>
+<tr>
+<td>Total U.S. psychiatrists</td>
+<td>52,164</td>
+<td>2023</td>
+<td>HRSA Workforce Brief 2025 [9]</td>
+</tr>
+<tr>
+<td>Psychologists not accepting new patients</td>
+<td>Majority</td>
+<td>2023</td>
+<td>APA practitioner survey [20]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-access-barriers-where-the-system-fails">5. Access Barriers: Where the System Fails</h2>
+<h3 id="51-wait-times">5.1 Wait Times</h3>
+<p><strong>Finding — Community Mental Health Centers:</strong> The national average wait between a client's first outreach or referral and their first appointment at <strong>community mental health centers</strong> is <strong>48 days</strong>, according to an MTM Services analysis of approximately 10,000 care-access flowcharts from approximately 1,000 centers across 47 states, cited by the National Council for Mental Wellbeing. <strong>[Moderate-High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> National Council for Mental Wellbeing / MTM Services. <em>CCBHC Impact Report</em> [16]</p>
+<p><strong>Important scope note:</strong> This figure is specific to community mental health centers and the 2021 analysis period. It is the most-cited national wait-time benchmark but should not be generalized as a universal behavioral health appointment average across all care settings or years.</p>
+</blockquote>
+<p><strong>Finding — Patient-Reported Waits:</strong> A peer-reviewed cross-sectional survey found mean reported wait times of <strong>94.1 days</strong>, with <strong>85.2% of respondents</strong> characterizing their wait as too long. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Subotic-Kerry, M. et al. (2025). <em>While they wait: a cross-sectional survey on wait times for mental health services.</em> BMJ Open, 15(3), e087342. [18]</p>
+<p><strong>Limitation:</strong> International sample; U.S.-specific figures may differ from the aggregate mean.</p>
+</blockquote>
+<p><strong>Finding — Psychiatrist Availability:</strong> A 2022 mystery-shopper study found only approximately <strong>18.5% of psychiatrists</strong> available to new patients in a five-state sample; the median in-person wait was <strong>67 days</strong> and the median telepsychiatry wait was <strong>43 days</strong>. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Mullangi, S. et al. (2023). <em>Low availability, long wait times, and high geographic disparity of psychiatric outpatient care in the US.</em> Psychiatric Services. [21]</p>
+<p><strong>Limitation:</strong> Five-state sample; 2022 data; may not fully represent national conditions.</p>
+</blockquote>
+<h3 id="52-insurance-and-cost-barriers">5.2 Insurance and Cost Barriers</h3>
+<p><strong>Finding — Cost:</strong> Roughly <strong>1 in 5 Americans</strong> delayed or did not receive mental health care due to cost. <strong>[Moderate-High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Commonwealth Fund. (November 2024). <em>State of Health Insurance Coverage in the U.S.: 2024 Biennial Survey.</em> [10]</p>
+</blockquote>
+<p><strong>Finding — In-Network Access:</strong> About <strong>1 in 3 people</strong> with private insurance reported difficulty finding an in-network mental health therapist and were more likely to seek out-of-network care compared to medical/surgical care. <strong>[Moderate]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> NAMI survey data, via insurance/MHPAEA analysis [15]</p>
+<p><strong>Limitation:</strong> Advocacy survey; methodology not fully detailed; exact ratio varies by source year.</p>
+</blockquote>
+<p><strong>Finding — Parity Gaps:</strong> Out-of-network utilization for behavioral health is materially higher than for medical/surgical care. Mental health parity enforcement remains variable across states and federally. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Commonwealth Fund [11, 14]; parity synthesis [13]</p>
+</blockquote>
+<h3 id="53-structural-failures-in-the-current-system">5.3 Structural Failures in the Current System</h3>
+<table>
+<thead>
+<tr>
+<th>Failure Mode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unstructured intake</strong></td>
+<td>Patients self-refer with no validated symptom data; clinicians re-collect what PHQ-9/GAD-7 capture in minutes</td>
+</tr>
+<tr>
+<td><strong>Undirected matching</strong></td>
+<td>Directories match on keyword and geography, not clinical severity or specialty need</td>
+</tr>
+<tr>
+<td><strong>Invisible wait times</strong></td>
+<td>Little real-time availability data; users apply in parallel with no feedback loop</td>
+</tr>
+<tr>
+<td><strong>Insurance opacity</strong></td>
+<td>Coverage often unknown until after the first visit</td>
+</tr>
+<tr>
+<td><strong>No stepped-care logic</strong></td>
+<td>Defaults to weekly individual therapy regardless of need, bypassing evidence-based stepped-care models</td>
+</tr>
+<tr>
+<td><strong>Passive crisis handling</strong></td>
+<td>Most tools display a hotline number; few implement active triage protocols</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-summary-table">5.4 Summary Table</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Setting/Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Average first-outreach-to-appointment wait</td>
+<td>48 days</td>
+<td>Community mental health centers (2021)</td>
+<td>National Council / MTM [16]</td>
+</tr>
+<tr>
+<td>Patient-reported mean wait</td>
+<td>94.1 days</td>
+<td>Cross-sectional survey; international sample</td>
+<td>Subotic-Kerry et al. 2025 [18]</td>
+</tr>
+<tr>
+<td>Psychiatrists accepting new patients</td>
+<td>~18.5%</td>
+<td>Five-state mystery-shopper, 2022</td>
+<td>Mullangi et al. 2023 [21]</td>
+</tr>
+<tr>
+<td>Median in-person psychiatry wait</td>
+<td>67 days</td>
+<td>Same study</td>
+<td>Mullangi et al. 2023 [21]</td>
+</tr>
+<tr>
+<td>Delayed care due to cost</td>
+<td>~1 in 5 Americans</td>
+<td>Commonwealth Fund 2024</td>
+<td>[10]</td>
+</tr>
+<tr>
+<td>Difficulty finding in-network therapist</td>
+<td>~1 in 3 privately insured</td>
+<td>NAMI survey</td>
+<td>[15]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-economic-impact-the-cost-of-inaction">6. Economic Impact: The Cost of Inaction</h2>
+<h3 id="61-total-avoidable-cost-of-mental-health-inequities">6.1 Total Avoidable Cost of Mental Health Inequities</h3>
+<p><strong>Finding:</strong> Mental health inequities in the United States cost an estimated <strong>$477.5 billion in avoidable or unnecessary expenditures in 2024</strong>, spanning chronic physical health conditions, emergency department overutilization, productivity loss, and premature death. Annual costs are projected to reach approximately <strong>$1.3 trillion by 2040</strong>, with cumulative costs from 2024–2040 approaching <strong>$14 trillion</strong>. <strong>[Moderate-High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Deloitte Health Equity Institute &amp; Meharry School of Global Health (Dawes, D. et al.). (May 2024). <em>The Projected Costs and Economic Impact of Mental Health Inequities in the United States.</em> [27]</p>
+<p><strong>Critical nuance:</strong> The $477.5 billion figure represents the <strong>total avoidable cost of mental health inequities</strong> — it is not lost productivity alone. Of that total, productivity loss accounts for approximately <strong>$116 billion</strong>. The $14 trillion figure is a <strong>cumulative</strong> projection over 2024–2040, not an annual figure.</p>
+</blockquote>
+<h3 id="62-workplace-absence-cost">6.2 Workplace Absence Cost</h3>
+<p><strong>Finding:</strong> Unplanned absences attributable to poor employee mental health cost the U.S. economy an estimated <strong>$47.6 billion annually</strong>. <strong>[Moderate-High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Gallup. (2023, updated 2025). <em>The Economic Cost of Poor Employee Mental Health.</em> Sample size approximately 15,000+. [26]</p>
+<p><strong>Limitation:</strong> Self-reported; absence attribution methodology is subject to recall bias.</p>
+</blockquote>
+<h3 id="63-depression-and-lost-productive-time">6.3 Depression and Lost Productive Time</h3>
+<p><strong>Finding:</strong> Depression alone is associated with approximately <strong>$44 billion per year</strong> in lost productive time among U.S. workers. <strong>[Moderate]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Industry synthesis citing Stewart et al. and related research, 2024 [29]</p>
+<p><strong>Limitation:</strong> Derived from cost-of-illness modeling; productivity valuation methodologies vary.</p>
+</blockquote>
+<h3 id="64-employer-awareness-gap">6.4 Employer Awareness Gap</h3>
+<p><strong>Finding:</strong> Roughly <strong>half of employees</strong> report not knowing how to access mental health care through their employer. <strong>[Moderate]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Workplace mental health survey synthesis (NAMI/Gallup/APA/Mind Share Partners), 2026 [25]</p>
+<p><strong>Limitation:</strong> Self-reported; composite from multiple surveys with differing samples and years.</p>
+</blockquote>
+<h3 id="65-summary-table">6.5 Summary Table</h3>
+<table>
+<thead>
+<tr>
+<th>Economic Metric</th>
+<th>Value</th>
+<th>Notes</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avoidable cost of mental health inequities (U.S., 2024)</td>
+<td>$477.5 billion</td>
+<td>Total — includes chronic conditions, ED overuse, productivity loss, premature death</td>
+<td>Deloitte/Meharry [27]</td>
+</tr>
+<tr>
+<td>Of that: productivity loss component</td>
+<td>~$116 billion</td>
+<td>Subset, not the whole</td>
+<td>Deloitte/Meharry [27]</td>
+</tr>
+<tr>
+<td>Projected annual cost (mental health inequities, 2040)</td>
+<td>~$1.3 trillion</td>
+<td>Annual estimate</td>
+<td>Deloitte/Meharry [27]</td>
+</tr>
+<tr>
+<td>Projected cumulative cost (2024–2040)</td>
+<td>~$14 trillion</td>
+<td>Multi-year cumulative</td>
+<td>Deloitte/Meharry [27]</td>
+</tr>
+<tr>
+<td>Absence costs from poor mental health</td>
+<td>~$47.6 billion/year</td>
+<td>Employer perspective</td>
+<td>Gallup [26]</td>
+</tr>
+<tr>
+<td>Lost productive time from depression</td>
+<td>~$44 billion/year</td>
+<td>Worker perspective</td>
+<td>Industry synthesis [29]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-digital-mental-health-evidence-for-technology-interventions">7. Digital Mental Health: Evidence for Technology Interventions</h2>
+<h3 id="71-generative-ai-and-cbt-engagement">7.1 Generative AI and CBT Engagement</h3>
+<p><strong>Finding:</strong> A 2026 randomized controlled trial (N=540) found that a generative-AI-enabled cognitive behavioral therapy (CBT) application significantly enhanced participant engagement compared to digital workbooks among adults with elevated anxiety or depression symptoms. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> McFadyen et al. (January 15, 2026). <em>Increasing engagement with CBT using generative AI: a randomized controlled trial.</em> Communications Medicine (Nature Portfolio). [35]</p>
+<p><strong>Limitation:</strong> Open-label design; outcomes measured by self-report; single-country sample; generalizability to other settings requires confirmation.</p>
+</blockquote>
+<h3 id="72-ai-supported-cbt-vs-face-to-face">7.2 AI-Supported CBT vs. Face-to-Face</h3>
+<p><strong>Finding:</strong> A 2024–2025 comparative study found AI-supported digital CBT showed <strong>comparable effectiveness</strong> to face-to-face CBT for generalized anxiety, while requiring substantially less clinician time per patient. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> PMC/NCBI. (2024–2025). <em>Combining Artificial Intelligence and Human Support in Mental Health.</em> PMC12117275. [34]</p>
+<p><strong>Limitation:</strong> Propensity-matching design, not a fully randomized head-to-head trial; self-selection effects possible.</p>
+</blockquote>
+<h3 id="73-early-ai-companion-evidence">7.3 Early AI Companion Evidence</h3>
+<p><strong>Finding:</strong> Woebot's foundational randomized controlled trial demonstrated statistically significant reduction in PHQ-9 depression scores within <strong>two weeks</strong> of use among college students with anxiety and depression. <strong>[Moderate-High (directional)]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Industry summary of the Woebot RCT results, citing a published peer-reviewed trial [33]</p>
+<p><strong>Limitation:</strong> Original RCT conducted in a specific population (college students); generalizability to working adults is not established by this study alone.</p>
+</blockquote>
+<h3 id="74-ai-crisis-detection">7.4 AI Crisis Detection</h3>
+<p><strong>Finding:</strong> Wysa, a conversational AI mental health platform, reported that its AI system flagged <strong>82% of crisis incidents</strong> compared to only 18% identified through user self-report, across a dataset of approximately 19,000 users. <strong>[Directional only]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Wysa / BusinessWire. (April 15, 2024). Business wire press release. [55]</p>
+<p><strong>Limitation:</strong> Proprietary, non-peer-reviewed data; possible selection bias; not independently validated. This figure is cited directionally to support the feasibility of AI-based crisis detection, not as a precision benchmark.</p>
+</blockquote>
+<h3 id="75-evidence-quality-summary">7.5 Evidence Quality Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Intervention</th>
+<th>Evidence Level</th>
+<th>Finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generative AI + CBT (engagement)</td>
+<td>RCT — High</td>
+<td>Significant improvement in engagement vs. digital workbooks</td>
+</tr>
+<tr>
+<td>AI-supported vs. face-to-face CBT</td>
+<td>Comparative study — High</td>
+<td>Comparable effectiveness; lower clinician time</td>
+</tr>
+<tr>
+<td>AI chatbot (PHQ-9 reduction)</td>
+<td>RCT (specific population) — Moderate-High</td>
+<td>Significant PHQ-9 reduction within 2 weeks</td>
+</tr>
+<tr>
+<td>AI crisis detection</td>
+<td>Proprietary — Directional only</td>
+<td>82% crisis flag rate claimed; not peer-reviewed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-market-context">8. Market Context</h2>
+<h3 id="81-market-size">8.1 Market Size</h3>
+<p><strong>Finding:</strong> The U.S. mental health apps market was valued at approximately <strong>$3.87 billion in 2025</strong> and is projected to reach approximately <strong>$18.14 billion by 2035</strong>, representing a CAGR of approximately 16.8%. The global market is projected at approximately <strong>$45.12 billion by 2035</strong>. <strong>[Moderate]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> SNS Insider (via GlobeNewswire/Yahoo Finance). (February 2026). [40]</p>
+<p><strong>Important note:</strong> Market-sizing estimates vary materially across research firms. At least one other firm estimates the U.S. market at approximately $2.31 billion in 2025. These figures are directional; significant variance in methodology and market definition drives the divergence.</p>
+</blockquote>
+<h3 id="82-employer-market-dynamics">8.2 Employer Market Dynamics</h3>
+<p><strong>Finding:</strong> Employer investment in digital mental health benefits has been <strong>expanding year over year</strong>. More employers are offering virtual/EAP mental health resources, and more are gaining access to utilization data. <strong>[Moderate]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> International Foundation of Employee Benefit Plans. (2024). <em>Mental Health and Substance Use Disorder Benefits: 2024 Survey.</em> [30]</p>
+</blockquote>
+<p><strong>Finding:</strong> North America is the largest regional segment of the digital mental health market, with enterprise growth driven by <strong>self-insured employers</strong> adopting workforce mental health platforms. <strong>[Moderate]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Mordor Intelligence. (2026). <em>Mental Health Apps Market Report.</em> [43]</p>
+</blockquote>
+<h3 id="83-mid-market-gap">8.3 Mid-Market Gap</h3>
+<p>Research synthesis indicates a measurable gap at the <strong>mid-market employer tier</strong> (200–5,000 employees):</p>
+<ul>
+<li>Large enterprise platforms (e.g., Spring Health, Lyra) are clinically validated but cost-structured for Fortune 500 employers</li>
+<li>Teletherapy marketplaces (e.g., BetterHelp, Talkspace) operate in closed ecosystems and do not connect users to external or in-person providers</li>
+<li>AI wellness companions (e.g., Woebot, Wysa) focus on ongoing support, not triage and navigation</li>
+<li>Provider directories (Psychology Today, Zocdoc) offer large databases but no validated clinical intake or severity-matched routing</li>
+</ul>
+<h2 id="9-regulatory-and-ethical-landscape">9. Regulatory and Ethical Landscape</h2>
+<h3 id="91-fda-regulatory-framework">9.1 FDA Regulatory Framework</h3>
+<p><strong>Finding:</strong> The FDA's <strong>General Wellness Policy for Low Risk Devices</strong> (2020) provides a relevant framework for digital health tools that promote wellness generally and are not intended to treat, diagnose, cure, or mitigate a specific disease. <strong>[High — Primary regulatory source]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> FDA. (September 27, 2020). <em>General Wellness: Policy for Low Risk Devices.</em> [54]</p>
+<p><strong>Application:</strong> A triage and navigation tool using validated screening instruments (PHQ-9/GAD-7) — without making diagnostic claims — is intended to be positioned within this framework. A formal regulatory assessment must be completed prior to launch.</p>
+</blockquote>
+<p><strong>Finding:</strong> Mounting regulatory and legal pressure exists for AI mental health tools, with increasing FDA scrutiny of products making clinical claims beyond general wellness. <strong>[Moderate-High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Gardner Law. (September 25, 2025). <em>AI Mental Health Tools Face Mounting Regulatory and Legal Pressure.</em> [52]; Sidley Austin LLP. (2026). <em>U.S. FDA and CMS Actions on Generative AI-Enabled Mental Health Devices.</em> [51]</p>
+</blockquote>
+<h3 id="92-hipaa-considerations">9.2 HIPAA Considerations</h3>
+<p>For digital health products:</p>
+<ul>
+<li>A product that stores no personally identifiable health information and has no covered-entity relationship has limited HIPAA obligations in prototype/MVP form</li>
+<li>A formal legal review is required before any pilot involving identified employee data</li>
+<li>A HIPAA-compliant architecture (including Business Associate Agreements) is a prerequisite for employer or insurer pilots with identified user data</li>
+</ul>
+<h3 id="93-mental-health-parity">9.3 Mental Health Parity</h3>
+<p><strong>Finding:</strong> The Mental Health Parity and Addiction Equity Act (MHPAEA) requires that mental health and SUD benefits not be subject to more restrictive limitations than medical/surgical benefits. Enforcement remains variable at the state level and federal rulemaking is ongoing. Payers need demonstrable triage infrastructure to support parity compliance. <strong>[High]</strong></p>
+<blockquote>
+<p><strong>Source:</strong> Commonwealth Fund [11, 14]; parity synthesis [13]</p>
+</blockquote>
+<h3 id="94-key-ethical-considerations">9.4 Key Ethical Considerations</h3>
+<table>
+<thead>
+<tr>
+<th>Consideration</th>
+<th>Research Finding</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scope of practice</strong></td>
+<td>PHQ-9 and GAD-7 are validated screening tools, not diagnostic instruments</td>
+<td>Product must make no diagnostic claims; defer interpretation to licensed providers</td>
+</tr>
+<tr>
+<td><strong>Algorithmic bias</strong></td>
+<td>Matching may underserve rural ZIPs, Medicaid enrollees, non-English speakers</td>
+<td>Require &quot;no matches&quot; fallback; plan demographic-parity audits</td>
+</tr>
+<tr>
+<td><strong>Stigma and language</strong></td>
+<td>Validated questionnaire wording reduces stigma vs. open free-text requests</td>
+<td>Use verbatim validated instrument wording; avoid clinical jargon</td>
+</tr>
+<tr>
+<td><strong>Informed consent</strong></td>
+<td>User must understand scope, data use, and limitations before beginning</td>
+<td>Clear intake disclaimers required</td>
+</tr>
+</tbody>
+</table>
+<h2 id="10-competitive-landscape-analysis">10. Competitive Landscape Analysis</h2>
+<h3 id="101-category-map">10.1 Category Map</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Representative Products</th>
+<th>Core Strength</th>
+<th>Critical Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Provider directories</strong></td>
+<td>Psychology Today, Zocdoc</td>
+<td>Large, searchable databases</td>
+<td>No validated intake; no clinical severity matching</td>
+</tr>
+<tr>
+<td><strong>Teletherapy marketplaces</strong></td>
+<td>BetterHelp, Talkspace</td>
+<td>Scale, brand recognition, accessibility</td>
+<td>Closed ecosystems; no routing to external or in-person providers</td>
+</tr>
+<tr>
+<td><strong>Enterprise workforce platforms</strong></td>
+<td>Spring Health, Lyra Health</td>
+<td>Clinically validated; enterprise-grade infrastructure</td>
+<td>Higher cost structure; designed for large employers (5,000+)</td>
+</tr>
+<tr>
+<td><strong>AI companions</strong></td>
+<td>Woebot, Wysa</td>
+<td>Clinically studied AI for ongoing support</td>
+<td>Ongoing support focus, not triage and navigation</td>
+</tr>
+<tr>
+<td><strong>Wellness / meditation</strong></td>
+<td>Headspace, Calm</td>
+<td>Strong B2B distribution base</td>
+<td>Wellness, not clinical-severity navigation</td>
+</tr>
+<tr>
+<td><strong>EAP platforms</strong></td>
+<td>Various</td>
+<td>Established employer relationships</td>
+<td>Often underutilized; limited structured intake</td>
+</tr>
+</tbody>
+</table>
+<h3 id="102-differentiation-opportunity">10.2 Differentiation Opportunity</h3>
+<p>The research identifies a differentiated position for an <strong>AI-first triage-and-match product</strong> targeting the <strong>mid-market employer segment (200–5,000 employees)</strong> with validated clinical intake as the core engine:</p>
+<ul>
+<li>Validated instruments (PHQ-9/GAD-7) provide a clinical foundation that directory-style products lack</li>
+<li>Deterministic, auditable scoring (not LLM-generated) addresses the primary clinical risk of AI health tools</li>
+<li>Mid-market pricing and a B2B SaaS model fills the gap between consumer-facing apps and large-enterprise platforms</li>
+<li>A navigation-and-match design — rather than ongoing support — avoids the regulatory surface area of therapeutic tools</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> This differentiation analysis is based on desk research and public product information as of 2026. It represents a positioning observation, not a comprehensive competitive audit. Direct competitive analysis with current feature parity mapping should be conducted prior to launch.</p>
+</blockquote>
+<h2 id="11-key-research-conclusions">11. Key Research Conclusions</h2>
+<p>The following conclusions are supported by the evidence reviewed and directly inform the product and business decisions documented in the companion Product Dossier:</p>
+<p><strong>C1. The scale of unmet need is large and measurable.</strong> Approximately 29.5 million adults with mental illness received no treatment in 2024. This is a quantifiable, addressable population, not an amorphous concept.</p>
+<p><strong>C2. The primary failure is structural, not motivational.</strong> The access barriers documented — wait times, insurance opacity, lack of self-assessment tools, and absent matching logic — are system failures that technology can meaningfully reduce without requiring regulatory or policy change.</p>
+<p><strong>C3. The economic case for employer buyers is strong.</strong> Combined, absence-related mental health costs (~$47.6B/year), depression productivity losses (~$44B/year), and the broader avoidable cost of mental health inequities (~$477.5B/year) create a clear ROI case for employer-sponsored navigation tools.</p>
+<p><strong>C4. AI-enabled interventions have an emerging evidence base.</strong> The 2026 RCT by McFadyen et al. and the 2024–2025 PMC comparative study provide meaningful evidence that AI-augmented CBT and digital interventions can achieve outcomes comparable to traditional delivery at lower cost. Crisis detection evidence from Wysa is directional but consistent with the theoretical basis.</p>
+<p><strong>C5. The regulatory pathway is navigable with clear scope limits.</strong> Positioning a triage-and-navigation tool as a general wellness product (not SaMD), using validated screening instruments without diagnostic claims, and ensuring deterministic (not LLM-generated) clinical scoring represents a defensible and achievable regulatory posture.</p>
+<p><strong>C6. A mid-market product gap exists.</strong> No currently dominant product serves the 200–5,000-employee employer segment with validated clinical intake, deterministic scoring, and multi-provider routing at accessible price points.</p>
+<h2 id="12-references">12. References</h2>
+<p>All references are presented with: publication year, source type, and reliability rating. Where a figure originates from a primary source, it is attributed to that source even if first encountered via a secondary synthesis.</p>
+<p><strong>[1]</strong> Substance Abuse and Mental Health Services Administration (SAMHSA). (2025). <em>Key Substance Use and Mental Health Indicators in the United States: Results from the 2024 National Survey on Drug Use and Health (NSDUH).</em> Federal survey. <strong>[High]</strong>
+https://www.samhsa.gov/data/sites/default/files/reports/rpt56287/2024-nsduh-annual-national/2024-nsduh-annual-national.htm</p>
+<p><strong>[4]</strong> SAMHSA. (2025). <em>2024 NSDUH Annual National Report (full report).</em> Federal survey. <strong>[High]</strong> Primary source for the 61.5 million / 23.4% and treatment-gap figures.
+https://www.samhsa.gov/data/sites/default/files/reports/rpt56287/2024-nsduh-annual-national-report.pdf</p>
+<p><strong>[5]</strong> U.S. Government Accountability Office. (October 27, 2022). <em>Behavioral Health: Available Workforce Information and Federal Actions.</em> GAO-23-105250. <strong>[High]</strong>
+https://www.gao.gov/products/gao-23-105250</p>
+<p><strong>[9]</strong> HRSA, National Center for Health Workforce Analysis. (December 2025). <em>Behavioral Health Workforce Brief 2025.</em> Federal agency. <strong>[High]</strong> Primary source for HPSA data (40%/137M, as of December 2, 2025) and psychiatrist count (52,164 in 2023).
+https://bhw.hrsa.gov/sites/default/files/bureau-health-workforce/data-research/Behavioral-Health-Workforce-Brief-2025.pdf</p>
+<p><strong>[10]</strong> Commonwealth Fund. (November 21, 2024). <em>State of Health Insurance Coverage in the U.S.: 2024 Biennial Survey.</em> Nonpartisan policy institute. <strong>[High]</strong>
+https://www.commonwealthfund.org/publications/surveys/2024/nov/state-health-insurance-coverage-us-2024-biennial-survey</p>
+<p><strong>[11]</strong> Commonwealth Fund. (August 5, 2024). <em>Enforcing Mental Health Parity: State Options to Improve Access to Care.</em> Policy brief; qualitative 10-state sample. <strong>[Moderate-High]</strong>
+https://www.commonwealthfund.org/publications/issue-briefs/enforcing-mental-health-parity-state-options-improve-access-care</p>
+<p><strong>[13]</strong> Parity-tracking synthesis (ParityTrack / KFF / Commonwealth Fund / DOL). (2026). <em>Mental Health Parity Laws by State.</em> Multi-source commercial synthesis. <strong>[Moderate]</strong>
+https://www.moneygeek.com/insurance/health/mental-health-parity/</p>
+<p><strong>[14]</strong> Commonwealth Fund. (May 25, 2023). <em>Building on Behavioral Health Parity: State Options to Strengthen Access.</em> Nonpartisan policy. <strong>[High]</strong>
+https://www.commonwealthfund.org/blog/2023/building-behavioral-health-parity-state-options-strengthen-access-care</p>
+<p><strong>[15]</strong> NAMI survey data (via insurance/MHPAEA analysis). (2024). <em>Mental Health Parity Update.</em> Advocacy survey. <strong>[Moderate]</strong> Methodology not fully detailed; exact ratio varies by source.
+https://w3ins.com/news/mental-health-parity-update-2024/</p>
+<p><strong>[16]</strong> National Council for Mental Wellbeing / MTM Services. <em>CCBHC Impact Report.</em> MTM Services analysis of ~10,000 care-access flowcharts from ~1,000 centers across 47 states, 2021. <strong>[Moderate-High]</strong> Specific to community mental health centers; not a universal behavioral health average.
+https://www.thenationalcouncil.org/eliminate-barriers-to-access/</p>
+<p><strong>[18]</strong> Subotic-Kerry, M. et al. (2025). <em>While they wait: a cross-sectional survey on wait times for mental health services.</em> BMJ Open, 15(3), e087342. Peer-reviewed. <strong>[High]</strong> Limitation: international sample.
+https://bmjopen.bmj.com/content/15/3/e087342</p>
+<p><strong>[19]</strong> American Psychiatric Association / Psychiatric Services. (April 1, 2025). <em>Elimination of Behavioral Health Wait Times.</em> Psychiatric Services, 76(4), 398–401. Peer-reviewed. <strong>[High]</strong>
+https://psychiatryonline.org/doi/10.1176/appi.ps.20240287</p>
+<p><strong>[20]</strong> NPR / American Psychological Association. (December 6, 2023). <em>Psychologists keep long waitlists as they struggle to meet demand for mental health care.</em> APA practitioner survey. <strong>[Moderate-High]</strong> Limitation: self-selected respondents.
+https://www.npr.org/sections/health-shots/2023/12/06/1217487323/psychologists-waitlist-demand-mental-health-care</p>
+<p><strong>[21]</strong> Mullangi, S. et al. (2023). <em>Low availability, long wait times, and high geographic disparity of psychiatric outpatient care in the US.</em> Psychiatric Services / ScienceDirect. Peer-reviewed. <strong>[High]</strong> Limitation: five-state, 2022 data.
+https://www.sciencedirect.com/science/article/abs/pii/S0163834323000877</p>
+<p><strong>[23]</strong> PMC / NCBI. (2022). <em>Waiting Lists for Psychotherapy and Provider Attitudes Toward Low-Intensity Treatments.</em> PMC9526124. Peer-reviewed. <strong>[High]</strong>
+https://pmc.ncbi.nlm.nih.gov/articles/PMC9526124/</p>
+<p><strong>[25]</strong> Workplace mental health statistics synthesis (NAMI / Gallup / APA / Mind Share Partners). (2026). Commercial synthesis citing primary sources. <strong>[Moderate]</strong>
+https://growtherapy.com/blog/workplace-mental-health-statistics/</p>
+<p><strong>[26]</strong> Gallup. (2023, updated 2025). <em>The Economic Cost of Poor Employee Mental Health.</em> Polling organization; sample size approximately 15,000+. <strong>[Moderate-High]</strong> Limitation: self-reported; absence attribution methodology subject to recall bias.
+https://www.gallup.com/workplace/404174/economic-cost-poor-employee-mental-health.aspx</p>
+<p><strong>[27]</strong> Deloitte Health Equity Institute &amp; Meharry School of Global Health (Dawes, D. et al.). (May 2024). <em>The Projected Costs and Economic Impact of Mental Health Inequities in the United States.</em> <strong>[Moderate-High]</strong> Primary source for $477.5B (2024 avoidable cost of mental health inequities), ~$116B productivity component, ~$1.3T annual by 2040, ~$14T cumulative by 2040.
+https://www2.deloitte.com/us/en/insights/industry/health-care/economic-burden-mental-health-inequities.html</p>
+<p><strong>[29]</strong> Industry synthesis citing Stewart et al. and related research. (2024). <em>The Hidden Costs of Neglecting Mental Health in the Workplace.</em> ~$44B/year lost productive time from depression. <strong>[Moderate]</strong>
+https://www.bighealth.com/blog/the-hidden-costs-of-neglecting-mental-health-in-the-workplace</p>
+<p><strong>[30]</strong> International Foundation of Employee Benefit Plans. (2024). <em>Mental Health and Substance Use Disorder Benefits: 2024 Survey.</em> Industry survey. <strong>[Moderate]</strong>
+https://blog.ifebp.org/mental-health-and-substance-use-disorders-employers-improve-response-but-employees-continue-to-struggle/</p>
+<p><strong>[33]</strong> Industry summary of Woebot RCT results. (2026). Cites a published peer-reviewed RCT. <strong>[Moderate]</strong>
+https://amworldgroup.com/blog/ai-therapy-apps</p>
+<p><strong>[34]</strong> NCBI PMC. (2024–2025). <em>Combining Artificial Intelligence and Human Support in Mental Health.</em> PMC12117275. Peer-reviewed. <strong>[High]</strong> Limitation: propensity-matching design.
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12117275/</p>
+<p><strong>[35]</strong> McFadyen et al. (January 15, 2026). <em>Increasing engagement with CBT using generative AI: a randomized controlled trial.</em> Communications Medicine (Nature Portfolio). Peer-reviewed RCT. <strong>[High]</strong> Limitation: open-label; self-report outcomes.
+https://www.nature.com/articles/s43856-025-01321-8</p>
+<p><strong>[36]</strong> Torous, J. et al. (2025). <em>The evolving field of digital mental health.</em> World Psychiatry. Peer-reviewed. <strong>[High]</strong>
+https://onlinelibrary.wiley.com/doi/10.1002/wps.21299</p>
+<p><strong>[40]</strong> SNS Insider (via GlobeNewswire/Yahoo Finance). (February 27, 2026). <em>Mental Health Apps Market Size.</em> U.S.: $3.87B (2025) to $18.14B (2035), CAGR ~16.8%; global to ~$45.12B (2035). Market research. <strong>[Moderate]</strong> Estimates vary widely across firms.
+https://finance.yahoo.com/news/mental-health-apps-market-size-091500341.html</p>
+<p><strong>[41]</strong> Straits Research. (March 5, 2026). <em>Mental Health Apps Market.</em> Market research. <strong>[Moderate]</strong>
+https://straitsresearch.com/report/mental-health-apps-market</p>
+<p><strong>[43]</strong> Mordor Intelligence. (2026). <em>Mental Health Apps Market Report.</em> Market research. <strong>[Moderate]</strong>
+https://www.mordorintelligence.com/industry-reports/mental-health-apps</p>
+<p><strong>[49]</strong> Industry submission to FDA. (2025). <em>Response: Docket No. FDA-2025-N-2338.</em> FDA public comment docket. <strong>[Moderate]</strong>
+https://downloads.regulations.gov/FDA-2025-N-2338-0033/attachment_1.pdf</p>
+<p><strong>[50]</strong> medRxiv. (2026). <em>Suicide- and crisis-risk detection using large language models in mental-health chatbots.</em> Pre-print, under review. <strong>[Moderate — not yet peer-reviewed]</strong>
+https://www.medrxiv.org/</p>
+<p><strong>[51]</strong> Sidley Austin LLP. (2026). <em>U.S. FDA and CMS Actions on Generative AI-Enabled Mental Health Devices Yield Insights Across AI.</em> Legal analysis. <strong>[High for regulatory summary]</strong>
+https://www.sidley.com/en/insights/newsupdates/2025/11/us-fda-and-cms-actions-on-generative-ai-enabled-mental-health-devices-yield-insights-across-ai</p>
+<p><strong>[52]</strong> Gardner Law. (September 25, 2025). <em>AI Mental Health Tools Face Mounting Regulatory and Legal Pressure.</em> Legal analysis. <strong>[Moderate-High]</strong>
+https://gardner.law/news/legal-and-regulatory-pressure-on-ai-mental-health-tools</p>
+<p><strong>[53]</strong> PMC / NCBI. (2025). <em>Framework to Assist Stakeholders in Technology Evaluation for Recovery (FASTER).</em> PMC12044955. Peer-reviewed. <strong>[High]</strong>
+https://pmc.ncbi.nlm.nih.gov/articles/PMC12044955/</p>
+<p><strong>[54]</strong> U.S. Food and Drug Administration. (September 27, 2020). <em>General Wellness: Policy for Low Risk Devices — Guidance for Industry and Food and Drug Administration Staff.</em> Primary regulatory guidance. <strong>[High]</strong>
+https://www.fda.gov/media/90652/download</p>
+<p><strong>[55]</strong> Wysa / BusinessWire. (April 15, 2024). <em>AI Detects 82% of Mental Health App Users in Crisis.</em> Industry study, N approximately 19,000. <strong>[Directional only]</strong> Proprietary, not peer-reviewed; possible selection bias.
+https://markets.financialcontent.com/pennwell.elp/article/bizwire-2024-4-15-ai-detects-82-of-mental-health-app-users-in-crisis-finds-wysa</p>
+
+<script>
+(function () {
+  var citationRe = /(\[Research Dossier[^\]]+\]|\[Ref\.\s*[\d,\s§][^\]]*\]|\[(?:Strong|Moderate(?:-High)?(?:\s*\([^)]*\))?)\])/gi;
+  document.querySelectorAll('p, li, td').forEach(function (el) {
+    if (el.closest('pre')) return;
+    el.innerHTML = el.innerHTML.replace(citationRe, '<span class="cp-evidence">$1</span>');
+  });
+  document.querySelectorAll('strong').forEach(function (el) {
+    if (el.textContent.trim() === 'Finding:') el.classList.add('cp-finding-label');
+  });
+})();
+</script>
+</body>
+</html>

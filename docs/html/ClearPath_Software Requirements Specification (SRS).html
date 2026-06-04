@@ -1,0 +1,3292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SRS.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* ClearPath brand — Tailwind teal palette */
+:root {
+	--cp-teal-50: #f0fdfa;
+	--cp-teal-100: #ccfbf1;
+	--cp-teal-200: #99f6e4;
+	--cp-teal-500: #14b8a6;
+	--cp-teal-600: #0d9488;
+	--cp-teal-700: #0f766e;
+	--cp-teal-800: #115e59;
+	--cp-text: #1e293b;
+}
+
+body {
+	color: var(--cp-text);
+}
+
+/* Inline code: file paths, endpoints, env vars */
+:not(pre):not(.hljs) > code {
+	color: var(--cp-teal-700);
+	background-color: var(--cp-teal-50);
+	border: 1px solid var(--cp-teal-100);
+	padding: 0.12em 0.4em;
+	border-radius: 3px;
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	font-size: 0.88em;
+	font-weight: 500;
+}
+
+/* File-tree and code blocks */
+pre:not(.hljs):not(:has(.mermaid)),
+pre.hljs {
+	background-color: var(--cp-teal-50) !important;
+	border: 1px solid var(--cp-teal-200);
+	border-left: 4px solid var(--cp-teal-500);
+	border-radius: 4px;
+}
+
+pre.hljs code,
+pre:not(:has(.mermaid)) code {
+	color: var(--cp-teal-800);
+}
+
+blockquote {
+	border-left-color: var(--cp-teal-500);
+	background: var(--cp-teal-50);
+	padding: 0.5em 1em;
+	border-radius: 0 4px 4px 0;
+}
+
+a {
+	color: var(--cp-teal-600);
+}
+
+a:hover {
+	color: var(--cp-teal-700);
+	text-decoration: underline;
+}
+
+hr {
+	border-bottom-color: var(--cp-teal-200);
+}
+
+table > thead > tr > th {
+	background-color: var(--cp-teal-50);
+	color: var(--cp-teal-800);
+	border-bottom: 2px solid var(--cp-teal-200);
+}
+
+/* Evidence citations & reliability tags (filled by script) */
+.cp-evidence {
+	background: var(--cp-teal-50);
+	color: var(--cp-teal-700);
+	padding: 0.08em 0.35em;
+	border-radius: 3px;
+	font-weight: 600;
+	font-size: 0.92em;
+	white-space: nowrap;
+}
+
+.cp-finding-label {
+	color: var(--cp-teal-700);
+}
+
+h3[id*="evidence"] + p + ul,
+h3[id="12-the-evidence-summary"] + p + ul {
+	background: var(--cp-teal-50);
+	border-left: 3px solid var(--cp-teal-500);
+	padding: 0.65em 1em 0.65em 1.25em;
+	border-radius: 0 4px 4px 0;
+	margin-top: 0.5em;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+/* Typography: sections & subsections slightly bold */
+h1 {
+	font-weight: 700;
+	font-size: 1.75em;
+	margin-top: 0;
+	color: var(--cp-teal-800);
+	border-bottom: 2px solid var(--cp-teal-500);
+	padding-bottom: 0.35em;
+}
+
+h2 {
+	font-weight: 600;
+	font-size: 1.35em;
+	margin-top: 1.4em;
+	margin-bottom: 0.5em;
+	color: var(--cp-teal-700);
+	border-bottom: 2px solid var(--cp-teal-200);
+	padding-bottom: 0.3em;
+}
+
+h3 {
+	font-weight: 600;
+	font-size: 1.12em;
+	margin-top: 1.1em;
+	margin-bottom: 0.35em;
+	color: var(--cp-teal-700);
+}
+
+h4, h5, h6 {
+	font-weight: 600;
+	color: var(--cp-teal-800);
+}
+
+pre:has(.mermaid),
+pre:has(.mermaid) code {
+	padding: 0;
+	margin: 0.5em 0;
+	background: none;
+	overflow: visible;
+	white-space: normal;
+	border: none;
+}
+
+.mermaid {
+	display: block;
+	margin: 0.5em 0;
+	text-align: center;
+}
+
+.mermaid svg {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	height: auto;
+}
+
+@media screen {
+	body {
+		max-width: 210mm;
+		margin: 0 auto;
+		padding: 18mm 15mm;
+		background: #fff;
+		font-size: 11pt;
+		line-height: 1.5;
+		color: #1a1a1a;
+	}
+}
+
+@media print {
+	@page {
+		size: A4;
+		margin: 18mm 15mm 20mm 15mm;
+	}
+
+	html, body {
+		width: 100%;
+		margin: 0 !important;
+		padding: 0 !important;
+		font-size: 11pt;
+		line-height: 1.45;
+		color: #000;
+		background: #fff;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	h1, h2, h3, h4 {
+		color: var(--cp-teal-800) !important;
+	}
+
+	h2 {
+		border-bottom-color: var(--cp-teal-200) !important;
+	}
+
+	table > thead > tr > th {
+		background-color: var(--cp-teal-50) !important;
+		color: var(--cp-teal-800) !important;
+	}
+
+	:not(pre):not(.hljs) > code,
+	.cp-evidence {
+		background-color: var(--cp-teal-50) !important;
+		color: var(--cp-teal-700) !important;
+		border-color: var(--cp-teal-100) !important;
+	}
+
+	pre.hljs,
+	pre:not(:has(.mermaid)) {
+		background-color: var(--cp-teal-50) !important;
+		border-color: var(--cp-teal-200) !important;
+	}
+
+	body.scrollBeyondLastLine {
+		margin-bottom: 0 !important;
+	}
+
+	#code-csp-warning {
+		display: none !important;
+	}
+
+	h1, h2, h3, h4 {
+		page-break-after: avoid;
+		break-after: avoid-page;
+	}
+
+	p, li {
+		orphans: 3;
+		widows: 3;
+	}
+
+	table {
+		width: 100%;
+		font-size: 10pt;
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	tr {
+		page-break-inside: avoid;
+		break-inside: avoid-page;
+	}
+
+	pre:not(:has(.mermaid)), blockquote, img {
+		page-break-inside: avoid;
+		break-inside: avoid-page;
+	}
+
+	pre:has(.mermaid),
+	pre:has(.mermaid) code {
+		padding: 0 !important;
+		margin: 0.25em 0 0.5em;
+		background: none !important;
+		overflow: visible !important;
+		white-space: normal;
+		border: none;
+		page-break-inside: auto;
+		break-inside: auto;
+	}
+
+	.mermaid {
+		display: block;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		page-break-inside: auto;
+		break-inside: auto;
+	}
+
+	.mermaid svg {
+		display: block;
+		margin: 0 auto;
+		max-width: 100% !important;
+		width: auto !important;
+		height: auto !important;
+		max-height: 175mm;
+	}
+
+	.page {
+		page-break-after: always;
+		break-after: page;
+	}
+
+	hr {
+		border: none;
+		border-top: 1px solid #ccc;
+		margin: 1em 0;
+		page-break-after: avoid;
+	}
+
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ccfbf1',
+        primaryTextColor: '#0f172a',
+        primaryBorderColor: '#14b8a6',
+        lineColor: '#14b8a6',
+        secondaryColor: '#f0fdfa',
+        tertiaryColor: '#99f6e4',
+        edgeLabelBackground: '#ffffff',
+        fontSize: '11px'
+      },
+      flowchart: {
+        curve: 'basis'
+      }
+    });
+  </script>
+<h1 id="clearpath">ClearPath</h1>
+<p><strong>Prepared by:</strong> Bilisuma Tadesse</p>
+<h2 id="software-requirements-specification-srs">Software Requirements Specification (SRS)</h2>
+<h3 id="ai-powered-mental-health-triage-and-navigation--mvp1-specification-with-mvp2-roadmap-annex">AI-Powered Mental Health Triage and Navigation — MVP1 Specification with MVP2+ Roadmap Annex</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Type</strong></td>
+<td>Software Requirements Specification (SRS)</td>
+</tr>
+<tr>
+<td><strong>Project</strong></td>
+<td>ClearPath — AI-Powered Mental Health Triage and Navigation</td>
+</tr>
+<tr>
+<td><strong>Standard Reference</strong></td>
+<td>IEEE 29148:2018 Systems and Software Engineering — Life Cycle Processes — Requirements Engineering</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>v1.0 — Final Draft</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>June 4, 2026</td>
+</tr>
+<tr>
+<td><strong>Live Prototype</strong></td>
+<td>https://clearpathcare-demo.vercel.app</td>
+</tr>
+<tr>
+<td><strong>Companion Documents</strong></td>
+<td>Research Dossier; Product Dossier</td>
+</tr>
+</tbody>
+</table>
+<h2 id="table-of-contents">Table of Contents</h2>
+<p><strong>Preamble</strong></p>
+<ul>
+<li><a href="#p1-scope">P1. Scope</a></li>
+<li><a href="#p2-definitions-and-abbreviations">P2. Definitions and Abbreviations</a></li>
+<li><a href="#p3-intended-audience">P3. Intended Audience</a></li>
+<li><a href="#p4-assumptions-and-constraints">P4. Assumptions and Constraints</a></li>
+</ul>
+<p><strong>Part I — MVP1: Core Requirements</strong></p>
+<ol>
+<li><a href="#1-system-overview">System Overview</a></li>
+<li><a href="#2-functional-requirements">Functional Requirements</a></li>
+<li><a href="#3-non-functional-requirements">Non-Functional Requirements</a></li>
+<li><a href="#4-data-requirements">Data Requirements</a></li>
+<li><a href="#5-interface-requirements">Interface Requirements</a></li>
+<li><a href="#6-safety-and-security-requirements">Safety and Security Requirements</a></li>
+<li><a href="#7-verification-and-acceptance-criteria">Verification and Acceptance Criteria</a></li>
+</ol>
+<p><strong>Part II — Architecture and Design Specification</strong></p>
+<ol start="8">
+<li><a href="#8-architectural-overview">Architectural Overview</a></li>
+<li><a href="#9-technology-stack">Technology Stack</a></li>
+<li><a href="#10-system-boundaries-and-trust-model">System Boundaries and Trust Model</a></li>
+<li><a href="#11-data-models">Data Models</a></li>
+<li><a href="#12-api-specification">API Specification</a></li>
+<li><a href="#13-core-workflow-specification">Core Workflow Specification</a></li>
+<li><a href="#14-pages-and-routes">Pages and Routes</a></li>
+<li><a href="#15-testing-specification">Testing Specification</a></li>
+<li><a href="#16-deployment-specification">Deployment Specification</a></li>
+<li><a href="#17-project-structure">Project Structure</a></li>
+</ol>
+<p><strong>Annex A — Future Roadmap: MVP2 and Beyond</strong></p>
+<ul>
+<li><a href="#a1-scope-boundary-mvp1-vs-future">A1. Scope Boundary: MVP1 vs. Future</a></li>
+<li><a href="#a2-mvp2-validate-and-harden-days-830">A2. MVP2: Validate and Harden</a></li>
+<li><a href="#a3-mvp3-close-the-loop-and-scale-months-24">A3. MVP3: Close the Loop and Scale</a></li>
+<li><a href="#a4-advanced-ai-capabilities">A4. Advanced AI Capabilities</a></li>
+<li><a href="#a5-enterprise-features">A5. Enterprise Features</a></li>
+<li><a href="#a6-architecture-evolution">A6. Architecture Evolution</a></li>
+<li><a href="#a7-extensibility-seams">A7. Extensibility Seams</a></li>
+</ul>
+<h2 id="preamble">Preamble</h2>
+<h3 id="p1-scope">P1. Scope</h3>
+<p>This document specifies the software requirements for ClearPath, an AI-powered mental health triage and care-navigation platform. Part I (Sections 1–7) contains the normative functional and non-functional requirements for the MVP1 release. Part II (Sections 8–17) documents the architecture and design decisions that realize those requirements. Annex A describes planned future capabilities and does not constitute normative requirements for the current release.</p>
+<p>ClearPath is scoped as a pre-clinical navigation tool, not a clinical diagnostic system. It uses validated screening instruments (PHQ-9, GAD-7) to generate a clinical profile that supports provider matching. All clinical scoring is deterministic; no clinical scores are generated by a language model.</p>
+<h3 id="p2-definitions-and-abbreviations">P2. Definitions and Abbreviations</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PHQ-9</strong></td>
+<td>Patient Health Questionnaire-9. A validated 9-item self-report instrument for screening and measuring depression severity. Scores range 0–27; bands: Minimal (0–4), Mild (5–9), Moderate (10–14), Moderately Severe (15–19), Severe (20–27).</td>
+</tr>
+<tr>
+<td><strong>GAD-7</strong></td>
+<td>Generalized Anxiety Disorder 7-item scale. A validated 7-item self-report instrument for screening and measuring anxiety severity. Scores range 0–21; bands: Minimal (0–4), Mild (5–9), Moderate (10–14), Severe (15–21).</td>
+</tr>
+<tr>
+<td><strong>Item 9</strong></td>
+<td>PHQ-9 item 9 (&quot;Thoughts that you would be better off dead, or of hurting yourself in some way&quot;). Endorsed at any level (value ≥ 1) triggers mandatory crisis detection.</td>
+</tr>
+<tr>
+<td><strong>Care Level</strong></td>
+<td>A stepped-care category derived deterministically from PHQ-9 and GAD-7 scores. Values: self_guided, coaching, therapy, psychiatry, urgent, crisis.</td>
+</tr>
+<tr>
+<td><strong>Deterministic</strong></td>
+<td>Processing that yields an identical output for a given input on every run, without language model involvement. Applied to all clinical scoring, severity banding, and care-level mapping.</td>
+</tr>
+<tr>
+<td><strong>LLM</strong></td>
+<td>Large Language Model. Used in ClearPath for three non-clinical functions: story-to-draft mapping, results summary narrative generation, and crisis-language classification on free text.</td>
+</tr>
+<tr>
+<td><strong>Story Path</strong></td>
+<td>An optional intake mode in which the user provides free-text narrative context. An LLM drafts suggested item values; the user must confirm each value before it is accepted for scoring.</td>
+</tr>
+<tr>
+<td><strong>Questionnaire Path</strong></td>
+<td>The primary intake mode. The user responds to PHQ-9 and GAD-7 items directly via a structured batched UI with 0–3 value selection.</td>
+</tr>
+<tr>
+<td><strong>SafetySupportCard</strong></td>
+<td>A UI component that surfaces crisis resources (988 Lifeline, Crisis Text Line, 911) inline when a crisis trigger is detected. Does not block intake completion.</td>
+</tr>
+<tr>
+<td><strong>Batch</strong></td>
+<td>A grouped set of PHQ-9 or GAD-7 items presented together in the questionnaire UI. The intake is structured as 7 batches across 16 items.</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>A transient, server-side state object associating a session ID with intake answers, profile context, and processing results. No personally identifiable information is persisted to permanent storage in MVP1.</td>
+</tr>
+<tr>
+<td><strong>PEPM</strong></td>
+<td>Per-employee-per-month. The pricing unit for the B2B SaaS employer sales motion.</td>
+</tr>
+<tr>
+<td><strong>HPSA</strong></td>
+<td>Health Professional Shortage Area. A federal designation for geographic areas with insufficient mental health professional supply.</td>
+</tr>
+<tr>
+<td><strong>SaMD</strong></td>
+<td>Software as a Medical Device. ClearPath is not positioned as SaMD; it is intended for FDA General Wellness classification.</td>
+</tr>
+<tr>
+<td><strong>WCAG</strong></td>
+<td>Web Content Accessibility Guidelines. The target conformance level is WCAG 2.1 AA.</td>
+</tr>
+<tr>
+<td><strong>PHI</strong></td>
+<td>Protected Health Information as defined under HIPAA. MVP1 stores no PHI.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p3-intended-audience">P3. Intended Audience</h3>
+<table>
+<thead>
+<tr>
+<th>Audience</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Engineering team</strong></td>
+<td>Functional and non-functional requirements; API contracts; data models; acceptance criteria</td>
+</tr>
+<tr>
+<td><strong>Clinical reviewers</strong></td>
+<td>Safety requirements (§6); scoring specifications (§13.3, §13.4); crisis detection logic (§13.4)</td>
+</tr>
+<tr>
+<td><strong>Product and business stakeholders</strong></td>
+<td>System overview (§1); requirements traceability to product decisions</td>
+</tr>
+<tr>
+<td><strong>QA and testing</strong></td>
+<td>Verification and acceptance criteria (§7); testing specification (§15)</td>
+</tr>
+<tr>
+<td><strong>Regulatory reviewers</strong></td>
+<td>Safety and compliance requirements (§6); scope definition (§1, §P1)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p4-assumptions-and-constraints">P4. Assumptions and Constraints</h3>
+<h4 id="assumptions">Assumptions</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Assumption</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A-01</td>
+<td>The user has access to a modern web browser and internet connectivity.</td>
+</tr>
+<tr>
+<td>A-02</td>
+<td>The user has sufficient English-language literacy to complete PHQ-9 and GAD-7 items as presented.</td>
+</tr>
+<tr>
+<td>A-03</td>
+<td>The user is not in acute crisis requiring immediate emergency intervention (the product addresses pre-crisis navigation, not emergency response).</td>
+</tr>
+<tr>
+<td>A-04</td>
+<td>Provider data in the seeded dataset is accurate at the time of seeding; real-time availability is not guaranteed.</td>
+</tr>
+<tr>
+<td>A-05</td>
+<td>The configured LLM provider is available and responsive for story path and summary generation. The questionnaire path functions without LLM availability.</td>
+</tr>
+<tr>
+<td>A-06</td>
+<td>PHQ-9 and GAD-7 scoring band definitions remain as published in the validated instrument literature; threshold tables in §13.3 reflect the current validated definitions.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="constraints">Constraints</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C-01</td>
+<td>All clinical scoring (PHQ-9 total, GAD-7 total, severity banding, care-level determination) shall be implemented as deterministic logic with no LLM involvement.</td>
+</tr>
+<tr>
+<td>C-02</td>
+<td>LLM-suggested item values in the story path shall not be accepted for scoring without explicit user confirmation.</td>
+</tr>
+<tr>
+<td>C-03</td>
+<td>PHQ-9 item 9 crisis detection shall be deterministic and shall not depend on LLM availability.</td>
+</tr>
+<tr>
+<td>C-04</td>
+<td>The /crisis page shall function independently of the main application; it shall have no dependency on shared application state or navigation.</td>
+</tr>
+<tr>
+<td>C-05</td>
+<td>No personally identifiable information shall be written to permanent storage in MVP1.</td>
+</tr>
+<tr>
+<td>C-06</td>
+<td>API keys and all server-side clinical logic shall be inaccessible to the client.</td>
+</tr>
+<tr>
+<td>C-07</td>
+<td>The product shall make no diagnostic claims. All outputs shall be clearly labeled as screening results, not clinical diagnoses.</td>
+</tr>
+<tr>
+<td>C-08</td>
+<td>Crisis detection shall not block the user from completing screening and receiving a care plan.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="part-i--mvp1-core-requirements">Part I — MVP1: Core Requirements</h1>
+<h2 id="1-system-overview">1. System Overview</h2>
+<h3 id="11-product-purpose">1.1 Product Purpose</h3>
+<p>ClearPath is a web-based mental health triage and care-navigation application. Its purpose is to reduce the time between a user's decision to seek mental health support and a qualified, actionable provider shortlist — from the current national average of approximately 48 days to minutes.</p>
+<p>ClearPath is not a therapy platform, a diagnostic system, or a crisis intervention service. It is a navigation tool: it collects validated screening data, derives a clinical profile deterministically, and surfaces matched providers.</p>
+<h3 id="12-system-context">1.2 System Context</h3>
+<p>The system operates between a motivated user (typically an employed adult with mild-to-moderate anxiety or depression) and the fragmented U.S. mental healthcare provider network. It interposes a structured triage layer that neither the user nor the provider ecosystem currently has access to.</p>
+<p>ClearPath is deployed as a single web application. In MVP1, it relies on a seeded provider dataset. Future phases introduce real provider data, persistent sessions, and employer-facing features.</p>
+<h3 id="13-key-system-boundaries">1.3 Key System Boundaries</h3>
+<p>ClearPath does not:</p>
+<ul>
+<li>Provide therapy or therapeutic interventions</li>
+<li>Make clinical diagnoses</li>
+<li>Replace crisis intervention services</li>
+<li>Verify real-time provider availability</li>
+<li>Access or store electronic health records</li>
+<li>Transmit protected health information in MVP1</li>
+</ul>
+<h2 id="2-functional-requirements">2. Functional Requirements</h2>
+<h3 id="21-user-onboarding-and-profile-collection">2.1 User Onboarding and Profile Collection</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-001</td>
+<td>The system shall present a landing page that states the product's purpose, scope limitations (screening, not diagnosis), and a link to the /crisis page.</td>
+</tr>
+<tr>
+<td>FR-002</td>
+<td>The system shall present a welcome page describing the four-step intake flow before the user begins onboarding.</td>
+</tr>
+<tr>
+<td>FR-003</td>
+<td>The system shall collect a user profile consisting of: ZIP code, insurance type, primary concern, and (optionally) care format preference.</td>
+</tr>
+<tr>
+<td>FR-004</td>
+<td>The profile wizard shall be completable in no more than three steps.</td>
+</tr>
+<tr>
+<td>FR-005</td>
+<td>The system shall validate that ZIP code and insurance fields are populated before proceeding to intake.</td>
+</tr>
+<tr>
+<td>FR-006</td>
+<td>The system shall accept an optional free-text context field during onboarding. If provided, the text shall be evaluated by the crisis classifier before intake begins.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-intake-questionnaire-path">2.2 Intake: Questionnaire Path</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-010</td>
+<td>The system shall present PHQ-9 and GAD-7 items using verbatim instrument wording as published in the validated instruments.</td>
+</tr>
+<tr>
+<td>FR-011</td>
+<td>The system shall group items into 7 batches: batches 0–2 covering PHQ-9 items 1–8 (mood chapter), batch 3 covering PHQ-9 item 9 alone (safety chapter), and batches 4–6 covering GAD-7 items 1–7 (anxiety chapter).</td>
+</tr>
+<tr>
+<td>FR-012</td>
+<td>Each item shall accept a user-selected response value of 0, 1, 2, or 3.</td>
+</tr>
+<tr>
+<td>FR-013</td>
+<td>The system shall display a progress indicator throughout the questionnaire showing current position relative to total items.</td>
+</tr>
+<tr>
+<td>FR-014</td>
+<td>PHQ-9 item 9 (suicidal ideation item) shall be presented as a dedicated batch (batch 3) within its own chapter.</td>
+</tr>
+<tr>
+<td>FR-015</td>
+<td>When PHQ-9 item 9 receives a confirmed response value of 1 or greater, the system shall display the SafetySupportCard before proceeding to the next batch.</td>
+</tr>
+<tr>
+<td>FR-016</td>
+<td>The SafetySupportCard shall be informational and shall not prevent the user from completing the remaining intake items.</td>
+</tr>
+<tr>
+<td>FR-017</td>
+<td>Upon completion of all 16 items, the system shall transition the user to the processing pipeline.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-intake-story-path">2.3 Intake: Story Path</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-020</td>
+<td>The system shall offer an alternative story intake path in which the user may provide a free-text narrative of at least a minimum character threshold before proceeding.</td>
+</tr>
+<tr>
+<td>FR-021</td>
+<td>On submission of the narrative, the system shall pass the text to the LLM story-inference service, which shall suggest a value of 0–3 for each of the 16 intake items.</td>
+</tr>
+<tr>
+<td>FR-022</td>
+<td>Suggested item values shall be clearly labeled as AI-generated drafts in the review interface.</td>
+</tr>
+<tr>
+<td>FR-023</td>
+<td>The user shall be able to review and modify each suggested value independently.</td>
+</tr>
+<tr>
+<td>FR-024</td>
+<td>The system shall not accept story-path item values for scoring unless the user has explicitly confirmed each item on the review screen.</td>
+</tr>
+<tr>
+<td>FR-025</td>
+<td>If the LLM returns a suggested value outside the range 0–3, the system shall clamp the value to the nearest valid boundary before displaying it.</td>
+</tr>
+<tr>
+<td>FR-026</td>
+<td>The story path shall converge with the questionnaire path at the processing stage; scoring behavior shall be identical for equivalent confirmed answers.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-scoring">2.4 Scoring</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-030</td>
+<td>The system shall compute PHQ-9 total score as the sum of all 9 confirmed PHQ-9 item values.</td>
+</tr>
+<tr>
+<td>FR-031</td>
+<td>The system shall compute GAD-7 total score as the sum of all 7 confirmed GAD-7 item values.</td>
+</tr>
+<tr>
+<td>FR-032</td>
+<td>The system shall assign a PHQ-9 severity band according to the validated scoring thresholds: Minimal (0–4), Mild (5–9), Moderate (10–14), Moderately Severe (15–19), Severe (20–27).</td>
+</tr>
+<tr>
+<td>FR-033</td>
+<td>The system shall assign a GAD-7 severity band according to the validated scoring thresholds: Minimal (0–4), Mild (5–9), Moderate (10–14), Severe (15–21).</td>
+</tr>
+<tr>
+<td>FR-034</td>
+<td>Scoring shall be performed entirely by deterministic logic. No LLM shall be involved in score computation.</td>
+</tr>
+<tr>
+<td>FR-035</td>
+<td>Item values with <code>confirmed = false</code> shall be excluded from all score computations.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-care-level-determination">2.5 Care-Level Determination</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-040</td>
+<td>The system shall determine a care level for each completed intake using the following deterministic mapping:</td>
+</tr>
+<tr>
+<td>FR-041</td>
+<td>If <code>isCrisis = true</code> (PHQ-9 item 9 ≥ 1 or LLM classifier confidence ≥ 0.85 on free text), care level shall be <code>crisis</code>.</td>
+</tr>
+<tr>
+<td>FR-042</td>
+<td>If <code>isCrisis = false</code> and (PHQ-9 band = Severe OR GAD-7 band = Severe), care level shall be <code>urgent</code>.</td>
+</tr>
+<tr>
+<td>FR-043</td>
+<td>If PHQ-9 band = Moderately Severe OR GAD-7 band = Moderate (without meeting crisis or urgent conditions), care level shall be <code>psychiatry</code>.</td>
+</tr>
+<tr>
+<td>FR-044</td>
+<td>If PHQ-9 band = Moderate OR GAD-7 band = Moderate (without meeting higher-tier conditions), care level shall be <code>therapy</code>.</td>
+</tr>
+<tr>
+<td>FR-045</td>
+<td>If PHQ-9 band = Mild OR GAD-7 band = Mild (without meeting higher-tier conditions), care level shall be <code>coaching</code>.</td>
+</tr>
+<tr>
+<td>FR-046</td>
+<td>If PHQ-9 band = Minimal AND GAD-7 band = Minimal, care level shall be <code>self_guided</code>.</td>
+</tr>
+<tr>
+<td>FR-047</td>
+<td>The <code>crisis</code> care level and the <code>urgent</code> care level shall be mutually exclusive and independently defined; a user with PHQ-9 item 9 ≥ 1 shall always receive <code>crisis</code>, not <code>urgent</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-crisis-detection">2.6 Crisis Detection</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-050</td>
+<td>The system shall implement two independent crisis detection layers: a deterministic layer (PHQ-9 item 9) and an LLM-based classifier layer (free text).</td>
+</tr>
+<tr>
+<td>FR-051</td>
+<td>The deterministic layer shall evaluate the confirmed value of PHQ-9 item 9. If the value is 1 or greater, the system shall set <code>isCrisis = true</code> and <code>crisis source = &quot;item9&quot;</code>.</td>
+</tr>
+<tr>
+<td>FR-052</td>
+<td>The deterministic crisis check shall not depend on LLM availability. It shall function on the questionnaire path regardless of LLM configuration.</td>
+</tr>
+<tr>
+<td>FR-053</td>
+<td>The LLM classifier layer shall evaluate any free-text input (optional context, story narrative). If the classifier returns a confidence score of 0.85 or greater, the system shall set the classifier crisis flag and include it in the final <code>isCrisis</code> determination.</td>
+</tr>
+<tr>
+<td>FR-054</td>
+<td>A <code>CrisisCheck</code> result shall include: crisis (boolean), confidence (float), and source (&quot;item9&quot;, &quot;classifier&quot;, or &quot;none&quot;).</td>
+</tr>
+<tr>
+<td>FR-055</td>
+<td>When <code>isCrisis = true</code> at any point in the intake flow, the SafetySupportCard shall be displayed inline.</td>
+</tr>
+<tr>
+<td>FR-056</td>
+<td>The SafetySupportCard shall display: 988 Suicide and Crisis Lifeline, Crisis Text Line, 911, and a link to the /crisis page.</td>
+</tr>
+<tr>
+<td>FR-057</td>
+<td>Crisis detection shall not trigger mandatory redirection away from the intake flow. The user shall be able to complete screening and reach the results page.</td>
+</tr>
+<tr>
+<td>FR-058</td>
+<td>When <code>isCrisis = true</code> at results, a safety banner shall be displayed prominently on the results page alongside the care plan and provider shortlist.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="27-provider-matching">2.7 Provider Matching</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-060</td>
+<td>The system shall filter the provider dataset to retain only providers whose insurance types include the user's stated insurance.</td>
+</tr>
+<tr>
+<td>FR-061</td>
+<td>The system shall filter the remaining provider set to retain providers whose specialty aligns with the user's stated concern or care level.</td>
+</tr>
+<tr>
+<td>FR-062</td>
+<td>The system shall apply care format filtering (in-person, telehealth, either) based on the user's stated format preference.</td>
+</tr>
+<tr>
+<td>FR-063</td>
+<td>The system shall rank the filtered provider set by fit score and return the top 3 matches as the provider shortlist.</td>
+</tr>
+<tr>
+<td>FR-064</td>
+<td>Each provider card in the results shall include: name, credentials, specialty, insurance accepted, format, estimated wait time, and at least one match reason.</td>
+</tr>
+<tr>
+<td>FR-065</td>
+<td>If no providers satisfy all filter criteria, the system shall present a community resources fallback rather than an empty result.</td>
+</tr>
+<tr>
+<td>FR-066</td>
+<td>Provider cards shall include a &quot;verify before booking&quot; notice and a last-updated timestamp to communicate data currency.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="28-results-and-summary">2.8 Results and Summary</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-070</td>
+<td>The results page shall display a clinical profile card summarizing PHQ-9 score and band, GAD-7 score and band, and derived care level.</td>
+</tr>
+<tr>
+<td>FR-071</td>
+<td>The clinical profile card shall include a clear non-diagnostic disclaimer stating that the results represent screening output, not a clinical diagnosis.</td>
+</tr>
+<tr>
+<td>FR-072</td>
+<td>The system shall generate a plain-language, non-diagnostic summary narrative via LLM, personalized using the user's stated concern and care level.</td>
+</tr>
+<tr>
+<td>FR-073</td>
+<td>The LLM prompt for summary generation shall instruct the model to: use non-clinical language, include a non-diagnostic framing statement, not suggest a specific diagnosis, and not recommend specific medications.</td>
+</tr>
+<tr>
+<td>FR-074</td>
+<td>If LLM summary generation fails or times out, the system shall display a deterministic fallback summary; the user shall reach the results page regardless of LLM availability.</td>
+</tr>
+<tr>
+<td>FR-075</td>
+<td>The results page shall display a processing pipeline visualization showing score, match, and summary steps.</td>
+</tr>
+<tr>
+<td>FR-076</td>
+<td>The results page shall include a print/save option that renders the care packet including clinical profile, care level, and provider shortlist.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="29-crisis-page">2.9 Crisis Page</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-080</td>
+<td>The /crisis page shall load independently of the main application. It shall have no dependency on shared application state, session data, or navigation.</td>
+</tr>
+<tr>
+<td>FR-081</td>
+<td>The /crisis page shall display: 988 Suicide and Crisis Lifeline, Crisis Text Line, 911.</td>
+</tr>
+<tr>
+<td>FR-082</td>
+<td>The /crisis page shall function even if the main application fails to load.</td>
+</tr>
+<tr>
+<td>FR-083</td>
+<td>The /crisis page shall be accessible from the landing page, results page, and SafetySupportCard at all times.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="210-session-management">2.10 Session Management</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-090</td>
+<td>The system shall maintain session state using a session ID generated at intake start.</td>
+</tr>
+<tr>
+<td>FR-091</td>
+<td>Session state shall be stored in the browser (sessionStorage) on the client and in an in-memory store on the server.</td>
+</tr>
+<tr>
+<td>FR-092</td>
+<td>If a user returns to the intake start with an existing session ID, the system shall resume from the current batch state rather than resetting.</td>
+</tr>
+<tr>
+<td>FR-093</td>
+<td>Session data shall not persist beyond the browser session (client) or server cold start (server-side in-memory store).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-non-functional-requirements">3. Non-Functional Requirements</h2>
+<h3 id="31-performance">3.1 Performance</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-001</td>
+<td>The end-to-end intake flow (from profile completion to results page render) shall complete within a median of 7 minutes under normal usage conditions.</td>
+</tr>
+<tr>
+<td>NFR-002</td>
+<td>API routes for scoring and matching shall respond within 2 seconds under normal load for the MVP1 seeded dataset.</td>
+</tr>
+<tr>
+<td>NFR-003</td>
+<td>The /crisis page shall load and render static content within 3 seconds on a standard mobile connection.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-availability">3.2 Availability</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-010</td>
+<td>The questionnaire path and deterministic scoring shall function without LLM availability. LLM-dependent features (story path, results summary) shall degrade gracefully when the LLM provider is unavailable.</td>
+</tr>
+<tr>
+<td>NFR-011</td>
+<td>The /crisis page shall be accessible independently of the main application's availability.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-accessibility">3.3 Accessibility</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-020</td>
+<td>The intake form and results page shall conform to WCAG 2.1 Level AA.</td>
+</tr>
+<tr>
+<td>NFR-021</td>
+<td>All form elements shall have associated labels.</td>
+</tr>
+<tr>
+<td>NFR-022</td>
+<td>The application shall be navigable by keyboard.</td>
+</tr>
+<tr>
+<td>NFR-023</td>
+<td>Color is not used as the sole means of conveying information.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-responsiveness">3.4 Responsiveness</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-030</td>
+<td>All pages shall render correctly at a minimum viewport width of 375px (mobile).</td>
+</tr>
+<tr>
+<td>NFR-031</td>
+<td>The intake questionnaire shall be fully operable on a mobile touch interface.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-security">3.5 Security</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-040</td>
+<td>LLM API keys shall be accessible only in server-side execution contexts. They shall never be exposed to the client.</td>
+</tr>
+<tr>
+<td>NFR-041</td>
+<td>All clinical scoring logic shall execute server-side. The client shall not receive scoring algorithms.</td>
+</tr>
+<tr>
+<td>NFR-042</td>
+<td>The system shall not log or persist user-provided free text to permanent storage in MVP1.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="36-maintainability">3.6 Maintainability</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-050</td>
+<td>The codebase shall have no TypeScript compilation errors at build time.</td>
+</tr>
+<tr>
+<td>NFR-051</td>
+<td>ESLint shall pass without warnings on core application files.</td>
+</tr>
+<tr>
+<td>NFR-052</td>
+<td>Scoring thresholds shall be defined in a single authoritative location; no threshold values shall be hardcoded in multiple places.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-data-requirements">4. Data Requirements</h2>
+<h3 id="41-user-profile">4.1 User Profile</h3>
+<p>The user profile captures onboarding context for session threading and match filtering. It shall contain:</p>
+<ul>
+<li>ZIP code (string, required)</li>
+<li>Insurance type (string, required; must correspond to a valid option in the provider dataset)</li>
+<li>Primary concern (one of: anxiety, depression, relationship, stress, unsure)</li>
+<li>Care format preference (optional; one of: telehealth, in-person, either)</li>
+<li>Optional context text (optional free-text string; used for crisis classification and summary personalization only)</li>
+</ul>
+<h3 id="42-intake-answer">4.2 Intake Answer</h3>
+<p>Each intake answer shall record:</p>
+<ul>
+<li>Instrument identifier (PHQ9 or GAD7)</li>
+<li>Item index within the instrument (0-based)</li>
+<li>Response value (integer in {0, 1, 2, 3})</li>
+<li>Confirmation flag (boolean; items with <code>confirmed = false</code> are excluded from scoring)</li>
+<li>Optional raw text (for story-path provenance tracking only)</li>
+</ul>
+<h3 id="43-score-result">4.3 Score Result</h3>
+<p>The score result shall contain:</p>
+<ul>
+<li>PHQ-9 total (integer, 0–27)</li>
+<li>PHQ-9 severity band (one of: minimal, mild, moderate, moderately_severe, severe)</li>
+<li>PHQ-9 item 9 value (integer in {0, 1, 2, 3})</li>
+<li>GAD-7 total (integer, 0–21)</li>
+<li>GAD-7 severity band (one of: minimal, mild, moderate, severe)</li>
+<li>Care level (one of: self_guided, coaching, therapy, psychiatry, urgent, crisis)</li>
+<li>isCrisis (boolean)</li>
+<li>isUrgent (boolean; mutually exclusive with isCrisis)</li>
+</ul>
+<h3 id="44-provider-record">4.4 Provider Record</h3>
+<p>Each provider record in the dataset shall contain:</p>
+<ul>
+<li>Unique identifier</li>
+<li>Name and credentials</li>
+<li>Specialty list (one or more)</li>
+<li>Accepted insurance types (one or more)</li>
+<li>Care format (telehealth, in-person, or either)</li>
+<li>ZIP code</li>
+<li>Estimated wait days</li>
+<li>Cost per session (integer or null if not available)</li>
+</ul>
+<h3 id="45-match-result">4.5 Match Result</h3>
+<p>The match result shall contain:</p>
+<ul>
+<li>A list of up to 3 matched provider cards, each containing the provider record, a computed fit score, and a list of match reasons</li>
+<li>An optional fallback list of community resources, populated when no providers satisfy filter criteria</li>
+</ul>
+<h2 id="5-interface-requirements">5. Interface Requirements</h2>
+<h3 id="51-user-interface">5.1 User Interface</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI-001</td>
+<td>The interface shall use plain, non-clinical language throughout the intake and results flow.</td>
+</tr>
+<tr>
+<td>UI-002</td>
+<td>PHQ-9 and GAD-7 items shall display the verbatim instrument text without modification.</td>
+</tr>
+<tr>
+<td>UI-003</td>
+<td>Non-diagnostic disclaimers shall appear at the following locations: landing page, welcome page, intake choice page, results page (adjacent to clinical profile card), and within the LLM results summary.</td>
+</tr>
+<tr>
+<td>UI-004</td>
+<td>LLM-generated content on the story review page shall be visually differentiated from user-confirmed values.</td>
+</tr>
+<tr>
+<td>UI-005</td>
+<td>The care level recommendation shall be presented as a care category name and description; it shall not use clinical diagnostic language.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-external-service-interfaces">5.2 External Service Interfaces</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Interface Type</th>
+<th>MVP1 Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM provider (Hugging Face / OpenAI / OpenRouter)</td>
+<td>HTTP REST API via server-side abstraction</td>
+<td>Story mapping, results summary, crisis text classification</td>
+</tr>
+<tr>
+<td>Vercel hosting</td>
+<td>Deployment platform</td>
+<td>Serverless deployment of Next.js application</td>
+</tr>
+</tbody>
+</table>
+<p>No real-time provider availability APIs, insurance eligibility APIs, or EHR interfaces are in scope for MVP1.</p>
+<h2 id="6-safety-and-security-requirements">6. Safety and Security Requirements</h2>
+<h3 id="61-clinical-safety-requirements">6.1 Clinical Safety Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SS-001</td>
+<td>The system shall never generate PHQ-9 or GAD-7 total scores using a language model. Scores shall be derived exclusively from deterministic computation on confirmed user responses.</td>
+</tr>
+<tr>
+<td>SS-002</td>
+<td>PHQ-9 item 9 crisis detection shall be deterministic and shall evaluate the confirmed user response directly. It shall not depend on LLM inference.</td>
+</tr>
+<tr>
+<td>SS-003</td>
+<td>The LLM crisis classifier shall supplement, not replace, the deterministic item 9 check.</td>
+</tr>
+<tr>
+<td>SS-004</td>
+<td>Care-level <code>crisis</code> shall be assigned if and only if <code>isCrisis = true</code>. <code>isCrisis = true</code> is set by item 9 ≥ 1 (deterministic) or LLM classifier confidence ≥ 0.85.</td>
+</tr>
+<tr>
+<td>SS-005</td>
+<td>The care levels <code>crisis</code> and <code>urgent</code> shall be independently and non-overlappingly defined.</td>
+</tr>
+<tr>
+<td>SS-006</td>
+<td>Story-path intake shall not permit unconfirmed AI-suggested item values to enter the scoring computation.</td>
+</tr>
+<tr>
+<td>SS-007</td>
+<td>Crisis detection shall never result in mandatory redirection away from the intake flow.</td>
+</tr>
+<tr>
+<td>SS-008</td>
+<td>A user whose intake results in <code>isCrisis = true</code> shall receive a provider shortlist and care plan alongside crisis resources.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-prompt-security-requirements">6.2 Prompt Security Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SS-010</td>
+<td>All LLM calls shall use a hardened system prompt that prohibits the model from: providing therapy, clinical advice, or diagnoses; generating PHQ-9 or GAD-7 numeric scores; recommending specific medications; providing specific provider recommendations.</td>
+</tr>
+<tr>
+<td>SS-011</td>
+<td>The system prompt shall constrain the LLM to the specific task assigned (story-item mapping, summary generation, or crisis classification).</td>
+</tr>
+<tr>
+<td>SS-012</td>
+<td>The system shall be tested with adversarial inputs designed to elicit clinical advice, diagnostic statements, or score generation from the LLM. No such outputs shall pass the system prompt constraint in testing.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="63-data-privacy-requirements">6.3 Data Privacy Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SS-020</td>
+<td>MVP1 shall store no personally identifiable information in any persistent storage.</td>
+</tr>
+<tr>
+<td>SS-021</td>
+<td>Session data shall be ephemeral: stored in browser sessionStorage (client-side) and server in-memory state (server-side).</td>
+</tr>
+<tr>
+<td>SS-022</td>
+<td>Text provided to the LLM provider shall be limited to the minimum required for the specific API call.</td>
+</tr>
+<tr>
+<td>SS-023</td>
+<td>LLM API credentials shall reside in server-side environment variables only.</td>
+</tr>
+<tr>
+<td>SS-024</td>
+<td>No user data shall be shared with third parties other than the configured LLM provider for the specific API call.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="64-disclaimer-requirements">6.4 Disclaimer Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SS-030</td>
+<td>The system shall display a non-diagnostic disclaimer at the landing page before the user enters the flow.</td>
+</tr>
+<tr>
+<td>SS-031</td>
+<td>The system shall display a non-diagnostic disclaimer at the welcome page.</td>
+</tr>
+<tr>
+<td>SS-032</td>
+<td>The system shall display a non-diagnostic disclaimer at the intake choice page before screening begins.</td>
+</tr>
+<tr>
+<td>SS-033</td>
+<td>The results page shall display a non-diagnostic disclaimer adjacent to the clinical profile card.</td>
+</tr>
+<tr>
+<td>SS-034</td>
+<td>The LLM summary prompt shall instruct the model to include a non-diagnostic framing statement in the generated narrative.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-verification-and-acceptance-criteria">7. Verification and Acceptance Criteria</h2>
+<h3 id="71-functional-acceptance-criteria">7.1 Functional Acceptance Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Criterion</th>
+<th>Pass Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-001</td>
+<td>PHQ-9 scoring accuracy</td>
+<td>System PHQ-9 total shall match manual scoring for a minimum of 10 test cases spanning all band boundaries.</td>
+</tr>
+<tr>
+<td>AC-002</td>
+<td>GAD-7 scoring accuracy</td>
+<td>System GAD-7 total shall match manual scoring for a minimum of 10 test cases spanning all band boundaries.</td>
+</tr>
+<tr>
+<td>AC-003</td>
+<td>Item 9 crisis detection</td>
+<td>PHQ-9 item 9 value ≥ 1 shall result in isCrisis = true and care level = crisis in 100% of test runs.</td>
+</tr>
+<tr>
+<td>AC-004</td>
+<td>Crisis UX continuity</td>
+<td>User shall be able to complete intake and reach the results page when item 9 ≥ 1; SafetySupportCard and results safety banner shall both be present.</td>
+</tr>
+<tr>
+<td>AC-005</td>
+<td>Story path scoring integrity</td>
+<td>An intake completed via story path with confirmed answers equivalent to a questionnaire-path intake shall produce identical PHQ-9 and GAD-7 totals.</td>
+</tr>
+<tr>
+<td>AC-006</td>
+<td>Unconfirmed answer exclusion</td>
+<td>A story-path intake in which item values are not confirmed on the review screen shall not result in those values contributing to the score.</td>
+</tr>
+<tr>
+<td>AC-007</td>
+<td>LLM score exclusion</td>
+<td>LLM shall not produce or modify any PHQ-9 or GAD-7 total score in a minimum of 20 test runs across all intake paths.</td>
+</tr>
+<tr>
+<td>AC-008</td>
+<td>Intake completion time</td>
+<td>Median completion time from profile start to results page shall be ≤ 7 minutes across a minimum of 5 test runs.</td>
+</tr>
+<tr>
+<td>AC-009</td>
+<td>Match relevance</td>
+<td>Matched providers shall include only providers whose accepted insurance includes the user's stated insurance type and whose specialty is relevant to the stated concern.</td>
+</tr>
+<tr>
+<td>AC-010</td>
+<td>Community fallback</td>
+<td>When no providers match the filter criteria, the community resources fallback shall be displayed.</td>
+</tr>
+<tr>
+<td>AC-011</td>
+<td>Crisis page independence</td>
+<td>/crisis page shall load and display 988, Crisis Text Line, and 911 resources without requiring main application state.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-non-functional-acceptance-criteria">7.2 Non-Functional Acceptance Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Criterion</th>
+<th>Pass Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-020</td>
+<td>Mobile responsiveness</td>
+<td>All pages render correctly and all intake controls are operable at 375px viewport width.</td>
+</tr>
+<tr>
+<td>AC-021</td>
+<td>Accessibility</td>
+<td>WCAG 2.1 AA audit of intake and results pages passes.</td>
+</tr>
+<tr>
+<td>AC-022</td>
+<td>Build integrity</td>
+<td>TypeScript compilation produces no errors.</td>
+</tr>
+<tr>
+<td>AC-023</td>
+<td>Lint</td>
+<td>ESLint passes with no warnings on core application files.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-safety-verification-checklist">7.3 Safety Verification Checklist</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Check</th>
+<th>Pass Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SV-001</td>
+<td>Item 9 presented in dedicated safety chapter</td>
+<td>Batch 3 contains only PHQ-9 item 9; chapter label is &quot;safety&quot;.</td>
+</tr>
+<tr>
+<td>SV-002</td>
+<td>Item 9 trigger → SafetySupportCard</td>
+<td>Item 9 response ≥ 1 causes SafetySupportCard to display before next batch; screening continues.</td>
+</tr>
+<tr>
+<td>SV-003</td>
+<td>Crisis intake → results with safety banner</td>
+<td>Completing intake after item 9 trigger reaches results page with crisis care level and safety banner.</td>
+</tr>
+<tr>
+<td>SV-004</td>
+<td>/crisis page loads</td>
+<td>/crisis displays 988, Crisis Text Line, 911 on direct navigation.</td>
+</tr>
+<tr>
+<td>SV-005</td>
+<td>High-risk story → no hard block</td>
+<td>Story text containing crisis-adjacent language does not prevent intake completion; SafetySupportCard displays.</td>
+</tr>
+<tr>
+<td>SV-006</td>
+<td>Benign story → no false crisis flag</td>
+<td>A benign story narrative does not trigger the crisis classifier.</td>
+</tr>
+<tr>
+<td>SV-007</td>
+<td>Adversarial prompt → no clinical advice</td>
+<td>LLM does not return therapy, diagnostic, or score-generation content under adversarial prompt inputs.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="part-ii--architecture-and-design-specification">Part II — Architecture and Design Specification</h1>
+<h2 id="8-architectural-overview">8. Architectural Overview</h2>
+<h3 id="81-summary">8.1 Summary</h3>
+<p>MVP1 is a single Next.js (App Router) full-stack application deployed on Vercel. The UI and all API routes are contained within a single deployable unit. A language model is used for three specific functions: optional story-to-draft screening item mapping, plain-language results summary generation, and crisis-language classification on free text.</p>
+<p>All clinical logic — scoring, severity classification, care-level determination, provider ranking, and PHQ-9 item 9 crisis detection — is implemented as deterministic server-side logic with no language model involvement.</p>
+<p><strong>Architectural decisions deferred beyond MVP1:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Status</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FastAPI separate service</td>
+<td>MVP3</td>
+<td>AI orchestration complexity does not justify a second service in MVP1</td>
+</tr>
+<tr>
+<td>LangGraph workflow orchestration</td>
+<td>MVP3+</td>
+<td>Linear batch intake does not require a graph workflow in MVP1</td>
+</tr>
+<tr>
+<td>Conversational LLM intake</td>
+<td>Excluded</td>
+<td>Higher latency, hallucination risk, and test surface; batched UI is more reliable</td>
+</tr>
+<tr>
+<td>Postgres / database server</td>
+<td>MVP2</td>
+<td>Seeded JSON proves the match loop; persistent storage planned for MVP2</td>
+</tr>
+<tr>
+<td>Auth / accounts</td>
+<td>MVP2</td>
+<td>Anonymous sessions reduce friction and privacy exposure in MVP1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="82-component-diagram">8.2 Component Diagram</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+subgraph client["Client"]
+  UI["React UI"]
+end
+
+subgraph server["Next.js API"]
+  API["Routes"]
+  LIB["Clinical libs"]
+end
+
+UI <-->|JSON| API
+API --> LIB
+LIB --> LLM["LLM provider"]
+
+%% Styling (teal theme + dark text)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class UI,API,LIB,LLM teal;
+
+style client fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+style server fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<h3 id="83-request-lifecycle-happy-paths">8.3 Request Lifecycle: Happy Paths</h3>
+<p><strong>Standard Questionnaire Path</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {
+  "themeVariables": {
+    "fontSize": "11px",
+    "primaryColor": "#D1FAF5",
+    "primaryTextColor": "#0F172A",
+    "primaryBorderColor": "#14B8A6",
+    "lineColor": "#14B8A6",
+    "actorBorder": "#14B8A6",
+    "actorBkg": "#D1FAF5",
+    "signalColor": "#14B8A6",
+    "signalTextColor": "#0F172A",
+    "noteBkgColor": "#f0fdfa",
+    "noteBorderColor": "#14B8A6"
+  },
+  "sequence": {
+    "diagramMarginX": 10,
+    "diagramMarginY": 8,
+    "actorMargin": 30
+  }
+}}%%
+sequenceDiagram
+
+participant U as User
+participant C as Client
+participant S as API
+
+U->>C: Onboard
+C->>S: Start intake
+
+loop Batch intake
+  U->>C: Answers
+  C->>S: Batch POST
+end
+
+C->>S: Score / match / summary
+S-->>C: Results
+</div></code></pre>
+<p><strong>Optional Story Path</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+A["Story page"] --> B["POST infer-story"] --> C["Review page"] --> D["POST review-submit"] --> E["Shared processing pipeline"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class A,B,C,D,E teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p><strong>Crisis Resource Navigation</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+T["Trigger"] --> I["Inline card"] --> R["Results banner"] --> L["Crisis page"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class T,I,R,L teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<h2 id="9-technology-stack">9. Technology Stack</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Version / Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Framework</strong></td>
+<td>Next.js (App Router)</td>
+<td>v16; TypeScript throughout</td>
+</tr>
+<tr>
+<td><strong>Styling</strong></td>
+<td>Tailwind CSS</td>
+<td>v4; theme tokens in <code>app/globals.css</code></td>
+</tr>
+<tr>
+<td><strong>AI Inference</strong></td>
+<td>HF / OpenAI / OpenRouter</td>
+<td>Via <code>lib/ai/openai.ts</code>; configured by <code>LLM_*</code> env vars</td>
+</tr>
+<tr>
+<td><strong>Crisis Classification</strong></td>
+<td>Rules + LLM</td>
+<td><code>lib/screening/crisis.ts</code>; LLM threshold ≥ 0.85 confidence</td>
+</tr>
+<tr>
+<td><strong>Clinical Logic</strong></td>
+<td>Pure TypeScript</td>
+<td><code>lib/screening/</code>, <code>lib/matching/</code>; zero LLM involvement</td>
+</tr>
+<tr>
+<td><strong>Provider Data</strong></td>
+<td><code>data/providers.json</code></td>
+<td>Seeded 20+ providers; 3 specialties, 4 insurance types, 3 ZIP clusters</td>
+</tr>
+<tr>
+<td><strong>Client Persistence</strong></td>
+<td><code>sessionStorage</code></td>
+<td><code>lib/storage/client-storage.ts</code>; session ID, profile, results snapshot</td>
+</tr>
+<tr>
+<td><strong>Server Persistence</strong></td>
+<td>In-memory map</td>
+<td><code>lib/storage/session.ts</code>; ephemeral across Vercel cold starts (MVP1 limitation)</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Vitest</td>
+<td>50 tests across scoring, matching, intake flow, care-level, story inference, LLM provider</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Vercel</td>
+<td>https://clearpathcare-demo.vercel.app</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Environment configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_PROVIDER</code></td>
+<td>Provider identifier (e.g., <code>huggingface</code>)</td>
+</tr>
+<tr>
+<td><code>LLM_API_KEY</code></td>
+<td>API token</td>
+</tr>
+<tr>
+<td><code>LLM_BASE_URL</code></td>
+<td>Provider base URL</td>
+</tr>
+<tr>
+<td><code>LLM_MODEL</code></td>
+<td>Model identifier</td>
+</tr>
+</tbody>
+</table>
+<p>Provider-specific aliases (<code>HF_*</code>, <code>OPENAI_API_KEY</code>, <code>OPENROUTER_*</code>) are supported. The questionnaire-only path operates without LLM configuration. The story path and results summary require a configured LLM.</p>
+<h2 id="10-system-boundaries-and-trust-model">10. System Boundaries and Trust Model</h2>
+<h3 id="101-inside-mvp1-scope">10.1 Inside MVP1 Scope</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Next.js app (UI + API routes)</td>
+<td>Single deployable on Vercel</td>
+</tr>
+<tr>
+<td>Deterministic scoring, matching, and routing</td>
+<td>Pure TypeScript; no external dependencies</td>
+</tr>
+<tr>
+<td>Seeded <code>data/providers.json</code></td>
+<td>~20 providers for demonstration</td>
+</tr>
+<tr>
+<td>Dual-layer crisis detection</td>
+<td>Deterministic item-9 + LLM classifier</td>
+</tr>
+<tr>
+<td>Static <code>/crisis</code> page</td>
+<td>Loads independently; no app dependencies</td>
+</tr>
+<tr>
+<td>Browser sessionStorage + server in-memory session</td>
+<td>Ephemeral; no PHI persistence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="102-outside-mvp1-scope-deferred">10.2 Outside MVP1 Scope (Deferred)</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Target Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI / HF API (external LLM)</td>
+<td>Always external</td>
+</tr>
+<tr>
+<td>NPPES / live provider availability</td>
+<td>MVP2</td>
+</tr>
+<tr>
+<td>Insurance eligibility APIs / clearinghouses</td>
+<td>MVP3</td>
+</tr>
+<tr>
+<td>Accounts, auth, HIPAA datastore</td>
+<td>MVP2+</td>
+</tr>
+<tr>
+<td>EHR / booking integration</td>
+<td>Long-term</td>
+</tr>
+<tr>
+<td>FastAPI AI service</td>
+<td>MVP3</td>
+</tr>
+<tr>
+<td>LangGraph workflow</td>
+<td>MVP3+ (only if justified)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="103-trust-boundary">10.3 Trust Boundary</h3>
+<p>API keys and all clinical scoring logic reside server-side only. The client never:</p>
+<ul>
+<li>Computes PHQ-9 or GAD-7 scores</li>
+<li>Applies severity band logic</li>
+<li>Calls the LLM provider directly</li>
+<li>Handles API credentials</li>
+</ul>
+<p>All scoring, matching, and AI calls are server-side API routes. The client submits answers and receives structured results.</p>
+<h2 id="11-data-models">11. Data Models</h2>
+<p>These are TypeScript transport data transfer objects (DTOs). No long-term PHI storage exists in MVP1.</p>
+<h3 id="111-patient-profile-onboarding-context">11.1 Patient Profile (Onboarding Context)</h3>
+<p>The profile captures user ZIP, insurance, concern, format preference, and optional free-text context. <code>optionalContext</code> is used for summary personalization and crisis classification; it is not used for silent scoring of intake items.</p>
+<h3 id="112-intake-answer">11.2 Intake Answer</h3>
+<p>Each intake answer records instrument identifier (PHQ9 or GAD7), item index (0-based), response value (0–3), confirmation status (boolean), and optional raw text for story-path provenance.</p>
+<h3 id="113-score-result">11.3 Score Result</h3>
+<p>The score result records PHQ-9 total, PHQ-9 severity band, PHQ-9 item 9 value, GAD-7 total, GAD-7 severity band, derived care level, isCrisis (boolean), and isUrgent (boolean).</p>
+<p><strong>Scoring thresholds (deterministic):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Instrument</th>
+<th>Band</th>
+<th>Score Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHQ-9</td>
+<td>Minimal</td>
+<td>0–4</td>
+</tr>
+<tr>
+<td>PHQ-9</td>
+<td>Mild</td>
+<td>5–9</td>
+</tr>
+<tr>
+<td>PHQ-9</td>
+<td>Moderate</td>
+<td>10–14</td>
+</tr>
+<tr>
+<td>PHQ-9</td>
+<td>Moderately Severe</td>
+<td>15–19</td>
+</tr>
+<tr>
+<td>PHQ-9</td>
+<td>Severe</td>
+<td>20–27</td>
+</tr>
+<tr>
+<td>GAD-7</td>
+<td>Minimal</td>
+<td>0–4</td>
+</tr>
+<tr>
+<td>GAD-7</td>
+<td>Mild</td>
+<td>5–9</td>
+</tr>
+<tr>
+<td>GAD-7</td>
+<td>Moderate</td>
+<td>10–14</td>
+</tr>
+<tr>
+<td>GAD-7</td>
+<td>Severe</td>
+<td>15–21</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Care-level mapping (deterministic):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Care Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isCrisis = true (item 9 ≥ 1 or classifier confidence ≥ 0.85)</td>
+<td>crisis</td>
+</tr>
+<tr>
+<td>PHQ-9 Severe or GAD-7 Severe, and isCrisis = false</td>
+<td>urgent</td>
+</tr>
+<tr>
+<td>PHQ-9 Moderately Severe or GAD-7 Moderate (below urgent/crisis threshold)</td>
+<td>psychiatry</td>
+</tr>
+<tr>
+<td>PHQ-9 Moderate or GAD-7 Moderate (below psychiatry threshold)</td>
+<td>therapy</td>
+</tr>
+<tr>
+<td>PHQ-9 Mild or GAD-7 Mild</td>
+<td>coaching</td>
+</tr>
+<tr>
+<td>PHQ-9 Minimal and GAD-7 Minimal</td>
+<td>self_guided</td>
+</tr>
+</tbody>
+</table>
+<h3 id="114-intake-batch-state-api-response">11.4 Intake Batch State (API Response)</h3>
+<p>The batch state response includes: batch index, total batch count, chapter identifier and intro content, item list with global index and safety flag, progress counters, done flag, and a CrisisCheck result.</p>
+<h3 id="115-crisis-check">11.5 Crisis Check</h3>
+<p>The crisis check response includes: crisis (boolean), confidence (float 0–1), and source (&quot;item9&quot;, &quot;classifier&quot;, or &quot;none&quot;).</p>
+<h3 id="116-provider-record">11.6 Provider Record</h3>
+<p>Each provider record includes: unique ID, name, credentials, specialty list, accepted insurance list, care format, ZIP code, estimated wait days, cost per session (nullable), and avatar seed.</p>
+<h3 id="117-match-result">11.7 Match Result</h3>
+<p>The match result includes a list of matched provider cards (each with provider record, fit score, and match reasons) and an optional community resources fallback list.</p>
+<h2 id="12-api-specification">12. API Specification</h2>
+<p>All routes accept <code>POST</code> requests with JSON request/response bodies. The <code>sessionId</code> field in the request body threads server-side session state.</p>
+<h3 id="121-route-reference">12.1 Route Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Purpose</th>
+<th>Key Inputs</th>
+<th>Key Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /api/intake/start</code></td>
+<td>Begin or resume batch intake; crisis-check optionalContext</td>
+<td><code>{ sessionId, onboarding, mode }</code></td>
+<td>IntakeBatchState</td>
+</tr>
+<tr>
+<td><code>POST /api/intake/batch</code></td>
+<td>Submit one batch of answers; return next batch state</td>
+<td><code>{ sessionId, answers[] }</code></td>
+<td>IntakeBatchState</td>
+</tr>
+<tr>
+<td><code>POST /api/intake/infer-story</code></td>
+<td>Classify story for crisis; LLM drafts 0–3 per item</td>
+<td><code>{ sessionId, story }</code></td>
+<td><code>{ suggestions[], crisis }</code></td>
+</tr>
+<tr>
+<td><code>POST /api/intake/review-submit</code></td>
+<td>Persist all 16 confirmed review answers</td>
+<td><code>{ sessionId, answers[] }</code></td>
+<td><code>{ crisis, done }</code></td>
+</tr>
+<tr>
+<td><code>POST /api/intake/session</code></td>
+<td>Return current session answers, story, and AI suggestions</td>
+<td><code>{ sessionId }</code></td>
+<td><code>{ answers[], story, aiSuggestions[] }</code></td>
+</tr>
+<tr>
+<td><code>POST /api/intake/score</code></td>
+<td>Compute deterministic ScoreResult</td>
+<td><code>{ sessionId }</code></td>
+<td>ScoreResult</td>
+</tr>
+<tr>
+<td><code>POST /api/match</code></td>
+<td>Compute deterministic MatchResult</td>
+<td><code>{ sessionId, scoreResult }</code></td>
+<td>MatchResult</td>
+</tr>
+<tr>
+<td><code>POST /api/summary</code></td>
+<td>Generate LLM non-diagnostic narrative with deterministic fallback</td>
+<td><code>{ sessionId, scoreResult, matchResult }</code></td>
+<td><code>{ summary: string }</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Out of scope for MVP1:</strong> Legacy conversational intake routes are not implemented. Crisis classification is handled within <code>POST /api/intake/infer-story</code> and <code>POST /api/intake/start</code>.</p>
+<h3 id="122-crisis-behavior-at-the-api-layer">12.2 Crisis Behavior at the API Layer</h3>
+<table>
+<thead>
+<tr>
+<th>Trigger</th>
+<th>API Behavior</th>
+<th>UI Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHQ-9 item 9 ≥ 1</td>
+<td>Batch response includes <code>crisis: { crisis: true, source: &quot;item9&quot; }</code></td>
+<td>SafetySupportCard shown; screening continues</td>
+</tr>
+<tr>
+<td>Story classifier ≥ 0.85</td>
+<td><code>infer-story</code> sets classifier crisis flag on session</td>
+<td>Flagged; affects final isCrisis at score time</td>
+</tr>
+<tr>
+<td>Profile context classifier</td>
+<td><code>start</code> may set initial crisis flag</td>
+<td>Logged; does not block flow or redirect</td>
+</tr>
+<tr>
+<td>Final <code>isCrisis</code> at results</td>
+<td><code>score</code> sets <code>isCrisis = true</code></td>
+<td>Safety banner on /results; /crisis link offered</td>
+</tr>
+</tbody>
+</table>
+<h3 id="123-error-handling">12.3 Error Handling</h3>
+<p>All API routes shall return structured responses with a <code>success</code> flag. On failure, the response shall include an <code>error</code> string and optional error code. Client-side: summary failures shall invoke deterministic fallback text; the user shall reach the results page regardless.</p>
+<h2 id="13-core-workflow-specification">13. Core Workflow Specification</h2>
+<h3 id="131-batch-intake-engine">13.1 Batch Intake Engine</h3>
+<p>The intake is structured as 7 batches across 16 items (PHQ-9 items 0–8, GAD-7 items 9–15):</p>
+<table>
+<thead>
+<tr>
+<th>Batch</th>
+<th>Items (global indices)</th>
+<th>Chapter</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0, 1, 2</td>
+<td>mood</td>
+<td>PHQ-9 items 1–3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3, 4, 5</td>
+<td>mood</td>
+<td>PHQ-9 items 4–6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6, 7</td>
+<td>mood</td>
+<td>PHQ-9 items 7–8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8</td>
+<td>safety</td>
+<td>PHQ-9 item 9 — alone; triggers SafetySupportCard if value ≥ 1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9, 10, 11</td>
+<td>anxiety</td>
+<td>GAD-7 items 1–3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>12, 13, 14</td>
+<td>anxiety</td>
+<td>GAD-7 items 4–6</td>
+</tr>
+<tr>
+<td>6</td>
+<td>15</td>
+<td>anxiety</td>
+<td>GAD-7 item 7</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Session flow:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+A["Start"] --> B["Init"] --> C["Batch loop"] --> D["Processing"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class A,B,C,D teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p><strong>Session resume:</strong> If a client boots with an existing session ID, the start endpoint shall return the current batch state rather than resetting the session.</p>
+<h3 id="132-story-review-path">13.2 Story Review Path</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+A["Story"] --> B["Infer"] --> C["Review"] --> D["Submit"] --> E["Score"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class A,B,C,D,E teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p><strong>LLM story inference constraints:</strong></p>
+<ul>
+<li>The LLM shall suggest a value of 0–3 per item; it shall not interpret clinical severity</li>
+<li>Suggestions shall be clearly labeled as drafts in the review UI</li>
+<li>The user may override any suggestion to any value 0–3</li>
+<li>Out-of-range LLM values shall be clamped to the nearest valid boundary before display</li>
+</ul>
+<h3 id="133-scoring-engine-behavior">13.3 Scoring Engine Behavior</h3>
+<p>The scoring engine shall:</p>
+<ul>
+<li>Accept a complete set of confirmed intake answers</li>
+<li>Sum confirmed PHQ-9 answers to produce the PHQ-9 total</li>
+<li>Extract the confirmed value of PHQ-9 item 9 separately</li>
+<li>Sum confirmed GAD-7 answers to produce the GAD-7 total</li>
+<li>Derive severity bands from the totals using the thresholds in §11.3</li>
+<li>Derive care level from bands, item 9 value, and classifier crisis flag using the mapping in §11.3</li>
+<li>Set <code>isCrisis = true</code> if PHQ-9 item 9 ≥ 1 or classifier crisis flag is set</li>
+<li>Set <code>isUrgent = true</code> if isCrisis is false and PHQ-9 band is Severe or GAD-7 band is Severe</li>
+</ul>
+<h3 id="134-crisis-detection-behavior">13.4 Crisis Detection Behavior</h3>
+<p><strong>Layer 1 — Deterministic (always active):</strong> The system shall evaluate the confirmed value of PHQ-9 item 9 directly. If the value is 1 or greater, it shall return <code>{ crisis: true, confidence: 1.0, source: &quot;item9&quot; }</code>. This check shall not invoke the LLM under any circumstances.</p>
+<p><strong>Layer 2 — LLM classifier (on free text only):</strong> For story and optional context text, the system shall invoke the LLM crisis classifier with a dedicated system prompt. If the LLM returns a confidence score of 0.85 or greater, it shall return <code>{ crisis: true, confidence: &lt;score&gt;, source: &quot;classifier&quot; }</code>. This layer supplements but does not replace the deterministic layer.</p>
+<p><strong>Layer 3 — UX (always visible when triggered):</strong> The SafetySupportCard component shall display 988 Suicide and Crisis Lifeline, Crisis Text Line, and 911. It shall be non-blocking. The safety card shall also appear as a banner on the results page for any intake with <code>isCrisis = true</code>.</p>
+<h3 id="135-provider-matching-behavior">13.5 Provider Matching Behavior</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart TD
+
+IN["Inputs"] --> F["Filter"] --> S["Score fit"] --> SEL["Top 3"] --> OUT{"Any matches?"}
+
+OUT -->|Yes| MR["MatchResult"]
+OUT -->|No| FB["Community fallback"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+classDef decision fill:#99f6e4,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class IN,F,S,SEL,MR,FB teal;
+class OUT decision;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p>The matching engine shall apply hard filters (insurance, specialty, format) before computing fit scores. It shall return the top 3 providers by fit score. If no providers pass all filters, it shall return the community resources fallback.</p>
+<h3 id="136-client-finalization-pipeline">13.6 Client Finalization Pipeline</h3>
+<p>The processing page shall orchestrate the following sequential steps and display step-by-step progress to the user:</p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+S1["Personalize"] --> S2["Score"] --> S3["Match"] --> S4["Summarize"] --> R["Results"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class S1,S2,S3,S4,R teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p>If the summary step fails, the pipeline shall substitute a deterministic fallback summary and complete normally.</p>
+<h2 id="14-pages-and-routes">14. Pages and Routes</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Component</th>
+<th>Role</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>Landing</td>
+<td>Marketing landing</td>
+<td>Value prop, screening disclaimer, crisis link</td>
+</tr>
+<tr>
+<td><code>/welcome</code></td>
+<td>Welcome</td>
+<td>Journey preview</td>
+<td>Entry point to onboarding; describes the 4-step flow</td>
+</tr>
+<tr>
+<td><code>/onboarding</code></td>
+<td>Profile wizard</td>
+<td>Multi-step profile</td>
+<td>ZIP, insurance, concern, format; 3-step wizard</td>
+</tr>
+<tr>
+<td><code>/intake</code></td>
+<td>Intake choice</td>
+<td>Path selection</td>
+<td>User selects questionnaire path or story path</td>
+</tr>
+<tr>
+<td><code>/intake/questions</code></td>
+<td>Batched questionnaire</td>
+<td>PHQ-9/GAD-7 UI</td>
+<td>BatchQuestionnaire component; progress indicator; chapter intros</td>
+</tr>
+<tr>
+<td><code>/intake/story</code></td>
+<td>Narrative entry</td>
+<td>Free-text intake</td>
+<td>Character minimum; submit triggers story inference</td>
+</tr>
+<tr>
+<td><code>/intake/review</code></td>
+<td>AI draft review</td>
+<td>Story review</td>
+<td>16 items with AI suggestions; user confirms each</td>
+</tr>
+<tr>
+<td><code>/processing</code></td>
+<td>Processing pipeline</td>
+<td>Pipeline progress</td>
+<td>Score → match → summary steps</td>
+</tr>
+<tr>
+<td><code>/results</code></td>
+<td>Results display</td>
+<td>Output page</td>
+<td>ClinicalProfileCard, ProviderCard ×3, HowResultsWork, safety banner</td>
+</tr>
+<tr>
+<td><code>/crisis</code></td>
+<td>Crisis resources</td>
+<td>Static crisis page</td>
+<td>Dark theme; 988, Crisis Text Line, 911; no app dependencies</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Route protection:</strong> No authentication in MVP1. All routes are public. Session state is managed via sessionStorage (client) and an in-memory map (server).</p>
+<p><strong>Crisis page independence:</strong> <code>/crisis</code> uses a dedicated layout with no shared dependencies. It is a static page that functions if the main application fails.</p>
+<h2 id="15-testing-specification">15. Testing Specification</h2>
+<h3 id="151-automated-test-requirements">15.1 Automated Test Requirements</h3>
+<p>The system shall have automated test coverage for the following domains:</p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Required Coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHQ-9 scoring</td>
+<td>All band boundary values (0, 4, 5, 9, 10, 14, 15, 19, 20, 27) and item 9 crisis flag</td>
+</tr>
+<tr>
+<td>GAD-7 scoring</td>
+<td>All band boundary values (0, 4, 5, 9, 10, 14, 15, 21)</td>
+</tr>
+<tr>
+<td>Care-level mapping</td>
+<td>All input combinations across band and crisis flag values; urgent vs. crisis distinction; edge cases</td>
+</tr>
+<tr>
+<td>Provider matching</td>
+<td>Insurance filter, specialty filter, format filter, ranking logic, community fallback trigger</td>
+</tr>
+<tr>
+<td>Intake flow</td>
+<td>Batch progression, item 9 crisis detection, session resume, review-submit flow</td>
+</tr>
+<tr>
+<td>Story inference</td>
+<td>LLM draft normalization, out-of-range value clamping, missing item handling</td>
+</tr>
+<tr>
+<td>LLM provider</td>
+<td>Provider initialization, fallback behavior, error handling</td>
+</tr>
+</tbody>
+</table>
+<p>The current test suite comprises 50 automated tests executed by Vitest. All tests shall pass as a prerequisite for production deployment.</p>
+<h3 id="152-manual-end-to-end-verification">15.2 Manual End-to-End Verification</h3>
+<p>The following personas shall be verified against the production deployment before each release:</p>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Path</th>
+<th>Key Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mild anxiety</td>
+<td>Questionnaire</td>
+<td>Low severity bands; coaching or self-guided care level; provider match includes relevant specialty</td>
+</tr>
+<tr>
+<td>Moderate depression</td>
+<td>Questionnaire</td>
+<td>Therapy-level care; item 9 = 0; no crisis banner</td>
+</tr>
+<tr>
+<td>Crisis (item 9 ≥ 1)</td>
+<td>Questionnaire</td>
+<td>Crisis care level; safety banner on results; providers still shown; /crisis accessible</td>
+</tr>
+<tr>
+<td>Story path</td>
+<td>Story + review</td>
+<td>AI draft displayed; scores computed only after confirmation; equivalent confirmed answers produce identical scores as questionnaire path</td>
+</tr>
+</tbody>
+</table>
+<h3 id="153-safety-verification-requirements">15.3 Safety Verification Requirements</h3>
+<p>All six safety verification checks in §7.3 shall be executed and documented before release.</p>
+<h3 id="154-non-functional-verification-requirements">15.4 Non-Functional Verification Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Responsive design</td>
+<td>Renders correctly at 375px viewport</td>
+</tr>
+<tr>
+<td>Accessibility</td>
+<td>WCAG 2.1 AA audit passes on intake + results pages</td>
+</tr>
+<tr>
+<td>Build integrity</td>
+<td>Compilation produces no TypeScript errors</td>
+</tr>
+<tr>
+<td>Lint</td>
+<td>ESLint passes with no warnings on core files</td>
+</tr>
+</tbody>
+</table>
+<h2 id="16-deployment-specification">16. Deployment Specification</h2>
+<h3 id="161-production-environment">16.1 Production Environment</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Host</strong></td>
+<td>Vercel (hobby tier; instant deploys from GitHub main)</td>
+</tr>
+<tr>
+<td><strong>URL</strong></td>
+<td>https://clearpathcare-demo.vercel.app</td>
+</tr>
+<tr>
+<td><strong>Environment variables</strong></td>
+<td>Set in Vercel dashboard: <code>LLM_PROVIDER</code>, <code>LLM_API_KEY</code>, <code>LLM_BASE_URL</code>, <code>LLM_MODEL</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="162-post-deploy-verification">16.2 Post-Deploy Verification</h3>
+<p>The following checks shall be performed after every production deployment:</p>
+<ol>
+<li>Confirm <code>/</code>, <code>/welcome</code>, and <code>/crisis</code> load successfully.</li>
+<li>Run the questionnaire-path persona end-to-end on production.</li>
+<li>Confirm LLM-dependent paths (story intake or results summary) respond as expected.</li>
+</ol>
+<h3 id="163-known-limitations-mvp1">16.3 Known Limitations (MVP1)</h3>
+<ol>
+<li><strong>Session persistence:</strong> In-memory sessions do not survive Vercel cold starts. Addressed in MVP2 with a persistent session store.</li>
+<li><strong>Rate limiting:</strong> API routes are not rate-limited in MVP1. Production hardening should include Vercel rate limiting or middleware if traffic increases.</li>
+<li><strong>LLM availability:</strong> If the configured LLM provider is unavailable, story mapping may fail; results summary uses a deterministic fallback; scoring and matching are unaffected on the questionnaire path.</li>
+</ol>
+<h2 id="17-project-structure">17. Project Structure</h2>
+<pre class="hljs"><code><div>app/
+  page.tsx
+  welcome/page.tsx
+  onboarding/page.tsx
+  intake/
+    page.tsx
+    questions/page.tsx
+    story/page.tsx
+    review/page.tsx
+  processing/page.tsx
+  results/page.tsx
+  crisis/
+    page.tsx
+    layout.tsx
+  api/
+    intake/
+      start/route.ts
+      batch/route.ts
+      infer-story/route.ts
+      review-submit/route.ts
+      session/route.ts
+      score/route.ts
+    match/route.ts
+    summary/route.ts
+
+lib/
+  ai/
+    openai.ts
+    prompts.ts
+    story-inference.ts
+  intake/
+    intake-flow.ts
+    instruments.ts
+    finalize-intake-client.ts
+  screening/
+    scoring.ts
+    crisis.ts
+    screening-summary.ts
+  storage/
+    session.ts
+    client-storage.ts
+  matching/
+    matcher.ts
+    provider-avatar.ts
+  hooks/
+    use-session-ready.ts
+  types.ts
+  validators.ts
+  utils.ts
+
+components/
+  shared/
+    safety-support-card.tsx
+  intake/
+    batch-questionnaire.tsx
+    chapter-intro.tsx
+    processing-screen.tsx
+  results/
+    clinical-profile-card.tsx
+    provider-card.tsx
+    how-results-work.tsx
+
+data/
+  providers.json
+
+tests/
+  scoring.test.ts
+  care-level.test.ts
+  matcher.test.ts
+  intake-flow.test.ts
+  story-inference.test.ts
+  llm-provider.test.ts
+
+.env.example
+README.md
+</div></code></pre>
+<h1 id="annex-a--future-roadmap-mvp2-and-beyond">Annex A — Future Roadmap: MVP2 and Beyond</h1>
+<blockquote>
+<p><strong>Annex scope statement.</strong> This annex describes planned future capabilities for ClearPath MVP2 and beyond. Content in this annex represents intended future scope and does not constitute normative requirements for the MVP1 release. Architecture decisions, feature specifications, and infrastructure changes described here are subject to revision based on MVP1 validation results and product learnings.</p>
+</blockquote>
+<h2 id="a1-scope-boundary-mvp1-vs-future">A1. Scope Boundary: MVP1 vs. Future</h2>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>MVP1</th>
+<th>MVP2 (Days 8–30)</th>
+<th>MVP3+ (Months 2–6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Structured PHQ-9/GAD-7 (batched UI, verbatim)</td>
+<td>Complete</td>
+<td>Refine UX</td>
+<td>Adaptive multi-instrument</td>
+</tr>
+<tr>
+<td>Optional story → AI draft → user review</td>
+<td>Complete</td>
+<td>Clinical review of mapping</td>
+<td>Richer narrative intake</td>
+</tr>
+<tr>
+<td>Deterministic scoring + care level</td>
+<td>Complete</td>
+<td>Unchanged</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Dual-layer crisis detection + safety card + /crisis</td>
+<td>Complete</td>
+<td>Hardened classifier + audit log</td>
+<td>Continuous monitoring</td>
+</tr>
+<tr>
+<td>Provider match</td>
+<td>Complete (seeded)</td>
+<td>Real data</td>
+<td>Embeddings-based semantic match</td>
+</tr>
+<tr>
+<td>Results + summary + processing pipeline</td>
+<td>Complete</td>
+<td>+ Trends</td>
+<td>+ Shareable clinician handoff</td>
+</tr>
+<tr>
+<td>Server session persistence</td>
+<td>In-memory only</td>
+<td>Postgres/session store</td>
+<td>Full persistence</td>
+</tr>
+<tr>
+<td>Provider availability (real-time)</td>
+<td>Out of scope</td>
+<td>Freshness signal</td>
+<td>Near-real-time</td>
+</tr>
+<tr>
+<td>Accounts / longitudinal tracking</td>
+<td>Out of scope</td>
+<td>Opt-in</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>Employer dashboard</td>
+<td>Out of scope</td>
+<td>v0 (aggregate)</td>
+<td>Analytics + ROI</td>
+</tr>
+<tr>
+<td>Provider notifications / referrals</td>
+<td>Out of scope</td>
+<td>v1</td>
+<td>Booking handoff</td>
+</tr>
+<tr>
+<td>Insurance verification</td>
+<td>Out of scope</td>
+<td>Stub</td>
+<td>Live eligibility</td>
+</tr>
+<tr>
+<td>FastAPI AI service</td>
+<td>Out of scope</td>
+<td>Introduced</td>
+<td>Core</td>
+</tr>
+<tr>
+<td>LangGraph orchestration</td>
+<td>Out of scope</td>
+<td>Evaluate</td>
+<td>Adopted where justified</td>
+</tr>
+<tr>
+<td>HIPAA-compliant architecture</td>
+<td>Out of scope (no PHI)</td>
+<td>Designed</td>
+<td>Enforced for pilots</td>
+</tr>
+<tr>
+<td>Multi-language</td>
+<td>Out of scope</td>
+<td>Spanish</td>
+<td>Top-N languages</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a2-mvp2-validate-and-harden-days-8%E2%80%9330">A2. MVP2: Validate and Harden (Days 8–30)</h2>
+<h3 id="a21-goal">A2.1 Goal</h3>
+<p>Turn the prototype into a pilot-ready product with real provider data, real users, and the foundation for the first employer contract.</p>
+<h3 id="a22-real-provider-data-pipeline">A2.2 Real Provider Data Pipeline</h3>
+<p>Replace seeded <code>providers.json</code> with a dataset of real, contactable providers.</p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart TD
+
+N["NPPES registry"] --> E["ETL ingest"] --> M["Enrich and geocode"] --> P["Postgres storage"] --> A["Updated match API"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class N,E,M,P,A teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p>Target: ~500 real providers across 5 metros (Boston, New York, Chicago, Los Angeles, Houston).</p>
+<p><strong>Success metric:</strong> At least 90% of result cards resolve to a real, contactable provider with a functioning phone number or online booking link.</p>
+<h3 id="a23-session-persistence">A2.3 Session Persistence</h3>
+<p>Deploy managed Postgres with a <code>sessions</code> table. Migrate session storage from in-memory map to database-backed adapter; session TTL of 72 hours. Opt-in longitudinal tracking via magic-link authentication with a <code>completed_intakes</code> table and a <code>/history</code> re-screen view.</p>
+<h3 id="a24-clinical-advisory-validation">A2.4 Clinical Advisory Validation</h3>
+<p>Engage 2–3 licensed clinicians to review:</p>
+<ul>
+<li>PHQ-9 and GAD-7 item presentation and pacing</li>
+<li>Care-level mapping logic (urgent vs. therapy vs. coaching appropriateness)</li>
+<li>Story-to-draft mapping quality</li>
+<li>Crisis detection sensitivity and false positive rate</li>
+</ul>
+<p>Validation results shall be documented in the README as a transparency artifact.</p>
+<h3 id="a25-employer-dashboard-v0">A2.5 Employer Dashboard v0</h3>
+<p>Aggregate-only employer dashboard supporting the first pilot conversation:</p>
+<ul>
+<li><code>employer_accounts</code> table; domain-based employee access; no individual-level data without consent</li>
+<li>Metrics: completion rate, care-level distribution, time-to-first-match, weekly trends, crisis rate (percentage only)</li>
+<li>Route: <code>/employer/dashboard</code>; employer admin auth via magic link or SSO stub</li>
+</ul>
+<p><strong>HIPAA note:</strong> Aggregate-only data does not constitute PHI. HIPAA-aware architecture review should begin at this phase in anticipation of identified-data pilots.</p>
+<h3 id="a26-first-employer-pilot-configuration">A2.6 First Employer Pilot Configuration</h3>
+<p>Target: 1 signed mid-market employer (at least 200 employees).</p>
+<p><strong>Pilot setup:</strong> Employer admin account; branded entry URL (<code>/start/&lt;employer-slug&gt;</code>); ZIP-cluster provider set; dashboard provisioned.</p>
+<p><strong>Instrumentation:</strong> <code>intake_events</code> table (started, profile completed, screening completed, results reached, provider clicked); time-to-first-appointment tracked via follow-up survey.</p>
+<h3 id="a27-mvp2-infrastructure-changes">A2.7 MVP2 Infrastructure Changes</h3>
+<table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add Postgres</td>
+<td>Sessions, providers, employers, events</td>
+</tr>
+<tr>
+<td>Add provider ETL script</td>
+<td>NPPES ingest + normalization; runs on schedule</td>
+</tr>
+<tr>
+<td>Add employer auth</td>
+<td>NextAuth.js or Auth.js (magic link)</td>
+</tr>
+<tr>
+<td>Add aggregate dashboard route</td>
+<td><code>/employer/dashboard</code></td>
+</tr>
+<tr>
+<td>Update <code>/api/match</code></td>
+<td>Read from database instead of JSON file</td>
+</tr>
+<tr>
+<td>Retain scoring/safety architecture</td>
+<td>No changes to deterministic scoring or crisis logic</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a3-mvp3-close-the-loop-and-scale-months-2%E2%80%934">A3. MVP3: Close the Loop and Scale (Months 2–4)</h2>
+<h3 id="a31-provider-notification-and-closed-loop-referral">A3.1 Provider Notification and Closed-Loop Referral</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+subgraph Process["Referral Workflow"]
+  A["Select provider"] --> B["Confirm summary"] --> C["Send referral"] --> D["Provider response"] --> E["User status update"]
+end
+
+R[("Referrals table")]
+
+C --> R
+D --> R
+
+%% Styling
+classDef process fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+classDef store fill:#99f6e4,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class A,B,C,D,E process;
+class R store;
+
+style Process fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+
+%% Link styling (edges)
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<p>This closed loop enables Phase 2 monetization (per-completed-referral fee to insurer), time-to-first-appointment measurement against the 48-day baseline, and provider fit quality measurement.</p>
+<h3 id="a32-live-insurance-eligibility-verification">A3.2 Live Insurance Eligibility Verification</h3>
+<p>Integrate with a clearinghouse (e.g., Availity, Change Healthcare). Inputs: carrier, optional member ID, provider NPI. Outputs: in-network status and estimated out-of-pocket. Display on results with a fallback to verify directly with the provider.</p>
+<p><strong>Compliance:</strong> Eligibility queries require PHI handling and a Business Associate Agreement with the clearinghouse.</p>
+<h3 id="a33-booking-handoff-options">A3.3 Booking Handoff Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Deep-link to provider online scheduling (public URL)</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Phone scheduling with referral context (care level, non-diagnostic)</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Calendar integration (e.g., Cal.com) for opted-in providers</td>
+</tr>
+</tbody>
+</table>
+<p>Full EHR integration (FHIR R4 write) is out of scope for MVP3.</p>
+<h3 id="a34-fastapi-ai-orchestration-service">A3.4 FastAPI AI Orchestration Service</h3>
+<p>FastAPI is introduced when AI workloads exceed what Next.js API routes should host: background jobs (ETL, batch re-scoring), embedding computation, model hosting, or automated evaluation on deploy.</p>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+
+N["Next.js BFF"] <-->|REST| F["FastAPI AI service"]
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class N,F teal;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+</div></code></pre>
+<h3 id="a35-embeddings-based-semantic-matching">A3.5 Embeddings-Based Semantic Matching</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart TD
+
+H["Hard filters"] --> R["Rule rank"]
+E["Embeddings"] --> B["Blend scores"]
+R --> B
+B --> OUT["Top 3 providers"]
+H -.-> OUT
+
+%% Styling (teal theme)
+classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+classDef output fill:#99f6e4,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+class H,R,E,B teal;
+class OUT output;
+
+%% Link styling
+linkStyle default stroke:#14B8A6,stroke-width:2px;
+linkStyle 4 stroke:#14B8A6,stroke-width:2px,stroke-dasharray:4 3;
+</div></code></pre>
+<h2 id="a4-advanced-ai-capabilities">A4. Advanced AI Capabilities</h2>
+<h3 id="a41-adaptive-multi-instrument-screening">A4.1 Adaptive Multi-Instrument Screening</h3>
+<p>When user concern and PHQ-9/GAD-7 results indicate supplemental assessment would improve routing, additional instruments may be conditionally presented.</p>
+<p><strong>Candidate instruments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Instrument</th>
+<th>Items</th>
+<th>Scale</th>
+<th>Trigger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCL-5 (PTSD)</td>
+<td>20</td>
+<td>0–4</td>
+<td>Trauma-related concern</td>
+</tr>
+<tr>
+<td>AUDIT (alcohol use)</td>
+<td>10</td>
+<td>Standard</td>
+<td>Substance-related concern</td>
+</tr>
+<tr>
+<td>MDQ (mood disorder)</td>
+<td>13</td>
+<td>Standard</td>
+<td>Mood concern with mild–moderate PHQ-9</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Architecture:</strong> Extend the batch intake engine dynamically from ScoreResult and concern; add adaptive instrument logic; extend scoring and matching additively without replacing existing components.</p>
+<p><strong>Timeline:</strong> MVP3+, subject to clinical advisory board approval.</p>
+<h3 id="a42-langgraph-workflow-orchestration">A4.2 LangGraph Workflow Orchestration</h3>
+<p>LangGraph shall be evaluated when the intake workflow requires: conditional branching on intermediate scores, tool-calling mid-flow (e.g., eligibility checks), or human-in-the-loop review for crisis cases. The linear batch flow does not require LangGraph in MVP1.</p>
+<h3 id="a43-open-source--self-hosted-crisis-classification">A4.3 Open-Source / Self-Hosted Crisis Classification</h3>
+<table>
+<thead>
+<tr>
+<th>Driver</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cost</td>
+<td>Lower marginal cost at high classification volume</td>
+</tr>
+<tr>
+<td>Privacy</td>
+<td>Crisis-related text remains on controlled infrastructure</td>
+</tr>
+<tr>
+<td>Customization</td>
+<td>Model tuned on consented, de-identified examples</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Requirements:</strong> IRB or equivalent for training data; GPU hosting; precision/recall evaluation with false-negative target under 2%; demographic parity audit.</p>
+<h2 id="a5-enterprise-features">A5. Enterprise Features</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SSO (SAML/OIDC)</strong></td>
+<td>Enterprise IT requirement for employer access</td>
+<td>MVP3+</td>
+</tr>
+<tr>
+<td><strong>HRIS integration</strong></td>
+<td>Eligibility sync from HR systems (Workday, BambooHR, etc.)</td>
+<td>MVP3+</td>
+</tr>
+<tr>
+<td><strong>EAP platform integration</strong></td>
+<td>Single benefits surface; ClearPath accessible within existing EAP</td>
+<td>MVP3+</td>
+</tr>
+<tr>
+<td><strong>Role-based access + audit logs</strong></td>
+<td>Security and compliance; admin roles, clinician reviewer roles</td>
+<td>MVP3+</td>
+</tr>
+<tr>
+<td><strong>White-label / co-branding</strong></td>
+<td>Custom domain, logo, color scheme for channel partners</td>
+<td>Scale</td>
+</tr>
+<tr>
+<td><strong>Configurable care pathways</strong></td>
+<td>Per-employer routing rules</td>
+<td>Scale</td>
+</tr>
+<tr>
+<td><strong>BAA + HIPAA-compliant data plane</strong></td>
+<td>Required before any employer pilot involving identified employee health data</td>
+<td>Before identified-data pilot</td>
+</tr>
+<tr>
+<td><strong>Multi-language (Spanish first)</strong></td>
+<td>Intake instruments have validated Spanish translations (PHQ-9-ES, GAD-7-ES)</td>
+<td>MVP3+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a6-architecture-evolution">A6. Architecture Evolution</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Architecture</th>
+<th>Driver</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MVP1 (current)</strong></td>
+<td>Single Next.js app; seeded JSON; in-memory sessions; Vercel</td>
+<td>Minimal infrastructure; validate core loop</td>
+</tr>
+<tr>
+<td><strong>MVP2</strong></td>
+<td>Next.js + managed Postgres; provider ETL; opt-in session store; employer auth</td>
+<td>Real data; persistence; pilot readiness</td>
+</tr>
+<tr>
+<td><strong>MVP3</strong></td>
+<td>Add FastAPI AI service; pgvector for embeddings; queue for background jobs</td>
+<td>AI orchestration; async work; semantic matching</td>
+</tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>Containerized services; autoscaling; observability; CDN; regional data isolation</td>
+<td>Multi-employer load; HIPAA compliance; SLA guarantees</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Principle carried throughout all phases:</strong> Deterministic scoring remains pure code. Safety resources remain prominent. The crisis page remains static and always-available. PHQ-9/GAD-7 totals never come from unconfirmed AI drafts.</p>
+<h2 id="a7-extensibility-seams">A7. Extensibility Seams</h2>
+<p>The MVP1 architecture was designed with explicit extension points to allow future work without requiring a rewrite.</p>
+<table>
+<thead>
+<tr>
+<th>Seam</th>
+<th>MVP1 Implementation</th>
+<th>MVP2+ Extension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scoring engine</td>
+<td>Pure TypeScript; no external dependencies</td>
+<td>Add new instruments (PCL-5, AUDIT) as additive score components; interface unchanged</td>
+</tr>
+<tr>
+<td>Provider matching engine</td>
+<td>JSON file input</td>
+<td>Swap to Postgres query + pgvector cosine similarity; interface unchanged</td>
+</tr>
+<tr>
+<td>Intake flow engine</td>
+<td>Linear 7-batch sequence</td>
+<td>Add adaptive branching; add persistence; interface extended, not replaced</td>
+</tr>
+<tr>
+<td>Crisis detection module</td>
+<td>Rules + API LLM</td>
+<td>Add audit log, human review queue, self-hosted classifier; same output interface</td>
+</tr>
+<tr>
+<td>LLM abstraction layer</td>
+<td>Single provider abstraction</td>
+<td>Add provider switching; A/B test models; add streaming support</td>
+</tr>
+<tr>
+<td>Provider data source</td>
+<td>Static seed file</td>
+<td>Replace with database-backed provider service; same ProviderCard output shape</td>
+</tr>
+<tr>
+<td>Session storage</td>
+<td>In-memory map</td>
+<td>Drop-in replacement with database-backed adapter; same interface</td>
+</tr>
+<tr>
+<td>Crisis UI component</td>
+<td>Static card with links</td>
+<td>Add dynamic content (local resource lookup by ZIP); same component contract</td>
+</tr>
+</tbody>
+</table>
+
+<script>
+(function () {
+  var citationRe = /(\[Research Dossier[^\]]+\]|\[Ref\.\s*[\d,\s§][^\]]*\]|\[(?:Strong|Moderate(?:-High)?(?:\s*\([^)]*\))?)\])/gi;
+  document.querySelectorAll('p, li, td').forEach(function (el) {
+    if (el.closest('pre')) return;
+    el.innerHTML = el.innerHTML.replace(citationRe, '<span class="cp-evidence">$1</span>');
+  });
+  document.querySelectorAll('strong').forEach(function (el) {
+    if (el.textContent.trim() === 'Finding:') el.classList.add('cp-finding-label');
+  });
+})();
+</script>
+</body>
+</html>

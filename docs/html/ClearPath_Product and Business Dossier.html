@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>product.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* ClearPath brand — Tailwind teal palette */
+:root {
+	--cp-teal-50: #f0fdfa;
+	--cp-teal-100: #ccfbf1;
+	--cp-teal-200: #99f6e4;
+	--cp-teal-500: #14b8a6;
+	--cp-teal-600: #0d9488;
+	--cp-teal-700: #0f766e;
+	--cp-teal-800: #115e59;
+	--cp-text: #1e293b;
+}
+
+body {
+	color: var(--cp-text);
+}
+
+/* Inline code: file paths, endpoints, env vars */
+:not(pre):not(.hljs) > code {
+	color: var(--cp-teal-700);
+	background-color: var(--cp-teal-50);
+	border: 1px solid var(--cp-teal-100);
+	padding: 0.12em 0.4em;
+	border-radius: 3px;
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	font-size: 0.88em;
+	font-weight: 500;
+}
+
+/* File-tree and code blocks */
+pre:not(.hljs):not(:has(.mermaid)),
+pre.hljs {
+	background-color: var(--cp-teal-50) !important;
+	border: 1px solid var(--cp-teal-200);
+	border-left: 4px solid var(--cp-teal-500);
+	border-radius: 4px;
+}
+
+pre.hljs code,
+pre:not(:has(.mermaid)) code {
+	color: var(--cp-teal-800);
+}
+
+blockquote {
+	border-left-color: var(--cp-teal-500);
+	background: var(--cp-teal-50);
+	padding: 0.5em 1em;
+	border-radius: 0 4px 4px 0;
+}
+
+a {
+	color: var(--cp-teal-600);
+}
+
+a:hover {
+	color: var(--cp-teal-700);
+	text-decoration: underline;
+}
+
+hr {
+	border-bottom-color: var(--cp-teal-200);
+}
+
+table > thead > tr > th {
+	background-color: var(--cp-teal-50);
+	color: var(--cp-teal-800);
+	border-bottom: 2px solid var(--cp-teal-200);
+}
+
+/* Evidence citations & reliability tags (filled by script) */
+.cp-evidence {
+	background: var(--cp-teal-50);
+	color: var(--cp-teal-700);
+	padding: 0.08em 0.35em;
+	border-radius: 3px;
+	font-weight: 600;
+	font-size: 0.92em;
+	white-space: nowrap;
+}
+
+.cp-finding-label {
+	color: var(--cp-teal-700);
+}
+
+h3[id*="evidence"] + p + ul,
+h3[id="12-the-evidence-summary"] + p + ul {
+	background: var(--cp-teal-50);
+	border-left: 3px solid var(--cp-teal-500);
+	padding: 0.65em 1em 0.65em 1.25em;
+	border-radius: 0 4px 4px 0;
+	margin-top: 0.5em;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+/* Typography: sections & subsections slightly bold */
+h1 {
+	font-weight: 700;
+	font-size: 1.75em;
+	margin-top: 0;
+	color: var(--cp-teal-800);
+	border-bottom: 2px solid var(--cp-teal-500);
+	padding-bottom: 0.35em;
+}
+
+h2 {
+	font-weight: 600;
+	font-size: 1.35em;
+	margin-top: 1.4em;
+	margin-bottom: 0.5em;
+	color: var(--cp-teal-700);
+	border-bottom: 2px solid var(--cp-teal-200);
+	padding-bottom: 0.3em;
+}
+
+h3 {
+	font-weight: 600;
+	font-size: 1.12em;
+	margin-top: 1.1em;
+	margin-bottom: 0.35em;
+	color: var(--cp-teal-700);
+}
+
+h4, h5, h6 {
+	font-weight: 600;
+	color: var(--cp-teal-800);
+}
+
+pre:has(.mermaid),
+pre:has(.mermaid) code {
+	padding: 0;
+	margin: 0.5em 0;
+	background: none;
+	overflow: visible;
+	white-space: normal;
+	border: none;
+}
+
+.mermaid {
+	display: block;
+	margin: 0.5em 0;
+	text-align: center;
+}
+
+.mermaid svg {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	height: auto;
+}
+
+@media screen {
+	body {
+		max-width: 210mm;
+		margin: 0 auto;
+		padding: 18mm 15mm;
+		background: #fff;
+		font-size: 11pt;
+		line-height: 1.5;
+		color: #1a1a1a;
+	}
+}
+
+@media print {
+	@page {
+		size: A4;
+		margin: 18mm 15mm 20mm 15mm;
+	}
+
+	html, body {
+		width: 100%;
+		margin: 0 !important;
+		padding: 0 !important;
+		font-size: 11pt;
+		line-height: 1.45;
+		color: #000;
+		background: #fff;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	h1, h2, h3, h4 {
+		color: var(--cp-teal-800) !important;
+	}
+
+	h2 {
+		border-bottom-color: var(--cp-teal-200) !important;
+	}
+
+	table > thead > tr > th {
+		background-color: var(--cp-teal-50) !important;
+		color: var(--cp-teal-800) !important;
+	}
+
+	:not(pre):not(.hljs) > code,
+	.cp-evidence {
+		background-color: var(--cp-teal-50) !important;
+		color: var(--cp-teal-700) !important;
+		border-color: var(--cp-teal-100) !important;
+	}
+
+	pre.hljs,
+	pre:not(:has(.mermaid)) {
+		background-color: var(--cp-teal-50) !important;
+		border-color: var(--cp-teal-200) !important;
+	}
+
+	body.scrollBeyondLastLine {
+		margin-bottom: 0 !important;
+	}
+
+	#code-csp-warning {
+		display: none !important;
+	}
+
+	h1, h2, h3, h4 {
+		page-break-after: avoid;
+		break-after: avoid-page;
+	}
+
+	p, li {
+		orphans: 3;
+		widows: 3;
+	}
+
+	table {
+		width: 100%;
+		font-size: 10pt;
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	tr {
+		page-break-inside: avoid;
+		break-inside: avoid-page;
+	}
+
+	pre:not(:has(.mermaid)), blockquote, img {
+		page-break-inside: avoid;
+		break-inside: avoid-page;
+	}
+
+	pre:has(.mermaid),
+	pre:has(.mermaid) code {
+		padding: 0 !important;
+		margin: 0.25em 0 0.5em;
+		background: none !important;
+		overflow: visible !important;
+		white-space: normal;
+		border: none;
+		page-break-inside: auto;
+		break-inside: auto;
+	}
+
+	.mermaid {
+		display: block;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		page-break-inside: auto;
+		break-inside: auto;
+	}
+
+	.mermaid svg {
+		display: block;
+		margin: 0 auto;
+		max-width: 100% !important;
+		width: auto !important;
+		height: auto !important;
+		max-height: 175mm;
+	}
+
+	.page {
+		page-break-after: always;
+		break-after: page;
+	}
+
+	hr {
+		border: none;
+		border-top: 1px solid #ccc;
+		margin: 1em 0;
+		page-break-after: avoid;
+	}
+
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ccfbf1',
+        primaryTextColor: '#0f172a',
+        primaryBorderColor: '#14b8a6',
+        lineColor: '#14b8a6',
+        secondaryColor: '#f0fdfa',
+        tertiaryColor: '#99f6e4',
+        edgeLabelBackground: '#ffffff',
+        fontSize: '11px'
+      },
+      flowchart: {
+        curve: 'basis'
+      }
+    });
+  </script>
+<h1 id="clearpath">ClearPath</h1>
+<p><strong>Prepared by:</strong> Bilisuma Tadesse</p>
+<h2 id="product-and-business-dossier">Product and Business Dossier</h2>
+<h3 id="ai-powered-mental-health-triage-and-provider-match-platform">AI-Powered Mental Health Triage and Provider-Match Platform</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Type</strong></td>
+<td>Product and Business Dossier</td>
+</tr>
+<tr>
+<td><strong>Project</strong></td>
+<td>ClearPath — AI-Powered Mental Health Triage and Navigation</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>v1.0 — Final Draft</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>June 4, 2026</td>
+</tr>
+<tr>
+<td><strong>Live Prototype</strong></td>
+<td>https://clearpathcare-demo.vercel.app</td>
+</tr>
+<tr>
+<td><strong>Companion Documents</strong></td>
+<td>Research Dossier; Software Requirements Specification</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Document purpose.</strong> This dossier presents the complete product strategy, design rationale, and business case for ClearPath. It is intended to be read alongside the Research Dossier (evidence base and citations) and the Software Requirements Specification (architecture and technical specifications). All product decisions are traceable to research findings documented in the companion Research Dossier.</p>
+</blockquote>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-executive-summary">Executive Summary</a></li>
+<li><a href="#2-problem-framing">Problem Framing</a></li>
+<li><a href="#3-product-strategy-design-thinking-process">Product Strategy: Design Thinking Process</a></li>
+<li><a href="#4-product-definition-what-clearpath-is-and-is-not">Product Definition: What ClearPath Is and Is Not</a></li>
+<li><a href="#5-the-ai-engine-core-differentiator">The AI Engine: Core Differentiator</a></li>
+<li><a href="#6-mvp1-specification">MVP1 Specification</a></li>
+<li><a href="#7-business-model-roi-and-stakeholders">Business Model, ROI, and Stakeholders</a></li>
+<li><a href="#8-roadmap-summary">Roadmap Summary</a></li>
+<li><a href="#9-risk-ethics-and-safety">Risk, Ethics, and Safety</a></li>
+<li><a href="#10-mvp1-rationale">MVP1 Rationale</a></li>
+</ol>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<h3 id="11-the-problem-in-one-sentence">1.1 The Problem in One Sentence</h3>
+<p>In the United States, the failure of mental healthcare is not a lack of willingness to seek help — it is the system's inability to convert that intent into care quickly and correctly.</p>
+<h3 id="12-the-evidence-summary">1.2 The Evidence (Summary)</h3>
+<p>The research evidence is documented fully in the companion Research Dossier. Key anchors:</p>
+<ul>
+<li>In 2024, approximately <strong>61.5 million U.S. adults (23.4%)</strong> had a diagnosable mental illness; approximately <strong>48% (~29.5 million) received no treatment</strong> in the past year [Research Dossier §3.1]</li>
+<li>The most-cited national wait benchmark between first outreach and a first appointment at community mental health centers is <strong>48 days</strong> [Research Dossier §5.1]</li>
+<li>A <strong>majority of psychologists</strong> report no openings for new patients; roughly <strong>1 in 3</strong> privately insured people struggle to find an in-network therapist [Research Dossier §4.3, §5.2]</li>
+<li>Poor employee mental health drives an estimated <strong>$47.6 billion/year</strong> in absence-related losses and <strong>$44 billion/year</strong> in depression-linked productivity loss [Research Dossier §6.2, §6.3]</li>
+</ul>
+<h3 id="13-the-product">1.3 The Product</h3>
+<p><strong>ClearPath</strong> is a web application that uses AI as a precision triage and care-navigation engine — not a therapy chatbot. The core loop:</p>
+<ol>
+<li>User builds a short profile (ZIP, insurance, primary concern, care format preference)</li>
+<li>User completes <strong>structured, clinically validated screening</strong> using verbatim PHQ-9 and GAD-7 instruments</li>
+<li>All scoring is <strong>deterministic code</strong> — the LLM never computes a clinical number</li>
+<li>The system maps scores to a stepped-care recommendation and surfaces a <strong>ranked shortlist of matched, in-network providers</strong></li>
+<li>A plain-language, non-diagnostic summary is generated to help the user understand their results and next steps</li>
+</ol>
+<blockquote>
+<p><strong>Value proposition:</strong> Reduce the time from <em>&quot;I need help&quot;</em> to <em>&quot;I have a shortlist of the right, reachable providers&quot;</em> from weeks to minutes — safely, without making diagnostic claims.</p>
+</blockquote>
+<h3 id="14-the-business">1.4 The Business</h3>
+<p>ClearPath is sold as a <strong>B2B SaaS mental health navigation benefit to self-insured employers</strong> (per-employee-per-month pricing). The buyer is present (HR/Benefits at mid-market companies) and the ROI is measurable (time-to-care, productivity recovery, benefit utilization).</p>
+<h3 id="15-current-status">1.5 Current Status</h3>
+<p>MVP1 is <strong>live and demonstrable</strong> at https://clearpathcare-demo.vercel.app. The full core loop is functional and ready for live demonstration.</p>
+<h2 id="2-problem-framing">2. Problem Framing</h2>
+<h3 id="21-core-unmet-need">2.1 Core Unmet Need</h3>
+<blockquote>
+<p><em>A motivated, employed adult with moderate anxiety or depression spends weeks navigating a fragmented, opaque, and unresponsive system before a first appointment — or gives up entirely — because there is no intelligent triage layer that converts willingness to seek help into matched, available care.</em></p>
+</blockquote>
+<p>When someone in the U.S. decides today to seek mental health support, they encounter:</p>
+<ul>
+<li><strong>No structured self-assessment</strong> — nothing helps them understand what type of care they need before searching</li>
+<li><strong>~48 days average wait</strong> at community mental health centers between first outreach and first appointment [Ref. 16]</li>
+<li><strong>A majority chance</strong> their chosen therapist is not accepting new patients [Ref. 20]</li>
+<li><strong>Confusing insurance landscape</strong> — roughly 1 in 3 privately insured people report difficulty finding an in-network therapist [Ref. 15]</li>
+<li><strong>No stepped-care logic</strong> — the system defaults to weekly individual therapy regardless of clinical need</li>
+</ul>
+<p>The result: people never enter care, enter mismatched care, or abandon the process after weeks of frustration.</p>
+<h3 id="22-primary-user">2.2 Primary User</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Demographics</strong></td>
+<td>25–45 years old, employed, insured or employer-covered, moderate-to-high digital literacy</td>
+</tr>
+<tr>
+<td><strong>Clinical state</strong></td>
+<td>Mild-to-moderate anxiety or depression; not in acute crisis</td>
+</tr>
+<tr>
+<td><strong>Behavioral pattern</strong></td>
+<td>Has searched for help; hit walls of unavailability or cost confusion; stalled</td>
+</tr>
+<tr>
+<td><strong>Core need</strong></td>
+<td>Fast, personalized, actionable guidance — not generic information</td>
+</tr>
+<tr>
+<td><strong>Channel</strong></td>
+<td>Reachable through employer benefit programs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Secondary user (MVP2+):</strong> Employer HR/Benefits managers seeking aggregate utilization data and population-level behavioral health insight.</p>
+<h3 id="23-what-the-current-system-gets-wrong">2.3 What the Current System Gets Wrong</h3>
+<table>
+<thead>
+<tr>
+<th>Failure Mode</th>
+<th>Why It Persists</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unstructured intake</strong></td>
+<td>Patients self-refer with no validated symptom data; clinicians re-collect what PHQ-9/GAD-7 capture in 5 minutes</td>
+</tr>
+<tr>
+<td><strong>Undirected matching</strong></td>
+<td>Directories match by keyword and geography — not clinical severity or specialty</td>
+</tr>
+<tr>
+<td><strong>Invisible wait times</strong></td>
+<td>Little real-time availability data; users apply to multiple providers with no feedback</td>
+</tr>
+<tr>
+<td><strong>Insurance opacity</strong></td>
+<td>Coverage often unknown until after the first visit</td>
+</tr>
+<tr>
+<td><strong>No stepped-care logic</strong></td>
+<td>Defaults to weekly therapy regardless of need; under-uses evidence-based stepped-care models</td>
+</tr>
+<tr>
+<td><strong>Passive crisis handling</strong></td>
+<td>Most tools display a hotline number; few run active, layered triage</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-product-strategy-design-thinking-process">3. Product Strategy: Design Thinking Process</h2>
+<p>ClearPath was scoped and designed using a structured <strong>Design Thinking</strong> methodology: Empathize, Define, Ideate, Prototype, Test.</p>
+<h3 id="31-empathize">3.1 Empathize</h3>
+<p><strong>Methods:</strong> Desk research across federal and policy sources (CDC/NCHS, SAMHSA, HRSA, KFF, Commonwealth Fund) and peer-reviewed journals; user journey mapping from documented access barriers; competitive landscape analysis.</p>
+<p><strong>Key empathy findings:</strong></p>
+<ol>
+<li><strong>Shame about not knowing where to start</strong> — the system offers no onboarding or self-assessment for new users</li>
+<li><strong>First contact is designed for administrators, not patients</strong> — cold-calling, paperwork, and non-responsive intake forms</li>
+<li><strong>Employed adults are the least-reached by community centers but most reachable through employer benefits</strong> — a commercially accessible channel with a motivated, capable user</li>
+<li><strong>Structure reduces stigma</strong> — users complete a validated questionnaire more readily than an open &quot;describe your problems&quot; field</li>
+</ol>
+<h3 id="32-define">3.2 Define</h3>
+<p><strong>Problem statement:</strong></p>
+<blockquote>
+<p><em>A motivated, employed adult experiencing moderate anxiety or depression spends weeks navigating a fragmented, opaque system before their first appointment — or gives up — because there is no intelligent triage layer that converts their willingness to seek help into matched, available care.</em></p>
+</blockquote>
+<p><strong>How Might We statements:</strong></p>
+<ul>
+<li>HMW reduce the time between &quot;I need help&quot; and &quot;I have a first appointment&quot; from weeks to minutes?</li>
+<li>HMW use validated clinical data — not free-text self-description — to improve provider match quality?</li>
+<li>HMW make insurance and cost information legible before a user commits to a provider?</li>
+<li>HMW detect escalating distress in a digital-first workflow without replacing clinical judgment?</li>
+</ul>
+<h3 id="33-ideate-three-concepts-evaluated">3.3 Ideate: Three Concepts Evaluated</h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Core Description</th>
+<th>AI Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A — ClearPath</strong> (triage + match)</td>
+<td>AI-guided profile + structured validated screening to clinical profile to ranked provider match</td>
+<td>Navigation pacing, optional story context, crisis classifier, plain-language summary; deterministic scoring and routing</td>
+</tr>
+<tr>
+<td><strong>B — Bridge</strong> (between-session CBT companion)</td>
+<td>AI delivers CBT homework between therapy sessions for existing patients</td>
+<td>Adaptive content delivery, session summaries, progress tracking</td>
+</tr>
+<tr>
+<td><strong>C — PulseDesk</strong> (employer ROI dashboard)</td>
+<td>Aggregates EAP and absence data into a mental health ROI view</td>
+<td>Anomaly detection, NLG recommendations, predictive risk scoring</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-decision-matrix">3.4 Decision Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion (Weight)</th>
+<th>A: ClearPath</th>
+<th>B: Bridge</th>
+<th>C: PulseDesk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User impact</strong> (25%)</td>
+<td>5 — addresses the entry barrier for ~29.5M untreated adults</td>
+<td>4 — helps existing patients; smaller pool</td>
+<td>3 — employer sees value; end-user impact indirect</td>
+</tr>
+<tr>
+<td><strong>Feasibility in 7-day window</strong> (25%)</td>
+<td>4 — intake + match is buildable; no EHR integration needed</td>
+<td>3 — requires provider-side integration</td>
+<td>2 — requires data partnerships and HR integrations</td>
+</tr>
+<tr>
+<td><strong>Safety / risk</strong> (20%)</td>
+<td>4 — crisis escalation well-defined; scope is pre-clinical navigation</td>
+<td>3 — between-session AI raises liability if patient deteriorates</td>
+<td>2 — risk scores on aggregate data create governance concerns</td>
+</tr>
+<tr>
+<td><strong>Differentiation</strong> (15%)</td>
+<td>5 — no AI-first triage + match product serves the mid-market at this fidelity</td>
+<td>3 — established AI companion players already exist</td>
+<td>4 — adjacent enterprise products exist; ROI framing differentiated</td>
+</tr>
+<tr>
+<td><strong>Business viability</strong> (15%)</td>
+<td>5 — employer PEPM or insurer per-referral; clear monetization path</td>
+<td>4 — per-provider subscription; smaller market</td>
+<td>4 — employer SaaS; long sales cycles in year 1</td>
+</tr>
+<tr>
+<td><strong>Weighted total</strong></td>
+<td><strong>4.55 (Selected)</strong></td>
+<td>3.50</td>
+<td>2.95</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision: Concept A — ClearPath.</strong> Highest weighted score; addresses the largest underserved population; most feasible to demonstrate within the build window; clearest safety boundary and monetization path.</p>
+<h3 id="35-prototype-and-test">3.5 Prototype and Test</h3>
+<p>The working prototype (MVP1) implements the full core loop. Validation is conducted with three user personas:</p>
+<ul>
+<li><strong>Persona 1:</strong> Mild anxiety (low PHQ-9/GAD-7 scores; coaching or self-guided routing)</li>
+<li><strong>Persona 2:</strong> Moderate depression (several elevated PHQ-9 items; item 9 = 0; therapy-level routing)</li>
+<li><strong>Persona 3:</strong> Crisis-adjacent (item 9 ≥ 1; crisis care level; dual-layer safety UX)</li>
+</ul>
+<p>Acceptance metrics: intake completion time at or under 7 minutes, scoring accuracy on 10 test cases per instrument, 100% crisis detection rate on item 9 ≥ 1, provider match relevance verified manually.</p>
+<h2 id="4-product-definition-what-clearpath-is-and-is-not">4. Product Definition: What ClearPath Is and Is Not</h2>
+<h3 id="41-what-clearpath-is">4.1 What ClearPath Is</h3>
+<p>ClearPath is a <strong>mental health triage and care-navigation tool</strong>. Its primary outputs are:</p>
+<ol>
+<li>A structured, non-diagnostic clinical profile derived from validated PHQ-9 and GAD-7 screening</li>
+<li>A stepped-care recommendation (self-guided, coaching, therapy, psychiatry, urgent, or crisis) based on deterministic scoring</li>
+<li>A ranked shortlist of matched, in-network providers filtered by clinical need, insurance, format preference, and location</li>
+<li>A plain-language, non-diagnostic summary to support the user's decision-making</li>
+</ol>
+<h3 id="42-what-clearpath-is-not">4.2 What ClearPath Is Not</h3>
+<table>
+<thead>
+<tr>
+<th>Not</th>
+<th>Why This Boundary Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Not a therapy chatbot</strong></td>
+<td>ClearPath does not provide therapy or therapeutic interventions</td>
+</tr>
+<tr>
+<td><strong>Not a diagnostic tool</strong></td>
+<td>PHQ-9 and GAD-7 are validated screening instruments; clinical diagnosis requires a licensed provider</td>
+</tr>
+<tr>
+<td><strong>Not a crisis management system</strong></td>
+<td>ClearPath applies dual-layer crisis detection and surfaces safety resources but does not replace clinical crisis services</td>
+</tr>
+<tr>
+<td><strong>Not a replacement for clinical judgment</strong></td>
+<td>All clinical decisions are deferred to the matched provider; the product supports navigation, not care delivery</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-design-principles">4.3 Design Principles</h3>
+<ol>
+<li><strong>Demo-first:</strong> Every feature must contribute to a working end-to-end demonstration</li>
+<li><strong>Safety is non-negotiable:</strong> Crisis detection and deterministic scoring are always Must-Have; never deferred</li>
+<li><strong>Determinism over cleverness:</strong> All clinical scoring, severity thresholds, and care-level logic are pure deterministic code</li>
+<li><strong>Instrument validity:</strong> PHQ-9 and GAD-7 totals come only from user-confirmed 0–3 answers — never from narrative text alone</li>
+<li><strong>Lean architecture:</strong> Single Next.js application; no unnecessary service layers in MVP1</li>
+<li><strong>Cut scope, not quality:</strong> When time is short, defer a Should-Have feature; never a Must-Have or safety requirement</li>
+</ol>
+<h2 id="5-the-ai-engine-core-differentiator">5. The AI Engine: Core Differentiator</h2>
+<h3 id="51-why-ai-is-core-not-decorative">5.1 Why AI Is Core, Not Decorative</h3>
+<p>The alternative to ClearPath is a static 16-question form plus a keyword-matched directory — which already exists and systematically under-serves users. AI adds value in four ways that a form cannot:</p>
+<ol>
+<li><strong>Guided journey:</strong> Welcome copy, profile wizard support, chapter transitions, and results narrative reduce drop-off compared to a cold 16-item form</li>
+<li><strong>Empathetic context:</strong> Optional free-text narrative personalizes the results summary; the crisis classifier runs on that text</li>
+<li><strong>Severity-sensitive routing:</strong> PHQ-9 scores, GAD-7 scores, and stated concern combine into a multi-dimensional profile, enabling precision matching rather than single-keyword lookup</li>
+<li><strong>Real-time crisis detection:</strong> The classifier monitors for indirect crisis language in optional context, in addition to the deterministic PHQ-9 item 9 check</li>
+</ol>
+<h3 id="52-ai-architecture-logical">5.2 AI Architecture (Logical)</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+  subgraph L1["Intake"]
+    direction TB
+    A[Profile] --> B{Path}
+    B -->|Q| C[PHQ-9 / GAD-7]
+    B -->|S| D[Story] --> C
+  end
+
+  subgraph L2["Deterministic core"]
+    direction TB
+    C --> E[Score] --> F[Match]
+  end
+
+  subgraph L3["Output"]
+    direction TB
+    F --> G[LLM summary] --> H[Results]
+  end
+
+  L1 --> L2 --> L3
+  B -.-> I[Crisis detect]
+  C -.-> J[Item 9 safety]
+
+  classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+  classDef decision fill:#99f6e4,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+  class A,C,D,E,F,G,H,I,J teal;
+  class B decision;
+
+  style L1 fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+  style L2 fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+  style L3 fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+</div></code></pre>
+<p><strong>Core principle:</strong> The LLM never computes or reports a clinical score. Scoring, severity classification, care-level mapping, and provider matching are all deterministic code, operating on user-confirmed item answers.</p>
+<h3 id="53-ai-vs-deterministic-roles">5.3 AI vs. Deterministic Roles</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Handled by</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHQ-9 / GAD-7 total scores</td>
+<td>Deterministic code</td>
+<td>Eliminates hallucination risk; auditable</td>
+</tr>
+<tr>
+<td>Severity band mapping</td>
+<td>Deterministic code</td>
+<td>Clinical thresholds require exactness</td>
+</tr>
+<tr>
+<td>Care-level recommendation</td>
+<td>Deterministic code</td>
+<td>Must be consistent across all runs</td>
+</tr>
+<tr>
+<td>Provider match ranking</td>
+<td>Deterministic code</td>
+<td>Filter and sort logic, not generative</td>
+</tr>
+<tr>
+<td>Story draft item suggestions</td>
+<td>LLM (user confirms each)</td>
+<td>Requires language understanding</td>
+</tr>
+<tr>
+<td>Crisis classification (text)</td>
+<td>Rules + LLM (≥0.85 confidence threshold)</td>
+<td>Text pattern requires semantic understanding</td>
+</tr>
+<tr>
+<td>Results summary narrative</td>
+<td>LLM</td>
+<td>Plain-language explanation requires generation</td>
+</tr>
+<tr>
+<td>Welcome / chapter transitions</td>
+<td>LLM or templated fallback</td>
+<td>Navigation warmth</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-safety-safeguards">5.4 Safety Safeguards</h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Engineering Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM gives clinical advice or diagnosis</td>
+<td>Hard system-prompt constraints; templated non-diagnostic output; adversarial testing</td>
+</tr>
+<tr>
+<td>Crisis signal missed</td>
+<td>Dual-layer: deterministic item-9 check + crisis-language classifier; always-visible safety card + static /crisis page</td>
+</tr>
+<tr>
+<td>Story scoring without user confirmation</td>
+<td>AI suggestions stored separately; scoring module uses confirmed answers only</td>
+</tr>
+<tr>
+<td>Hallucinated score</td>
+<td>Scoring is deterministic; LLM never handles the numeric computation</td>
+</tr>
+<tr>
+<td>Result mistaken for diagnosis</td>
+<td>Explicit, repeated disclaimers: &quot;screening, not a diagnosis&quot;</td>
+</tr>
+<tr>
+<td>Severe symptoms conflated with crisis</td>
+<td>Severe scores route to urgent guidance, distinct from the crisis care level and 988 resources</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-mvp1-specification">6. MVP1 Specification</h2>
+<h3 id="61-moscow-prioritization">6.1 MoSCoW Prioritization</h3>
+<h4 id="must-have-all-shipped-in-mvp1">Must-Have (All Shipped in MVP1)</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Feature</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1</td>
+<td>Deterministic PHQ-9 + GAD-7 scoring engine with unit tests</td>
+<td>Clinical backbone; removes all hallucination risk from scores</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>Structured PHQ-9/GAD-7 screening (verbatim items, batched UI; optional story-to-AI-draft-to-user-review path)</td>
+<td>Validated instruments; both questionnaire and narrative entry paths</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>Dual-layer crisis detection + safety resources (inline banner + static /crisis page)</td>
+<td>Safety-critical; non-blocking design allows screening to complete</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>Care-level recommendation (stepped-care mapping; urgent vs. crisis distinct)</td>
+<td>Actionable routing without diagnostic claims</td>
+</tr>
+<tr>
+<td>M5</td>
+<td>Provider match engine + results page (seeded dataset)</td>
+<td>Primary user payoff: ranked, relevant shortlist</td>
+</tr>
+<tr>
+<td>M6</td>
+<td>Profile onboarding wizard + landing + welcome journey</td>
+<td>Entry point and user context collection</td>
+</tr>
+<tr>
+<td>M7</td>
+<td>Vercel deployment + README</td>
+<td>Submission deliverable; live, demonstrable prototype</td>
+</tr>
+</tbody>
+</table>
+<h4 id="should-have">Should-Have</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Feature</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>Print/save care packet (print stylesheet on results)</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>LLM plain-language results narrative (non-diagnostic)</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Accessibility pass (WCAG 2.1 AA) on intake + results</td>
+<td>Target Jun 3</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>&quot;No matches found&quot; fallback to community resources</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>Progress indicator + chapter introductions in screening</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Processing pipeline UI (score, match, summary steps)</td>
+<td>Shipped</td>
+</tr>
+</tbody>
+</table>
+<h4 id="can-wait--mvp2-and-beyond">Can Wait — MVP2 and Beyond</h4>
+<p>Real provider data pipeline, accounts and authentication, employer dashboard, provider notifications, live insurance verification, payments, FastAPI AI service, LangGraph orchestration, native mobile, multi-language support.</p>
+<h3 id="62-user-flow">6.2 User Flow</h3>
+<pre><code class="language-mermaid"><div class="mermaid">%%{init: {"themeVariables": {"fontSize": "11px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 22, "padding": 6}}}%%
+flowchart LR
+  subgraph L1["Onboarding"]
+    direction LR
+    A[Landing] --> B[Welcome] --> C[Profile]
+  end
+
+  subgraph L2["Intake"]
+    direction LR
+    D{Path} --> E[Screen]
+  end
+
+  subgraph L3["Output"]
+    direction LR
+    F[Processing] --> G[Results]
+  end
+
+  C --> D
+  E --> F
+
+  classDef teal fill:#D1FAF5,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+  classDef decision fill:#99f6e4,stroke:#14B8A6,stroke-width:2px,color:#0F172A;
+
+  class A,B,C,E,F,G teal;
+  class D decision;
+
+  style L1 fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+  style L2 fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+  style L3 fill:#f0fdfa,stroke:#14B8A6,stroke-width:1.5px
+</div></code></pre>
+<p>Key UX principle: <strong>no hard redirects on crisis detection.</strong> A user who triggers crisis detection is shown the SafetySupportCard inline; the /crisis page is offered voluntarily; and the full screening flow and results remain accessible. This ensures that even users with elevated risk receive a care plan and provider shortlist alongside safety resources.</p>
+<h3 id="63-acceptance-criteria">6.3 Acceptance Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Pass Condition</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHQ-9 scoring accuracy</td>
+<td>System score matches manual scoring for 10 test cases</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>GAD-7 scoring accuracy</td>
+<td>System score matches manual scoring for 10 test cases</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Crisis detection — item 9</td>
+<td>PHQ-9 item 9 ≥ 1 sets isCrisis and crisis care level 100% of the time</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Crisis UX</td>
+<td>Safety resources shown inline + on results; screening not hard-blocked</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Story path integrity</td>
+<td>AI-suggested item values require user confirmation before scoring</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Scoring integrity</td>
+<td>Zero LLM-generated scores in 20 runs; scoring is deterministic</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Intake completion time</td>
+<td>Median ≤ 7 minutes across 5 runs</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Match relevance</td>
+<td>Matched providers reflect stated insurance + concern</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Responsiveness</td>
+<td>Renders correctly at 375px viewport</td>
+<td>Verified</td>
+</tr>
+<tr>
+<td>Accessibility</td>
+<td>WCAG 2.1 AA for intake form elements</td>
+<td>Target Jun 3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-business-model-roi-and-stakeholders">7. Business Model, ROI, and Stakeholders</h2>
+<h3 id="71-monetization-phases">7.1 Monetization Phases</h3>
+<p><strong>Phase 1 (Months 1–6): Employer B2B SaaS</strong></p>
+<p>ClearPath as a mental health navigation benefit, offered free to employees and purchased by HR/Benefits teams.</p>
+<ul>
+<li><strong>Pricing model:</strong> Per-employee-per-month (PEPM), targeting $3–8 PEPM</li>
+<li><strong>Contract structure:</strong> Annual contracts; minimum ~200 employees</li>
+<li><strong>Sales motion:</strong> Direct to HR/Benefits at 500–5,000-employee companies (mid-market); avoid Fortune 500 in year 1 due to longer sales cycles</li>
+<li><strong>Why employers pay:</strong> Poor employee mental health drives measurable costs; ClearPath reduces time-to-care, the lever most directly tied to those costs</li>
+</ul>
+<p><strong>Phase 2 (Months 6–18): Insurer/Health Plan Integration</strong></p>
+<ul>
+<li><strong>Model:</strong> PMPM or per-completed-referral fee</li>
+<li><strong>Value proposition:</strong> Reduced avoidable ED visits, step-appropriate routing, improved parity compliance infrastructure</li>
+<li><strong>Regulatory context:</strong> Mental health parity enforcement is evolving; payers need demonstrable structured triage [Ref. 13, 14]</li>
+</ul>
+<p><strong>Phase 3 (Months 18–36): Provider Network</strong></p>
+<ul>
+<li><strong>Model:</strong> Premium directory placement or per-booked-appointment referral fees</li>
+<li><strong>Governance:</strong> Must be disclosed and structured to prevent pay-to-rank dynamics that would compromise match integrity</li>
+</ul>
+<h3 id="72-unit-economics-indicative">7.2 Unit Economics (Indicative)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Assumption</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Average PEPM price</td>
+<td>Conservative</td>
+<td>$5/employee/month</td>
+</tr>
+<tr>
+<td>Average contract size</td>
+<td>500 employees</td>
+<td>$2,500 MRR</td>
+</tr>
+<tr>
+<td>Year-1 target</td>
+<td>50 employers</td>
+<td>~$125,000 MRR (~$1.5M ARR)</td>
+</tr>
+<tr>
+<td>COGS (API + hosting + support)</td>
+<td>Estimated</td>
+<td>~30% of revenue</td>
+</tr>
+<tr>
+<td>Target gross margin</td>
+<td>—</td>
+<td>~70%</td>
+</tr>
+<tr>
+<td>Break-even employer count</td>
+<td>~$30K/month operating cost</td>
+<td>~12 employers</td>
+</tr>
+</tbody>
+</table>
+<p>These are illustrative planning assumptions, not financial forecasts.</p>
+<p><strong>Employer ROI anchor:</strong> One 500-employee company with an average salary of $65,000 and a 5% reduction in depression-related productivity loss recovers approximately $163,000/year against a $30,000/year ClearPath cost — an estimated 5:1 return, before accounting for reduced absenteeism or improved benefit utilization.</p>
+<h3 id="73-stakeholder-map">7.3 Stakeholder Map</h3>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Primary Interest</th>
+<th>Pain ClearPath Addresses</th>
+<th>Key Concern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Patients / end users</strong></td>
+<td>Fast, affordable, matched care</td>
+<td>Long waits + insurance opacity</td>
+<td>Privacy; data misuse</td>
+</tr>
+<tr>
+<td><strong>Employers / HR teams</strong></td>
+<td>Productivity, retention, measurable benefit ROI</td>
+<td>Impaired productivity; employees unsure how to access benefits</td>
+<td>Liability; employee trust</td>
+</tr>
+<tr>
+<td><strong>Health insurers / plans</strong></td>
+<td>Cost containment, parity compliance, reduced ED visits</td>
+<td>Mis-routed care; out-of-network overuse</td>
+<td>Regulatory scrutiny</td>
+</tr>
+<tr>
+<td><strong>Therapists / counselors</strong></td>
+<td>Full caseloads with well-matched patients</td>
+<td>Intake burden; poor-fit referrals</td>
+<td>Replacement concerns; data ownership</td>
+</tr>
+<tr>
+<td><strong>Primary care providers</strong></td>
+<td>Structured mental health referral pathway</td>
+<td>No organized MH navigation for co-morbid patients</td>
+<td>Integration complexity</td>
+</tr>
+<tr>
+<td><strong>Regulators (FDA, state boards)</strong></td>
+<td>Safety; non-diagnostic claims</td>
+<td>Unvalidated apps making clinical claims</td>
+<td>Perception of diagnosing vs. screening</td>
+</tr>
+</tbody>
+</table>
+<h3 id="74-competitive-positioning">7.4 Competitive Positioning</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Strength</th>
+<th>Gap ClearPath Fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provider directories (Psychology Today, Zocdoc)</td>
+<td>Large provider databases</td>
+<td>No validated intake; no clinical-severity matching</td>
+</tr>
+<tr>
+<td>Teletherapy marketplaces (BetterHelp, Talkspace)</td>
+<td>Scale and brand recognition</td>
+<td>Closed ecosystems; no external or in-person routing</td>
+</tr>
+<tr>
+<td>Enterprise platforms (Spring Health, Lyra)</td>
+<td>Clinically validated; enterprise-grade</td>
+<td>Higher cost; designed for large employers; not mid-market</td>
+</tr>
+<tr>
+<td>AI companions (Woebot, Wysa)</td>
+<td>Clinically studied ongoing support</td>
+<td>Support focus, not triage and navigation</td>
+</tr>
+<tr>
+<td>Wellness apps (Headspace, Calm)</td>
+<td>Strong B2B distribution</td>
+<td>Wellness focus, not clinical-severity routing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ClearPath's differentiated position:</strong> AI-first triage-and-match for the <strong>underserved mid-market</strong> (200–5,000-employee companies), with validated clinical intake as the core engine — not wellness content, not a closed therapy ecosystem, not enterprise-only pricing.</p>
+<h2 id="8-roadmap-summary">8. Roadmap Summary</h2>
+<p>Full roadmap detail is in the companion SRS. This section summarizes the strategic phases.</p>
+<h3 id="81-mvp1-prove-the-loop-7-day-build--completed">8.1 MVP1: Prove the Loop (7-Day Build — Completed)</h3>
+<p><strong>Goal:</strong> A live, demonstrable prototype proving the full core loop safely.</p>
+<p><strong>Delivered:</strong> Profile, structured validated screening, deterministic scoring, dual-layer crisis detection, stepped-care recommendation, ranked provider match, and results page.</p>
+<p><strong>Live:</strong> https://clearpathcare-demo.vercel.app</p>
+<h3 id="82-mvp2-validate-and-harden-days-830">8.2 MVP2: Validate and Harden (Days 8–30)</h3>
+<p><strong>Goal:</strong> Turn the prototype into a pilot-ready product with real data, real users, and the first employer conversation.</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Real provider data pipeline (NPPES NPI registry + public listings; ~500 providers, 5 metros)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Opt-in longitudinal tracking (magic-link sessions; 30-day re-screen; trend view)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Clinical advisory validation (2–3 licensed clinicians review intake quality and routing logic)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Employer dashboard v0 (aggregate-only: completion counts, care-level distribution, time-to-match)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>First employer pilot (at least 1 signed; at least 200 employees; instrument time-to-first-appointment vs. 48-day baseline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MVP2 success metrics:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intake completion rate</td>
+<td>&gt; 65%</td>
+</tr>
+<tr>
+<td>Provider match click-through</td>
+<td>&gt; 35%</td>
+</tr>
+<tr>
+<td>Crisis escalation rate (100% audited)</td>
+<td>Low single-digit percent</td>
+</tr>
+<tr>
+<td>Real provider coverage</td>
+<td>≥ 500 providers, 5 metros</td>
+</tr>
+<tr>
+<td>Employer pilots signed</td>
+<td>≥ 1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-mvp3-close-the-loop-and-scale-months-24">8.3 MVP3: Close the Loop and Scale (Months 2–4)</h3>
+<ul>
+<li>Provider notification and consented referral (closed-loop attribution for Phase 2 monetization)</li>
+<li>Live insurance eligibility verification</li>
+<li>Booking handoff to provider scheduling</li>
+<li>Embeddings-based semantic matching (complement rule-based ranking)</li>
+<li>FastAPI AI orchestration service (when AI work outgrows Next.js API routes)</li>
+</ul>
+<h3 id="84-scale-and-enterprise-months-4">8.4 Scale and Enterprise (Months 4+)</h3>
+<ul>
+<li>LangGraph-orchestrated adaptive multi-instrument screening (PCL-5, AUDIT)</li>
+<li>SSO/SAML, HRIS/EAP integrations, HIPAA-compliant data architecture</li>
+<li>Multi-language support (Spanish first)</li>
+<li>Bias and fairness auditing on match outcomes</li>
+<li>White-label and co-brand configurations</li>
+</ul>
+<p><strong>Core principle across all phases:</strong> The batch intake and deterministic scoring infrastructure built in MVP1 is never replaced — all future work is additive.</p>
+<h2 id="9-risk-ethics-and-safety">9. Risk, Ethics, and Safety</h2>
+<h3 id="91-clinical-and-safety-risks">9.1 Clinical and Safety Risks</h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acute crisis not escalated</td>
+<td>Low (dual-layer detection)</td>
+<td>Critical</td>
+<td>Deterministic item-9 check + parallel LLM classifier; inline SafetySupportCard + always-accessible static /crisis page</td>
+</tr>
+<tr>
+<td>LLM gives clinical advice or diagnosis</td>
+<td>Medium (without safeguards)</td>
+<td>High</td>
+<td>Hard system-prompt constraints; adversarial testing; deterministic scoring; non-diagnostic templated output</td>
+</tr>
+<tr>
+<td>User substitutes app for professional care</td>
+<td>Medium</td>
+<td>High</td>
+<td>Repeated, prominent disclaimers: &quot;screening, not diagnosis or treatment&quot;</td>
+</tr>
+<tr>
+<td>Provider data inaccuracy</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>&quot;Verify before booking&quot; prompt; &quot;last updated&quot; timestamp on all provider cards</td>
+</tr>
+<tr>
+<td>Model drift or prompt degradation</td>
+<td>Low-Medium</td>
+<td>Medium</td>
+<td>Scheduled prompt re-evaluation; adversarial testing on every model/prompt change</td>
+</tr>
+<tr>
+<td>Prompt injection via user input</td>
+<td>Medium</td>
+<td>High</td>
+<td>Hardened system prompts; clinical decisions not LLM-driven; adversarial testing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="92-ethics">9.2 Ethics</h3>
+<p><strong>Scope of practice:</strong> ClearPath performs screening, not diagnosis. PHQ-9 and GAD-7 are validated screening tools used routinely in primary care worldwide. The product makes no diagnostic claims and defers clinical interpretation to the matched provider. The intended regulatory positioning is consistent with FDA's General Wellness policy; a formal determination is required prior to launch.</p>
+<p><strong>Algorithmic bias:</strong> Matching may underserve rural ZIPs, non-English speakers, or Medicaid enrollees due to provider data distribution. Planned mitigations: &quot;No matches found&quot; fallback surfacing community mental health center alternatives; language-preference filter (MVP2 roadmap); demographic-parity audits on match outcomes (MVP2 roadmap).</p>
+<p><strong>Data minimization:</strong> MVP1 stores no personally identifiable information. Session data does not persist beyond the browser session. No user data is sold or shared.</p>
+<p><strong>Informed consent:</strong> Users are informed at intake start what is collected, how it is used, that the tool is not a therapist, and that they can stop at any time.</p>
+<h3 id="93-regulatory-posture">9.3 Regulatory Posture</h3>
+<p>ClearPath is intended to operate as a <strong>general wellness / health-navigation tool</strong>, not Software as a Medical Device (SaMD), in alignment with FDA's General Wellness Policy [Ref. 54]. Key guardrails:</p>
+<ul>
+<li>No diagnostic claims are made</li>
+<li>PHQ-9 and GAD-7 are used as validated screening instruments, consistent with their intended use in primary care</li>
+<li>Clinical decisions (diagnosis, treatment planning) are deferred to the matched licensed provider</li>
+<li>A formal regulatory assessment must be completed before launch</li>
+</ul>
+<p>If the product is later extended to include clinical decision support, FDA de novo or 510(k) clearance may be required.</p>
+<p><strong>HIPAA:</strong> MVP1 stores no PHI and has no covered-entity relationship. A HIPAA-compliant architecture and Business Associate Agreements are required before any employer or insurer pilot involving identified user data.</p>
+<h3 id="94-known-mvp1-limitations">9.4 Known MVP1 Limitations</h3>
+<ol>
+<li>Provider data is seeded — real-time availability is not reflected; users are prompted to verify before booking</li>
+<li>Insurance cost estimates are indicative — coverage must be confirmed with the provider</li>
+<li>No independent clinical validation has been conducted — planned for MVP2 with licensed clinician advisors</li>
+<li>The tool requires internet access and moderate digital literacy — digital-divide concerns are acknowledged</li>
+<li>English-only in MVP1 — a meaningful equity limitation</li>
+</ol>
+<h2 id="10-mvp1-rationale">10. MVP1 Rationale</h2>
+<p>The ClearPath MVP1 is the right starting point for seven compounding reasons:</p>
+<p><strong>1. Highest-leverage, most tractable failure.</strong> The intent-to-care gap can be meaningfully reduced with software today — without requiring regulatory change, new clinical partnerships, or EHR integrations. Workforce shortages and insurance reform are intractable in a 7-day window; intelligent triage navigation is not.</p>
+<p><strong>2. AI is structurally necessary, not decorative.</strong> A static form plus a keyword directory already exists. It under-serves. AI enables guided pacing, ambiguity handling, real-time crisis detection, and multi-dimensional matching — none achievable with a form alone.</p>
+<p><strong>3. The buyer is present.</strong> Employers are actively expanding mental health benefit offerings. A buyer-present, ROI-measurable market with an identified decision-maker (HR/Benefits) is the most efficient path to early revenue.</p>
+<p><strong>4. The safety boundary is clear and defensible.</strong> Screening is not diagnosis. Deterministic scoring removes the primary clinical risk of AI health tools. The scope is bounded, testable, and aligned with established regulatory frameworks.</p>
+<p><strong>5. It is shippable in the window without cutting safety corners.</strong> No EHR integration, no HIPAA-covered data, no real-time API partnerships, and no regulatory approvals are needed to prove the core loop.</p>
+<p><strong>6. The path to revenue is concrete.</strong> One 500-employee pilot at $5 PEPM = $2,500 MRR. Ten pilots = $25,000 MRR. The B2B SaaS motion is proven in adjacent categories and directly applicable here.</p>
+<p><strong>7. Every future feature is additive, not a rebuild.</strong> Longitudinal tracking, booking handoff, employer dashboards, insurer integration, and adaptive multi-instrument screening all layer onto the same intake and scoring infrastructure built in MVP1. Nothing done in the 7-day build is throwaway work.</p>
+
+<script>
+(function () {
+  var citationRe = /(\[Research Dossier[^\]]+\]|\[Ref\.\s*[\d,\s§][^\]]*\]|\[(?:Strong|Moderate(?:-High)?(?:\s*\([^)]*\))?)\])/gi;
+  document.querySelectorAll('p, li, td').forEach(function (el) {
+    if (el.closest('pre')) return;
+    el.innerHTML = el.innerHTML.replace(citationRe, '<span class="cp-evidence">$1</span>');
+  });
+  document.querySelectorAll('strong').forEach(function (el) {
+    if (el.textContent.trim() === 'Finding:') el.classList.add('cp-finding-label');
+  });
+})();
+</script>
+</body>
+</html>
